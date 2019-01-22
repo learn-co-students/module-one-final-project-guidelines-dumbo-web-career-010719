@@ -1,3 +1,9 @@
+def lover_setup
+  nikki = Lover.create(name: "Nikki", gender: "Female", personality: "Fierce", interest: "fitness", fitness_req: 30, intellect_req: 15, kindness_req: 15, money_req: 100)
+  kira = Lover.create(name: "Kira", gender: "Female", personality: "Sweet", interest: "volunteering", fitness_req: 10, intellect_req: 20, kindness_req: 30, money_req: 50)
+  princess = Lover.create(name: "Princess", gender: "Female", personality: "Shallow", interest: "money", fitness_req: 30, intellect_req: 30, kindness_req: 10, money_req: 1000)
+  penelope = Lover.create(name: "Penelope", gender: "Female", personality: "Nerdy", interest: "intellect", fitness_req: 10, intellect_req: 40, kindness_req: 10, money_req: 20)
+end
 
 def start_day(current_user)
   count = 0.0
@@ -30,6 +36,7 @@ def display_stats(current_user)
 end
 
 def new_game
+  lover_setup
   puts "What is your name?"
   name = gets.chomp
   prompt = TTY::Prompt.new
@@ -46,6 +53,14 @@ end
 def load_game
   user_choices = User.all.map{ |obj| obj.name}
   prompt = TTY::Prompt.new
-  current_user = prompt.select("Choose a file", %w(user_choices))
-  puts current_user
+  choice = prompt.select("Choose a file", user_choices)
+  current_user = User.all.find { |obj| obj.name == choice}
+  puts "You've chosen #{current_user.name}"
+  display_stats(current_user)
+  start_day(current_user)
+end
+
+def delete_file
+  prompt = TTY::Prompt.new
+  delete_choice = prompt.select("Choose a file to delete")
 end
