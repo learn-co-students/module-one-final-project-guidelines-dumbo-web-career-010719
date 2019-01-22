@@ -64,8 +64,9 @@ def new_game
   current_user = User.create(name: name, preference: preference,
     fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100)
-  puts "You've created a new character!"
+  puts "Hello, #{current_user.name}!"
   display_stats(current_user)
+  sleep(2)
   start_day(current_user)
 end
 
