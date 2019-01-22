@@ -3,6 +3,8 @@ class CreateLovers < ActiveRecord::Migration[5.0]
     create_table :lovers do |t|
       t.string :name
       t.string :gender
+      t.string :personality
+      t.string :interest
       t.integer :fitness_req
       t.integer :intellect_req
       t.integer :kindness_req
