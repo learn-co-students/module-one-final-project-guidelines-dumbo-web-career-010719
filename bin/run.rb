@@ -1,8 +1,4 @@
 require_relative '../config/environment'
+require_relative "../lib/command_line_interface.rb"
 
-
-
-puts "Hello Welcome to My Movie List"
-puts "What is your name?"
-name = gets.chomp
-puts "Hello #{name}"
+command_line
