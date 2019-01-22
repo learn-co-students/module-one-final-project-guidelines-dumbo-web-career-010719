@@ -13,12 +13,39 @@ def start_day(current_user)
       menu.choice 'date', 6
     end
     if answer == 1
-      current_user.intellect += 10
-      current_user.money += 200
-      current_user.save
-      display_stats(current_user)
+      work(current_user)
+    elsif answer == 2
+      gym(current_user)
+    elsif answer == 3
+      volunteer(current_user)
+    elsif answer == 4
+      study(current_user)
     end
   end
+end
+
+def work(current_user)
+  current_user.money += 200
+  current_user.save
+  display_stats(current_user)
+end
+
+def gym(current_user)
+  current_user.fitness += 10
+  current_user.save
+  display_stats(current_user)
+end
+
+def volunteer(current_user)
+  current_user.kindness += 10
+  current_user.save
+  display_stats(current_user)
+end
+
+def study(current_user)
+  current_user.intellect += 10
+  current_user.save
+  display_stats(current_user)
 end
 
 def display_stats(current_user)
