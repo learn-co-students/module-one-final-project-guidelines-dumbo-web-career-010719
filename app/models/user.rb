@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
-  has_many :movies, through :movieslist
-  has_many :movieslist
+  has_many :movies, through: :lists
+  has_many :lists
 end
