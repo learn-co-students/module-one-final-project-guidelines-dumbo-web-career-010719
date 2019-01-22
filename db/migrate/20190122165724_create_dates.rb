@@ -4,5 +4,6 @@ class CreateDates < ActiveRecord::Migration[5.0]
       t.integer :user_id
       t.integer :lovers_id
       t.integer :affection_pts
+    end
   end
 end
