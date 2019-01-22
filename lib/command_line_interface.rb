@@ -104,7 +104,10 @@ end
 # Delete entry in movie list
 # Takes in a movie id?
 def delete_movie_from_movie_list(curr_user)
-
+    puts "Enter a movie title to delete"
+    input = gets.chomp
+    curr_user.delete_movie_in_list(input)
+    puts "Deleted #{input} from your list"
 end
 
 def update_movie_menu
@@ -150,6 +153,5 @@ def update_movie_logic(curr_user, movie_name, input)
         end
 
         curr_input = update_movie_menu
-            
     end
 end

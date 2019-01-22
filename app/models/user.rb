@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   end
 
   def delete_movie_in_list(movie_name)
-  
+    movie_list.destroy(movie_list.find(get_movie(movie_name)))
   end
 
 end
