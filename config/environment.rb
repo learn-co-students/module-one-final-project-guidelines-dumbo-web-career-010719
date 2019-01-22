@@ -1,3 +1,4 @@
+require_relative './game_methods.rb'
 require 'bundler'
 Bundler.require
 
