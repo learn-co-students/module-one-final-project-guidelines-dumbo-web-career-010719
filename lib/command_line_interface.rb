@@ -1,8 +1,8 @@
 require_relative '../config/environment'
+require 'active_record'
 
 def command_line
-    welcome
-    prompts
+    prompts(welcome)
 end
 
 def welcome 
@@ -10,11 +10,13 @@ def welcome
     puts "What is your name?"
     name = gets.chomp
     puts "Hello #{name}"
+    return name
 end
 
-def prompts
+def prompts(name)
     inputs = show_menu
     status = true
+    check_user(name)
     
     while status do
         case inputs
@@ -63,6 +65,9 @@ def exit_line
     puts "C ya"
 end
 
+def check_user(user_name)
+    User.find_or_create_by(name: user_name)
+end
 
 # Get movie list for user
 def get_movie_list
