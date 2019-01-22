@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 
 
-
-puts "HELLO WORLD"
+puts "Welcome to the Flatiron Dating Sim"
+puts "New game or Load game?"
+name = gets.chomp
