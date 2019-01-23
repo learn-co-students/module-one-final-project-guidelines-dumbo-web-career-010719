@@ -240,7 +240,7 @@ def male_date (current_user)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
   pts = affection_pts(current_user, choice_id)
   if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{mchoice} better."
@@ -258,7 +258,7 @@ def female_date(current_user)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
   pts = affection_pts(current_user, choice_id)
   if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{fchoice} better."
