@@ -61,14 +61,14 @@ end
 
 # View specific movie info
 def view_movie_info(curr_user)
-    input = TTY::Prompt.new.ask("Enter a movie title ")
+    input = select_movie(curr_user)
     puts "Here is #{input}"
     puts curr_user.get_movie(input)
 end
 
 # Update entry in movie list
 def update_movie_list_entry(curr_user)
-    input = TTY::Prompt.new.ask("Enter a movie title to update")
+    input = select_movie(curr_user)
     
     while true do
         if update_movie_prompt(curr_user, input) == false
@@ -79,7 +79,7 @@ end
 
 # Delete entry in movie list
 def delete_movie_list_entry(curr_user)
-    input = TTY::Prompt.new.ask("Enter a movie title to delete ")
+    input = select_movie(curr_user)
     curr_user.delete_movie_in_list(input)
     puts "Deleted #{input} from your list"
 end
@@ -163,4 +163,19 @@ def display_table(data)
     table = TTY::Table.new(['Title', 'Rating', 'Feedback', 'Watched'], data)
     multi_renderer = TTY::Table::Renderer::ASCII.new(table, multiline: true)
     multi_renderer.render
+end
+
+def movie_list_names(movie_list)
+    movie_id = movie_list.map { |item| item.movie_id}
+    movies = movie_id.map { |id| Movie.find(id)}
+    movie_names = movies.map { |movie| movie.name}
+end
+
+def movie_list_prompt(data)
+    prompt = TTY::Prompt.new
+    prompt.select("Select a movie", data)
+end
+
+def select_movie(curr_user)
+    movie_list_prompt(movie_list_names(curr_user.movie_list))
 end
