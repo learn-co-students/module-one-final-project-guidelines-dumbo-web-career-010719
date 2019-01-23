@@ -1,11 +1,13 @@
 require_relative '../config/environment'
 require 'active_record'
+require 'tty-prompt'
 
 def command_line
     prompts(welcome)
 end
 
 def welcome 
+    system "clear"
     puts "Hello Welcome to My Movie List"
     puts "What is your name?"
     name = gets.chomp
@@ -15,55 +17,17 @@ end
 
 def prompts(name)
     curr_user = check_user(name)
-    inputs = show_menu
-    status = true
     
-    while status do
-        case inputs
-        when "1"
-            # Show all movies
-            puts "Show all movies"
-            get_movie_list(curr_user)
-        when "2"
-            # Add movie to movie list
-            add_new_movie(curr_user)
-        when "3"
-            # View movie info
-            view_movie_info(curr_user)
-        when "4"
-            # Update movie list entry
-            update_movie_list_entry(curr_user)
-        when "5"
-            # Delete movie from movie list
-            delete_movie_from_movie_list(curr_user)
-        when "6"
-            exit_line
-            status = false
-        end
-        
-        if status == false
+    while true do
+        if main_prompt_screen(curr_user) == false
             break
         end
-        puts "__________________________________________________"
-        inputs = show_menu
     end
 end
 
-def show_menu
-    puts "Here are your options. Enter a number to navigate"
-    puts "1 Show movie list"
-    puts "2 Add new movie"
-    puts "3 View movie info"
-    puts "4 Update movie list entry"
-    puts "5 Delete movie from movie list"
-    puts "6 exit to exit"
-
-    input = gets.chomp
-    return input
-end 
-
 def exit_line
     puts "C ya"
+    return false
 end
 
 def check_user(user_name)
@@ -78,80 +42,85 @@ end
 # Add movie to movie list for user
 # Create new movie and add it to movie list
 def add_new_movie(curr_user)
-    puts "Enter a movie title"
-    input = gets.chomp
+    input = TTY::Prompt.new.ask("Enter a movie title ")
     puts curr_user.new_movie(input)
     puts "Added #{input} to your list"
 end
 
 # View specific movie info
-# Takes in movie id?
 def view_movie_info(curr_user)
-    puts "Enter a movie title"
-    input = gets.chomp
+    input = TTY::Prompt.new.ask("Enter a movie title ")
     puts "Here is #{input}"
     puts curr_user.get_movie(input)
 end
 
 # Update entry in movie list
-# Takes in movie id?
 def update_movie_list_entry(curr_user)
-    puts "Enter a movie title"
-    input = gets.chomp
-    update_movie_logic(curr_user, input, update_movie_menu)
+    input = TTY::Prompt.new.ask("Enter a movie title to update")
+    
+    while true do
+        if update_movie_prompt(curr_user, input) == false
+            break
+        end
+    end
 end
 
 # Delete entry in movie list
-# Takes in a movie id?
 def delete_movie_from_movie_list(curr_user)
-    puts "Enter a movie title to delete"
-    input = gets.chomp
+    input = TTY::Prompt.new.ask("Enter a movie title to delete ")
     curr_user.delete_movie_in_list(input)
     puts "Deleted #{input} from your list"
 end
 
-def update_movie_menu
-    puts "1 to update rating"
-    puts "2 to update progress"
-    puts "3 to update feedback"
-    puts "4 to exit"
-    
-    input = gets.chomp
-    return input
+
+def main_prompt_screen(curr_user)
+    prompt = TTY::Prompt.new
+    screen = [
+        {"Show all movies" => -> do get_movie_list(curr_user) end},
+        {"Add movie to most list" => -> do add_new_movie(curr_user) end},
+        {"View movie info" => -> do view_movie_info(check_user) end},
+        {"Update movie list entry" => -> do update_movie_list_entry(curr_user) end},
+        {"Delete movie from movie list" => -> do delete_movie_list_entry(check_user) end},
+        {"Exit" => -> do exit_line end}
+    ]
+    prompt.select("", screen)
 end
 
-def update_movie_logic(curr_user, movie_name, input)
-    status = true
-    curr_input = input
+def update_movie_prompt(curr_user, movie_name)
+    prompt = TTY::Prompt.new
+    screen = [
+        {"Update rating" => -> do update_movie_rating(curr_user, movie_name) end},
+        {"Update progress" => -> do update_movie_progress(curr_user, movie_name) end},
+        {"Update feedback" => -> do update_movie_feedback(curr_user, movie_name) end},
+        {"Exit" => -> do update_exit end}
+    ]
+    prompt.select("", screen)
+end
 
-    while status do
-        case curr_input
-        when "1"
-            puts "enter rating"
-            rating = gets.chomp
-            curr_user.update_movie_in_list(movie_name, {rating: rating})
-        when "2"
-            puts "enter progress"
-            progress = gets.chomp
-             
-            if progress == "true"
-                curr_user.update_movie_in_list(movie_name, {watched: true})
-            else
-                curr_user.update_movie_in_list(movie_name, {watched: false})
-            end
-        when "3"
-            puts "enter feedback"
-            feedback = gets.chomp
-            curr_user.update_movie_in_list(movie_name, {feedback: feedback})
-        when "4"
-            status = false
-            puts "Exit update movie menu"
-        end
+def update_movie_rating(curr_user, movie_name)
+    prompt = TTY::Prompt.new
+    rating = prompt.ask("Whats your new rating? ")
+    curr_user.update_movie_in_list(movie_name, {rating: rating})
+end
 
-        if status == false
-            break
-        end
-
-        curr_input = update_movie_menu
+def update_movie_progress(curr_user, movie_name)
+    prompt = TTY::Prompt.new
+    progress = prompt.ask("Whats your progress? ")
+    puts progress
+    
+    if progress == "true"
+        curr_user.update_movie_in_list(movie_name, {watched: true})
+    else
+        curr_user.update_movie_in_list(movie_name, {watched: false})
     end
+end
+
+def update_movie_feedback(curr_user, movie_name)
+    prompt = TTY::Prompt.new
+    feedback = prompt.ask("Whats your feedback? ")
+    curr_user.update_movie_in_list(movie_name, {feedback: feedback})
+end
+
+def update_exit
+    return false
 end
