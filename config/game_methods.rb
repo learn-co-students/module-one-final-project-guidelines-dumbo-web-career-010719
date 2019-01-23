@@ -22,6 +22,9 @@ def start_day(current_user)
       study(current_user)
     end
   end
+  puts "Wow, today was tiring. Time to go to bed."
+  sleep(2)
+  next_day(current_user)
 end
 
 def work(current_user)
@@ -78,7 +81,7 @@ def load_game
   current_user = User.all.find { |obj| obj.name == choice}
   puts "You've chosen #{current_user.name}"
   display_stats(current_user)
-  start_day(current_user)
+  next_day(current_user)
 end
 
 def delete_file
@@ -89,4 +92,36 @@ def delete_file
   deleting.destroy
   puts "File has been deleted."
   welcome
+end
+
+def next_day(current_user)
+  count = 0.5
+  2.times do
+    count += 0.5
+    prompt = TTY::Prompt.new
+    answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
+      menu.enum '.'
+      menu.choice 'work', 1
+      menu.choice 'gym', 2
+      menu.choice 'volunteer', 3
+      menu.choice 'study', 4
+      menu.choice 'flirt', 5
+      menu.choice 'date', 6
+      menu.choice 'exit', 7
+    end
+    if answer == 1
+      work(current_user)
+    elsif answer == 2
+      gym(current_user)
+    elsif answer == 3
+      volunteer(current_user)
+    elsif answer == 4
+      study(current_user)
+    elsif answer == 7
+      return welcome
+    end
+  end
+  puts "Wow, today was tiring. Time to go to bed."
+  sleep(2)
+  next_day(current_user)
 end

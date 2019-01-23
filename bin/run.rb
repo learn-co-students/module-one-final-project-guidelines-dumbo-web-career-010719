@@ -3,6 +3,7 @@ require 'tty-prompt'
 
 def banner
   puts "
+
   ███████╗██╗      █████╗ ████████╗██╗██████╗  ██████╗ ███╗   ██╗
   ██╔════╝██║     ██╔══██╗╚══██╔══╝██║██╔══██╗██╔═══██╗████╗  ██║
   █████╗  ██║     ███████║   ██║   ██║██████╔╝██║   ██║██╔██╗ ██║
@@ -24,14 +25,13 @@ end
 
 def welcome
   main_menu = [
-    {   "New Game" => -> do new_game end },
-      {  "Load Game" => -> do load_game end},
-      {"Delete File" => -> do delete_file end},
-        {"Exit" => -> do puts "Goodbye" end}
-  ]
+    {"New Game" => -> do new_game end },
+    {"Load Game" => -> do load_game end},
+    {"Delete File" => -> do delete_file end},
+    {"Exit" => -> do puts "Goodbye" end}]
   prompt = TTY::Prompt.new
   response = prompt.select("Welcome to the Flatiron Dating Sim!", main_menu)
-  end
+end
 
 
 
