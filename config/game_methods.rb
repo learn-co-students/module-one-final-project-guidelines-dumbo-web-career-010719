@@ -196,7 +196,7 @@ def male_date (current_user)
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
-  if  current_user.fitness == choice_id.fitness_req && current_user.intellect == choice_id.intellect_req && current_user.kindness == choice_id.kindness_req && current_user.money == choice_id.money_req
+  if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
     current_user.money -= choice_id.money_req
     current_user.save
@@ -213,7 +213,7 @@ def female_date(current_user)
   female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-  if current_user.fitness == choice_id.fitness_req && current_user.intellect == choice_id.intellect_req && current_user.kindness == choice_id.kindness_req && current_user.money == choice_id.money_req
+  if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
     current_user.money -= choice_id.money_req
     current_user.save
@@ -223,4 +223,8 @@ def female_date(current_user)
   end
   sleep(2)
   display_stats(current_user)
+end
+
+def prompt_facts(choice_id)
+  choice_id
 end
