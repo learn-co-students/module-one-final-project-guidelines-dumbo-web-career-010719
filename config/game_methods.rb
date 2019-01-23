@@ -26,15 +26,15 @@ def goodbye
   system "clear"
 end
 
-  def load_game
-    user_choices = User.all.map{ |obj| obj.name}
-    prompt = TTY::Prompt.new
-    choice = prompt.select("Choose a file", user_choices)
-    current_user = User.all.find { |obj| obj.name == choice}
-    puts "You've chosen #{current_user.name}"
-    display_stats(current_user)
-    next_day(current_user)
-  end
+def load_game
+  user_choices = User.all.map{ |obj| obj.name}
+  prompt = TTY::Prompt.new
+  choice = prompt.select("Choose a file", user_choices)
+  current_user = User.all.find { |obj| obj.name == choice}
+  puts "You've chosen #{current_user.name}"
+  display_stats(current_user)
+  next_day(current_user)
+end
 
   def delete_file
     users = User.all.map { |obj| obj.name}
