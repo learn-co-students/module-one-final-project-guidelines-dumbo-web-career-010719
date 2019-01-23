@@ -10,7 +10,7 @@ nikki = Lover.create(name: "Nikki", gender: "Female", personality: "Fierce", int
   aff_kindness_mod: 2,
   aff_money_mod: 10,
   aff_pts_req: 400,
-  first_meeting: "Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.")
+  first_meeting: "Nikki: Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.")
 kira = Lover.create(name: "Kira", gender: "Female", personality: "Sweet", interest: "volunteering", fitness_req: 10, intellect_req: 20, kindness_req: 30, money_req: 50,
   fact_color: "My favorite color is purple",
   fact_item: "I love animals!!",
@@ -23,7 +23,7 @@ kira = Lover.create(name: "Kira", gender: "Female", personality: "Sweet", intere
   aff_kindness_mod: 2,
   aff_money_mod: 20,
   aff_pts_req: 500,
-  first_meeting: "Hello!! I'm Kira!! Sorry it's a mess in here...")
+  first_meeting: "Kira: Hello!! I'm Kira!! Sorry it's a mess in here...")
 princess = Lover.create(name: "Princess", gender: "Female", personality: "Shallow", interest: "money", fitness_req: 30, intellect_req: 30, kindness_req: 10, money_req: 1000,
   fact_item: "I really want this Louis Vuitton purse",
   fact_dream:"I can't decide between an Audi or Mercedes for my next car",
@@ -36,7 +36,7 @@ princess = Lover.create(name: "Princess", gender: "Female", personality: "Shallo
   aff_kindness_mod: 1,
   aff_money_mod: 50,
   aff_pts_req: 400,
-  first_meeting: "Excuse me. I'm using the squat rack. Wait your turn.")
+  first_meeting: "Princess: Excuse me. I'm using the squat rack. Wait your turn.")
 penelope = Lover.create(name: "Penelope", gender: "Female", personality: "Nerdy", interest: "intellect", fitness_req: 10, intellect_req: 40, kindness_req: 10, money_req: 20,
   fact_place: "I absolutely adore the library",
   fact_item: "My favorite author of ALL TIME is Edgar Allen Poe",
@@ -49,7 +49,7 @@ penelope = Lover.create(name: "Penelope", gender: "Female", personality: "Nerdy"
   aff_kindness_mod: 3,
   aff_money_mod: 10,
   aff_pts_req: 700,
-  first_meeting: "Welcome to the library. Do you need to sign up for a new card?")
+  first_meeting: "Penelope: Welcome to the library. Do you need to sign up for a new card?")
 
 
 ryan = Lover.create(name: "Ryan", gender: "Male", personality: "Quiet", interest: "intellect", fitness_req: 5, intellect_req: 30, kindness_req: 10, money_req: 20,
@@ -64,7 +64,7 @@ ryan = Lover.create(name: "Ryan", gender: "Male", personality: "Quiet", interest
   aff_kindness_mod: 1,
   aff_money_mod: 10,
   aff_pts_req: 400,
-  first_meeting: "A guy")
+  first_meeting: "Ryan: ...")
 john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest: "money", fitness_req: 15, intellect_req: 10, kindness_req: 10, money_req: 1000,
   fact_place: "I like to go to the Equinox on Wall St",
   fact_item: "Can you be careful not to scratch my jacket? It's real leather",
@@ -77,7 +77,7 @@ john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest
   aff_kindness_mod: 1,
   aff_money_mod: 25,
   aff_pts_req: 600,
-  first_meeting: "A guy")
+  first_meeting: "John: Hey there. Welcome to hell.")
 fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", interest: "fitness", fitness_req: 30, intellect_req: 5, kindness_req: 5, money_req: 50,
   fact_place: "My home country, Italia, is a gorgeous place",
   fact_item: "All I need in life is my Maserati",
@@ -90,7 +90,7 @@ fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", inter
   aff_kindness_mod: 1,
   aff_money_mod: 50,
   aff_pts_req: 600,
-  first_meeting: "A guy")
+  first_meeting: "Fabio: *grunts*")
 oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", interest: "volunteering", fitness_req: 0, intellect_req: 15, kindness_req: 25, money_req: 10,
   fact_place: "I know this sounds cheesy, but I love volunteering at the shelter",
   fact_item: "Don't laugh but I actually have a vegetable garden",
@@ -103,4 +103,4 @@ oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", inte
   aff_kindness_mod: 1,
   aff_money_mod: 10,
   aff_pts_req: 500,
-  first_meeting: "A guy")
+  first_meeting: "Oliver: Hi newbie. Welcome!!")
