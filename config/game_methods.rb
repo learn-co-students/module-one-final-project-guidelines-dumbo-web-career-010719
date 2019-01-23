@@ -79,8 +79,8 @@ end
 #---------------------------- Day Loops --------------------------------#
 
 def day(current_user)
-  if(current_user.total_days == 30)
-    end_game
+  if(current_user.total_days == 40)
+    lose_game
   end
   choices = [
     {name: 'Go to work', value: 1},
@@ -166,6 +166,7 @@ def gym(current_user)
   current_user.fitness += 10
   current_user.save
   display_stats(current_user)
+  current_user.gym_days += 1
 end
 
 def volunteer(current_user)
@@ -188,6 +189,7 @@ def volunteer(current_user)
   current_user.kindness += 10
   current_user.save
   display_stats(current_user)
+  current_user.volunteer_days += 1
 end
 
 def study(current_user)
@@ -210,6 +212,7 @@ def study(current_user)
   current_user.intellect += 10
   current_user.save
   display_stats(current_user)
+  current_user.study_days += 1
 end
 
 def flirt(current_user)
@@ -294,6 +297,7 @@ def male_date (current_user)
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
         puts "Yay you got a significant other!"
         #endgame method
+        endgame(current_user, choice_id)
     else
       puts "You got to know #{mchoice} better."
     end
@@ -317,8 +321,9 @@ def female_date(current_user)
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
         puts "Yay you got a significant other!"
         #endgame method
+        endgame(current_user, choice_id)
     else
-      puts "You got to know #{mchoice} better."
+      puts "You got to know #{fchoice} better."
     end
   else
     puts "#{fchoice} doesn't seem interested in going on a date with you."
@@ -348,4 +353,29 @@ end
 def aff_dates_sum(user, lover)
   sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
   sum
+end
+
+def lovers(current_user)
+  Lovers.all.select do |lover|
+    current_user.preference == lover.gender && current_user
+    date(current_user)
+  end
+  current_user.total_days += 1
+  day(current_user)
+end
+
+def endgame(current_user, lover)
+  system "clear"
+  puts "Congratulations you're in love!"
+  puts "It took you
+  #{current_user.total_days} total days consisting of
+  #{current_user.work_days} work days
+  #{current_user.volunteer_days} volunteer days
+  #{current_user.gym_days} gym days
+  #{current_user.study_days} study days
+  #{current_user.total_dates} total dates
+  to end up with #{lover.name}"
+  puts "Thank you for playing Flatiron Dating Sim!"
+  sleep(4)
+  exit
 end
