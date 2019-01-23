@@ -1,7 +1,7 @@
 require_relative '../config/environment'
 require 'active_record'
 require 'pry'
-
+#lookup tty prompt
 def command_line
     prompts(welcome)
 end
