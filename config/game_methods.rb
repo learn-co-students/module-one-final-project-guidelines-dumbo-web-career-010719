@@ -125,9 +125,18 @@ end
 
 def work(current_user)
   if current_user.work_days == 0
-    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
-    puts "You have met #{lover.name}!"
-    puts lover.first_meeting
+    if current_user.preference == 'Both'
+      lover = Lover.all.select { |lovers| lovers.interest == "money" }
+      puts "You have met #{lover[0].name} & #{lover[1].name}!"
+      puts lover[0].first_meeting
+      puts lover[1].first_meeting
+      sleep(2)
+    else
+      lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
+      puts "You have met #{lover.name}!"
+      puts lover.first_meeting
+      sleep(2)
+    end
   end
   puts "Another day, another dollar."
   sleep(2)
@@ -139,9 +148,18 @@ end
 
 def gym(current_user)
   if current_user.gym_days == 0
-    lover = Lover.all.find {|lovers| lovers.gender == current_user.preference && lovers.interest == "fitness"}
-    puts "You have met #{lover.name}!"
-    puts lover.first_meeting
+    if current_user.preference == 'Both'
+      lover = Lover.all.select { |lovers| lovers.interest == "fitness" }
+      puts "You have met #{lover[0].name} & #{lover[1].name}!"
+      puts lover[0].first_meeting
+      puts lover[1].first_meeting
+      sleep(2)
+    else
+      lover = Lover.all.find {|lovers| lovers.gender == current_user.preference && lovers.interest == "fitness"}
+      puts "You have met #{lover.name}!"
+      puts lover.first_meeting
+      sleep(2)
+    end
   end
   puts "I'm so sore."
   sleep(2)
@@ -152,9 +170,18 @@ end
 
 def volunteer(current_user)
   if current_user.volunteer_days == 0
-    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
-    puts "You have met #{lover.name}!"
-    puts lover.first_meeting
+    if current_user.preference == 'Both'
+      lover = Lover.all.select { |lovers| lovers.interest == "volunteering" }
+      puts "You have met #{lover[0].name} & #{lover[1].name}!"
+      puts lover[0].first_meeting
+      puts lover[1].first_meeting
+      sleep(2)
+    else
+      lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
+      puts "You have met #{lover.name}!"
+      puts lover.first_meeting
+      sleep(2)
+    end
   end
   puts "The shelter looks slighter nicer now!"
   sleep(2)
@@ -165,9 +192,16 @@ end
 
 def study(current_user)
   if current_user.study_days == 0
-    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
-    puts "You have met #{lover.name}!"
-    puts lover.first_meeting
+    if current_user.preference == 'Both'
+      lover = Lover.all.select { |lovers| lovers.interest == "intellect" }
+      puts "You have met #{lover[0].name} & #{lover[1].name}  !"
+      puts lover[0].first_meeting
+      puts lover[1].first_meeting
+    else
+      lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
+      puts "You have met #{lover.name}!"
+      puts lover.first_meeting
+    end
   end
   puts "Ugh... Learning Active Record is confusing..."
   sleep(2)
@@ -312,13 +346,4 @@ end
 def aff_dates_sum(user, lover)
   sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
   sum
-end
-
-def lovers(current_user)
-  Lovers.all.select do |lover|
-    current_user.preference == lover.gender && current_user
-    date(current_user)
-  end
-  current_user.total_days += 1
-  day(current_user)
 end
