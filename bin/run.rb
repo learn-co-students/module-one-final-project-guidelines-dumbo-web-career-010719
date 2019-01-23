@@ -26,12 +26,32 @@ puts " "
 puts "------------------------------"
 
 prompt = TTY::Prompt.new
-prompt.select("Please choose to create or to join a league.", %w(Join Create))
+type = prompt.select("Please choose to create or to join a league.", %w(Join Create))
 
-  if prompt == "Create"
-    prompt.ask("Please provide us with your username.", default: ENV['USERNAME'])
+  if type == "Create"
+
+    username = prompt.collect do
+      key(:username).ask('username?')
+    end
     # binding.pry
-  else
+    user = Creator.create(username)
+    league = prompt.collect do
+      key(:name).ask('name of league?')
+      key(:location).select('location of league?', %w(Manhattan Brooklyn Queens Bronx Buffalo Albany))
+      key(:start_date).ask('start date of league? (example: yyyymmdd)')
+      key(:title).select('which game is the league for?', %w(Super_Smash_Brothers_Ultimate Fortnite League_of_Legends Call_of_Duty Overwatch Battlefield_5))
+      end
+      League.create(league)
+
+      # League.last.creator_id = Creator.last.id
+      League.last.update(creator_id: Creator.last.id)
+        binding.pry
+
+
+
+
+
+  elsif type == "Join"
     players_result = prompt.collect do
       key(:username).ask('username?')
       key(:location).select('location?', %w(Manhattan Brooklyn Queens Bronx Buffalo Albany))

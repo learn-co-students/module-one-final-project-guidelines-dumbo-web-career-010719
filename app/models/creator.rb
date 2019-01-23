@@ -3,4 +3,5 @@ class Creator < ActiveRecord::Base
   has_many :players, through: :leagues
   has_many :games, through: :leagues
 
+
 end

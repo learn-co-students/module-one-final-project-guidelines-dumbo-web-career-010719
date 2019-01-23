@@ -19,7 +19,7 @@ League.create(name: "vwvw", location: "Albany", title: "LOL")
 League.create(name: "whakcd", location: "Queens", title: "WHAT")
 League.create(name: "oola", location: "Manhattan", title: "SSB")
 
-#
+
 # League.create(name: "LCS", location: "NY", date: 20190123, title: "SSB")
 # League.create(name: "aaa", location: "NY", date: 20000123, title: "SSB")
 # League.create(name: "vwvw", location: "LA", date: 19641230, title: "LOL")

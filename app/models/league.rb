@@ -3,7 +3,10 @@ class League < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
-  def all_players
-    
-  end
+
+  # def all_players
+  #
+  # end
+
+
 end
