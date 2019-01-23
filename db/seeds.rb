@@ -64,7 +64,7 @@ ryan = Lover.create(name: "Ryan", gender: "Male", personality: "Quiet", interest
   aff_kindness_mod: 1,
   aff_money_mod: 10,
   aff_pts_req: 400,
-  first_meeting: "A guy")
+  first_meeting: "...")
 john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest: "money", fitness_req: 15, intellect_req: 10, kindness_req: 10, money_req: 1000,
   fact_place: "I like to go to the Equinox on Wall St",
   fact_item: "Can you be careful not to scratch my jacket? It's real leather",
@@ -77,7 +77,7 @@ john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest
   aff_kindness_mod: 1,
   aff_money_mod: 25,
   aff_pts_req: 600,
-  first_meeting: "A guy")
+  first_meeting: "Hey there. Welcome to hell.")
 fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", interest: "fitness", fitness_req: 30, intellect_req: 5, kindness_req: 5, money_req: 50,
   fact_place: "My home country, Italia, is a gorgeous place",
   fact_item: "All I need in life is my Maserati",
@@ -90,7 +90,7 @@ fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", inter
   aff_kindness_mod: 1,
   aff_money_mod: 50,
   aff_pts_req: 600,
-  first_meeting: "A guy")
+  first_meeting: "*grunts*")
 oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", interest: "volunteering", fitness_req: 0, intellect_req: 15, kindness_req: 25, money_req: 10,
   fact_place: "I know this sounds cheesy, but I love volunteering at the shelter",
   fact_item: "Don't laugh but I actually have a vegetable garden",
@@ -103,4 +103,4 @@ oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", inte
   aff_kindness_mod: 1,
   aff_money_mod: 10,
   aff_pts_req: 500,
-  first_meeting: "A guy")
+  first_meeting: "Hi newbie. Welcome!!")

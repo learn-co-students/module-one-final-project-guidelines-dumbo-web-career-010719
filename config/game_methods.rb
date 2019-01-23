@@ -145,13 +145,8 @@ end
 #   next_day(current_user)
 # end
 
-<<<<<<< HEAD
-def day(user)
-  if(user.total_days == 30)
-=======
 def day(current_user)
   if(current_user.total_days == 30)
->>>>>>> lizzy
     end_game
   end
   choices = [
@@ -176,23 +171,13 @@ def day(current_user)
   elsif answer == 4
     study(current_user)
   elsif answer == 5
-<<<<<<< HEAD
-    date(user)
-  end
-  user.total_days += 1
-  day(user)
-end
-
-def lovers(user)
-  Lovers.all.select do |lover|
-    user.preference == lover.gender && user
-=======
     date(current_user)
->>>>>>> lizzy
   end
   current_user.total_days += 1
   day(current_user)
 end
+
+
 
 # def next_day(current_user)
 #   count = 1.5
@@ -414,5 +399,8 @@ end
 def lovers(current_user)
   Lovers.all.select do |lover|
     current_user.preference == lover.gender && current_user
+    date(current_user)
   end
+  current_user.total_days += 1
+  day(current_user)
 end
