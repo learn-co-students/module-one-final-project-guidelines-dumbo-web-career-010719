@@ -11,16 +11,40 @@ def start_day(current_user)
       menu.choice 'study', 4
     end
     if answer == 1
-      puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+      if current_user.preference == "Female"
+        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+        sleep(2)
+      else
+        puts "John: 'Hey there. Welcome to hell.'"
+        sleep(2)
+      end
       work(current_user)
     elsif answer == 2
-      puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+      if current_user.preference == "Female"
+        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+        sleep(2)
+      else
+        puts "Fabio: *grunts*"
+        sleep(2)
+      end
       gym(current_user)
     elsif answer == 3
-      puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+      if current_user.preference == "Female"
+        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+        sleep(2)
+      else
+        puts "Oliver: 'Hi newbie! Welcome!!'"
+        sleep(2)
+      end
       volunteer(current_user)
     elsif answer == 4
-      puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+      if current_user.preference == "Female"
+        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+        sleep(2)
+      else
+        puts "Ryan: '...'"
+        sleep(2)
+      end
       study(current_user)
     end
   end
@@ -30,24 +54,32 @@ def start_day(current_user)
 end
 
 def work(current_user)
+  puts "Another day, another dollar."
+  sleep(2)
   current_user.money += 200
   current_user.save
   display_stats(current_user)
 end
 
 def gym(current_user)
+  puts "I'm so sore."
+  sleep(2)
   current_user.fitness += 10
   current_user.save
   display_stats(current_user)
 end
 
 def volunteer(current_user)
+  puts "The shelter looks slighter nicer now!"
+  sleep(2)
   current_user.kindness += 10
   current_user.save
   display_stats(current_user)
 end
 
 def study(current_user)
+  puts "Ugh... Learning Active Record is confusing..."
+  sleep(2)
   current_user.intellect += 10
   current_user.save
   display_stats(current_user)
