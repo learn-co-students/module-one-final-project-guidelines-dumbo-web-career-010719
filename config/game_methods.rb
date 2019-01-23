@@ -44,7 +44,7 @@ def new_game
     puts "Hello, #{current_user.name}!"
     display_stats(current_user)
     sleep(2)
-    start_day(current_user)
+    day(current_user)
   end
 
 def goodbye
@@ -74,80 +74,79 @@ end
   end
 
 #---------------------------- Day Loops --------------------------------#
-def start_day(current_user)
-  count = 0.0
-  2.times do
-    count += 0.5
-    prompt = TTY::Prompt.new
-    answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
-      menu.enum '.'
-      menu.choice 'work', 1
-      menu.choice 'gym', 2
-      menu.choice 'volunteer', 3
-      menu.choice 'study', 4
-    end
-    if answer == 1
-      if current_user.preference == "Female"
-        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "John: 'Hey there. Welcome to hell.'"
-        sleep(2)
-      else
-        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
-        puts "John: 'Hey there. Welcome to hell.'"
-        sleep(2)
-      end
-      work(current_user)
-    elsif answer == 2
-      if current_user.preference == "Female"
-        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Fabio: *grunts*"
-        sleep(2)
-      else
-        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
-        puts "Fabio: *grunts*"
-        sleep(2)
-      end
-      gym(current_user)
-    elsif answer == 3
-      if current_user.preference == "Female"
-        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Oliver: 'Hi newbie! Welcome!!'"
-        sleep(2)
-      else
-        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
-        puts "Oliver: 'Hi newbie. Welcome!!'"
-        sleep(2)
-      end
-      volunteer(current_user)
-    elsif answer == 4
-      if current_user.preference == "Female"
-        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Ryan: '...'"
-        sleep(2)
-      else
-        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
-        puts "Ryan: '...'"
-        sleep(2)
-      end
-      study(current_user)
-    end
-  end
-  puts "Wow, today was tiring. Time to go to bed."
-  sleep(2)
-  next_day(current_user)
-end
+# def start_day(current_user)
+#   count = 0.0
+#   2.times do
+#     count += 0.5
+#     prompt = TTY::Prompt.new
+#     answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
+#       menu.enum '.'
+#       menu.choice 'work', 1
+#       menu.choice 'gym', 2
+#       menu.choice 'volunteer', 3
+#       menu.choice 'study', 4
+#     end
+#     if answer == 1
+#       if current_user.preference == "Female"
+#         puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "John: 'Hey there. Welcome to hell.'"
+#         sleep(2)
+#       else
+#         puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+#         puts "John: 'Hey there. Welcome to hell.'"
+#         sleep(2)
+#       end
+#       work(current_user)
+#     elsif answer == 2
+#       if current_user.preference == "Female"
+#         puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Fabio: *grunts*"
+#         sleep(2)
+#       else
+#         puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+#         puts "Fabio: *grunts*"
+#         sleep(2)
+#       end
+#       gym(current_user)
+#     elsif answer == 3
+#       if current_user.preference == "Female"
+#         puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Oliver: 'Hi newbie! Welcome!!'"
+#         sleep(2)
+#       else
+#         puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+#         puts "Oliver: 'Hi newbie. Welcome!!'"
+#         sleep(2)
+#       end
+#       volunteer(current_user)
+#     elsif answer == 4
+#       if current_user.preference == "Female"
+#         puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Ryan: '...'"
+#         sleep(2)
+#       else
+#         puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+#         puts "Ryan: '...'"
+#         sleep(2)
+#       end
+#       study(current_user)
+#     end
+#   end
+#   puts "Wow, today was tiring. Time to go to bed."
+#   sleep(2)
+#   next_day(current_user)
+# end
 
-
-def day(user)
-  if(user.total_days == 30)
+def day(current_user)
+  if(current_user.total_days == 30)
     end_game
   end
   choices = [
@@ -157,113 +156,25 @@ def day(user)
     {name: 'Study at the library', value:4},
     {name: 'Go on a date', value: 5}
   ]
-  if user.total_days == 0
-    choices[4][:disabled] = "(You haven't met a girl)"
+  if current_user.total_days == 0
+    choices[4][:disabled] = "(You haven't met anyone to talk to!)"
   end
-  display_stats(user)
+  display_stats(current_user)
   prompt = TTY::Prompt.new
-  answer = prompt.select("Day #{user.total_days+1} - What do you want to do?", choices)
+  answer = prompt.select("Day #{current_user.total_days+1} - What do you want to do?", choices)
   if answer == 1
-    work(user)
+    work(current_user)
   elsif answer == 2
-    gym(user)
+    gym(current_user)
   elsif answer == 3
-    volunteer(user)
+    volunteer(current_user)
   elsif answer == 4
-    study(user)
+    study(current_user)
   elsif answer == 5
-    date(user)
+    date(current_user)
   end
-  user.total_days += 1
-  day(user)
-end
-def lovers(user)
-  Lovers.all.select do |lover|
-    user.preference == lover.gender && user
-  end
-end
-
-def work(current_user)
-  if current_user.work_days == 0
-    lover = Lover.all.find do |lovers|
-      lovers.gender == current_user.preference && lovers.interest == "money"
-    end
-    puts "You have met #{lover.name}!"
-    puts lover.first_meeting
-  end
-  puts "Another day, another dollar."
-  sleep(2)
-  current_user.money += 200
-  current_user.save
-  display_stats(current_user)
-  current_user.work_days += 1
-end
-
-def gym(current_user)
-  puts "I'm so sore."
-  sleep(2)
-  current_user.fitness += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def volunteer(current_user)
-  puts "The shelter looks slighter nicer now!"
-  sleep(2)
-  current_user.kindness += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def study(current_user)
-  puts "Ugh... Learning Active Record is confusing..."
-  sleep(2)
-  current_user.intellect += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def display_stats(current_user)
-  puts "Here are your stats.
-  Fitness: #{current_user.fitness}
-  Intellect: #{current_user.intellect}
-  Kindness: #{current_user.kindness}
-  Money: $#{current_user.money}"
-end
-
-def new_game
-  puts "What is your name?"
-  name = gets.chomp
-  prompt = TTY::Prompt.new
-  preference = prompt.select("What is your sexual preference?", %w(Male Female))
-  current_user = User.create(name: name, preference: preference,
-    fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
-    money: 100)
-  puts "Hello, #{current_user.name}!"
-  display_stats(current_user)
-  sleep(2)
-  start_day(current_user)
-end
-
-
-def load_game
-  user_choices = User.all.map{ |obj| obj.name}
-  prompt = TTY::Prompt.new
-  choice = prompt.select("Choose a file", user_choices)
-  current_user = User.all.find { |obj| obj.name == choice}
-  puts "You've chosen #{current_user.name}"
-  display_stats(current_user)
-  next_day(current_user)
-end
-
-def delete_file
-  users = User.all.map { |obj| obj.name}
-  prompt = TTY::Prompt.new
-  delete_choice = prompt.select("Choose a file to delete", users)
-  deleting = User.all.find { |obj| obj.name == delete_choice}
-  deleting.destroy
-  puts "File has been deleted."
-  welcome
+  current_user.total_days += 1
+  day(current_user)
 end
 
 def next_day(current_user)
@@ -304,12 +215,21 @@ end
 
 #---------------------------- Action Methods --------------------------------#
 
+
 def work(current_user)
+  if current_user.work_days == 0
+    lover = Lover.all.find do |lovers|
+      lovers.gender == current_user.preference && lovers.interest == "money"
+    end
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "Another day, another dollar."
   sleep(2)
   current_user.money += 200
   current_user.save
   display_stats(current_user)
+  current_user.work_days += 1
 end
 
 def gym(current_user)
@@ -472,4 +392,10 @@ end
 def aff_dates_sum(user, lover)
   sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
   sum
+end
+
+def lovers(current_user)
+  Lovers.all.select do |lover|
+    current_user.preference == lover.gender && current_user
+  end
 end
