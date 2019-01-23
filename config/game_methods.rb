@@ -1,11 +1,6 @@
-def display_stats(current_user)
-  puts "Here are your stats.
-  Fitness: #{current_user.fitness}
-  Intellect: #{current_user.intellect}
-  Kindness: #{current_user.kindness}
-  Money: $#{current_user.money}"
-end
 
+
+#---------------------------- Main Menu --------------------------------#
 def new_game
   puts "What is your name?"
   name = gets.chomp
@@ -46,6 +41,7 @@ end
     welcome
   end
 
+#---------------------------- Action Methods --------------------------------#
 def start_day(current_user)
   count = 0.0
   2.times do
@@ -169,8 +165,6 @@ def study(current_user)
   display_stats(current_user)
 end
 
-
-
 def flirt(current_user)
   prompt = TTY::Prompt.new
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
@@ -237,9 +231,19 @@ def female_date(current_user)
   display_stats(current_user)
 end
 
+#---------------------------- Helper Methods --------------------------------#
+
 def prompt_facts(choice_id)
   facts = [choice_id.fact_food, choice_id.fact_item, choice_id.fact_place, choice_id.fact_color, choice_id.fact_dream, choice_id.fact_season]
   facts.sample
+end
+
+def display_stats(current_user)
+  puts "Here are your stats.
+  Fitness: #{current_user.fitness}
+  Intellect: #{current_user.intellect}
+  Kindness: #{current_user.kindness}
+  Money: $#{current_user.money}"
 end
 
 def affection_pts(current_user, current_lover)
