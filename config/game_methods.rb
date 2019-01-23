@@ -145,7 +145,7 @@ def start_day(current_user)
   next_day(current_user)
 end
 
-<<<<<<< HEAD
+
 def day(user)
   if(user.total_days == 30)
     end_game
@@ -267,7 +267,7 @@ def delete_file
 end
 
 =======
->>>>>>> master
+
 def next_day(current_user)
   count = 1.5
   2.times do
