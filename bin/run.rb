@@ -28,7 +28,7 @@ def welcome
     {"New Game" => -> do new_game end },
     {"Load Game" => -> do load_game end},
     {"Delete File" => -> do delete_file end},
-    {"Exit" => -> do puts "Goodbye" end}]
+    {"Exit" => -> do goodbye end}]
   prompt = TTY::Prompt.new
   response = prompt.select("Welcome to the Flatiron Dating Sim!", main_menu)
 end

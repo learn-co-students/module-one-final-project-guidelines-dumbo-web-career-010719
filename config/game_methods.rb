@@ -20,6 +20,11 @@ def new_game
     start_day(current_user)
   end
 
+def goodbye
+  puts "Goodbye!"
+  sleep(3)
+  system "clear"
+end
 
   def load_game
     user_choices = User.all.map{ |obj| obj.name}
@@ -98,7 +103,7 @@ end
 
 def next_day(current_user)
   count = 1.5
-  60.times do
+  2.times do
     count += 0.5
     prompt = TTY::Prompt.new
     answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
@@ -170,16 +175,21 @@ def flirt(current_user)
   prompt = TTY::Prompt.new
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
   female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
     Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    puts "#{prompt_facts(choice_id)}"
+    sleep(2)
     puts "You got to know #{mchoice} better."
     sleep(2)
   elsif current_user.preference == "Female"
     fchoice = prompt.select("Who do you want to flirt with?", female_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
     Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    puts "#{prompt_facts(choice_id)}"
+    sleep(2)
     puts "You got to know #{fchoice} better."
     sleep(2)
   end
@@ -228,7 +238,8 @@ def female_date(current_user)
 end
 
 def prompt_facts(choice_id)
-  choice_id
+  facts = [choice_id.fact_food, choice_id.fact_item, choice_id.fact_place, choice_id.fact_color, choice_id.fact_dream, choice_id.fact_season]
+  facts.sample
 end
 
 def affection_pts(current_user, current_lover)
