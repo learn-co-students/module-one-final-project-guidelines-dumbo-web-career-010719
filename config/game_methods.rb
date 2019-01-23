@@ -1,3 +1,46 @@
+def display_stats(current_user)
+  puts "Here are your stats.
+  Fitness: #{current_user.fitness}
+  Intellect: #{current_user.intellect}
+  Kindness: #{current_user.kindness}
+  Money: $#{current_user.money}"
+end
+
+def new_game
+  puts "What is your name?"
+  name = gets.chomp
+  prompt = TTY::Prompt.new
+  preference = prompt.select("What is your sexual preference?", %w(Male Female))
+  current_user = User.create(name: name, preference: preference,
+    fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
+    money: 100)
+    puts "Hello, #{current_user.name}!"
+    display_stats(current_user)
+    sleep(2)
+    start_day(current_user)
+  end
+
+
+  def load_game
+    user_choices = User.all.map{ |obj| obj.name}
+    prompt = TTY::Prompt.new
+    choice = prompt.select("Choose a file", user_choices)
+    current_user = User.all.find { |obj| obj.name == choice}
+    puts "You've chosen #{current_user.name}"
+    display_stats(current_user)
+    next_day(current_user)
+  end
+
+  def delete_file
+    users = User.all.map { |obj| obj.name}
+    prompt = TTY::Prompt.new
+    delete_choice = prompt.select("Choose a file to delete", users)
+    deleting = User.all.find { |obj| obj.name == delete_choice}
+    deleting.destroy
+    puts "File has been deleted."
+    welcome
+  end
+
 def start_day(current_user)
   count = 0.0
   2.times do
@@ -53,84 +96,9 @@ def start_day(current_user)
   next_day(current_user)
 end
 
-def work(current_user)
-  puts "Another day, another dollar."
-  sleep(2)
-  current_user.money += 200
-  current_user.save
-  display_stats(current_user)
-end
-
-def gym(current_user)
-  puts "I'm so sore."
-  sleep(2)
-  current_user.fitness += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def volunteer(current_user)
-  puts "The shelter looks slighter nicer now!"
-  sleep(2)
-  current_user.kindness += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def study(current_user)
-  puts "Ugh... Learning Active Record is confusing..."
-  sleep(2)
-  current_user.intellect += 10
-  current_user.save
-  display_stats(current_user)
-end
-
-def display_stats(current_user)
-  puts "Here are your stats.
-  Fitness: #{current_user.fitness}
-  Intellect: #{current_user.intellect}
-  Kindness: #{current_user.kindness}
-  Money: $#{current_user.money}"
-end
-
-def new_game
-  puts "What is your name?"
-  name = gets.chomp
-  prompt = TTY::Prompt.new
-  preference = prompt.select("What is your sexual preference?", %w(Male Female))
-  current_user = User.create(name: name, preference: preference,
-    fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
-    money: 100)
-  puts "Hello, #{current_user.name}!"
-  display_stats(current_user)
-  sleep(2)
-  start_day(current_user)
-end
-
-
-def load_game
-  user_choices = User.all.map{ |obj| obj.name}
-  prompt = TTY::Prompt.new
-  choice = prompt.select("Choose a file", user_choices)
-  current_user = User.all.find { |obj| obj.name == choice}
-  puts "You've chosen #{current_user.name}"
-  display_stats(current_user)
-  next_day(current_user)
-end
-
-def delete_file
-  users = User.all.map { |obj| obj.name}
-  prompt = TTY::Prompt.new
-  delete_choice = prompt.select("Choose a file to delete", users)
-  deleting = User.all.find { |obj| obj.name == delete_choice}
-  deleting.destroy
-  puts "File has been deleted."
-  welcome
-end
-
 def next_day(current_user)
-  count = 1.0
-  2.times do
+  count = 1.5
+  60.times do
     count += 0.5
     prompt = TTY::Prompt.new
     answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
@@ -163,6 +131,40 @@ def next_day(current_user)
   sleep(2)
   next_day(current_user)
 end
+
+def work(current_user)
+  puts "Another day, another dollar."
+  sleep(2)
+  current_user.money += 200
+  current_user.save
+  display_stats(current_user)
+end
+
+def gym(current_user)
+  puts "I'm so sore."
+  sleep(2)
+  current_user.fitness += 10
+  current_user.save
+  display_stats(current_user)
+end
+
+def volunteer(current_user)
+  puts "The shelter looks slighter nicer now!"
+  sleep(2)
+  current_user.kindness += 10
+  current_user.save
+  display_stats(current_user)
+end
+
+def study(current_user)
+  puts "Ugh... Learning Active Record is confusing..."
+  sleep(2)
+  current_user.intellect += 10
+  current_user.save
+  display_stats(current_user)
+end
+
+
 
 def flirt(current_user)
   prompt = TTY::Prompt.new
