@@ -72,6 +72,7 @@ john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest
   aff_kindness_mod: 1,
   aff_money_mod: 25,
   aff_pts_req: 600)
+  
 fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", interest: "fitness", fitness_req: 30, intellect_req: 5, kindness_req: 5, money_req: 50,
   fact_place: "My home country, Italia, is a gorgeous place",
   fact_item: "All I need in life is my Maserati",
