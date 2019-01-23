@@ -45,7 +45,9 @@ end
 
 # Get movie list for user
 def get_movie_list(curr_user)
+    curr_user =  check_user(curr_user.name)
     movie_list = curr_user.movie_list
+    #binding.pry
     puts display_table(parse_movie_list(movie_list))
 end
 
@@ -76,7 +78,7 @@ def update_movie_list_entry(curr_user)
 end
 
 # Delete entry in movie list
-def delete_movie_from_movie_list(curr_user)
+def delete_movie_list_entry(curr_user)
     input = TTY::Prompt.new.ask("Enter a movie title to delete ")
     curr_user.delete_movie_in_list(input)
     puts "Deleted #{input} from your list"
@@ -90,21 +92,23 @@ def main_prompt_options(curr_user)
         {"Add movie to most list" => -> do add_new_movie(curr_user) end},
         {"View movie info" => -> do view_movie_info(check_user) end},
         {"Update movie list entry" => -> do update_movie_list_entry(curr_user) end},
-        {"Delete movie from movie list" => -> do delete_movie_list_entry(check_user) end},
+        {"Delete movie from movie list" => -> do delete_movie_list_entry(curr_user) end},
         {"Exit" => -> do exit_line end}
     ]
     prompt.select("", options)
 end
 
  # ---------------------- Update operations ---------------------- #
-def update_movie_prompt(curr_user, movie_name)
+def update_movie_prompt(user, movie_name)
     prompt = TTY::Prompt.new
+    curr_user = user
     options = [
         {"Update rating" => -> do update_movie_rating(curr_user, movie_name) end},
         {"Update progress" => -> do update_movie_progress(curr_user, movie_name) end},
         {"Update feedback" => -> do update_movie_feedback(curr_user, movie_name) end},
         {"Exit" => -> do update_exit end}
     ]
+    curr_user =  check_user(curr_user.name)
     prompt.select("", options)
 end
 
@@ -112,24 +116,26 @@ def update_movie_rating(curr_user, movie_name)
     prompt = TTY::Prompt.new
     rating = prompt.ask("Whats your new rating? ")
     curr_user.update_movie_in_list(movie_name, {rating: rating})
+    get_movie_list(curr_user)
 end
 
 def update_movie_progress(curr_user, movie_name)
     prompt = TTY::Prompt.new
     progress = prompt.ask("Whats your progress? ")
-    puts progress
     
     if progress == "true"
         curr_user.update_movie_in_list(movie_name, {watched: true})
     else
         curr_user.update_movie_in_list(movie_name, {watched: false})
     end
+    get_movie_list(curr_user)
 end
 
 def update_movie_feedback(curr_user, movie_name)
     prompt = TTY::Prompt.new
     feedback = prompt.ask("Whats your feedback? ")
     curr_user.update_movie_in_list(movie_name, {feedback: feedback})
+    get_movie_list(curr_user)
 end
 
 def update_exit
@@ -139,6 +145,7 @@ end
 
  # Parse movie list and return an array of structured arrays for tty-table
 def parse_movie_list(movie_list)
+    #binding.pry
     movie_id = movie_list.map { |item| item.movie_id}
     movies = movie_id.map { |id| Movie.find(id)}
     movie_names = movies.map { |movie| movie.name}
