@@ -20,6 +20,11 @@ def new_game
     start_day(current_user)
   end
 
+def goodbye
+  puts "Goodbye!"
+  sleep(3)
+  system "clear"
+end
 
   def load_game
     user_choices = User.all.map{ |obj| obj.name}
