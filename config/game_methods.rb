@@ -9,16 +9,18 @@ def start_day(current_user)
       menu.choice 'gym', 2
       menu.choice 'volunteer', 3
       menu.choice 'study', 4
-      menu.choice 'flirt', 5
-      menu.choice 'date', 6
     end
     if answer == 1
+      puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
       work(current_user)
     elsif answer == 2
+      puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
       gym(current_user)
     elsif answer == 3
+      puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
       volunteer(current_user)
     elsif answer == 4
+      puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
       study(current_user)
     end
   end
@@ -117,6 +119,8 @@ def next_day(current_user)
       volunteer(current_user)
     elsif answer == 4
       study(current_user)
+    elsif answer == 5
+      flirt(current_user)
     elsif answer == 7
       return welcome
     end
@@ -124,4 +128,24 @@ def next_day(current_user)
   puts "Wow, today was tiring. Time to go to bed."
   sleep(2)
   next_day(current_user)
+end
+
+def flirt(current_user)
+  prompt = TTY::Prompt.new
+  male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+  female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  if current_user.preference == "Male"
+    mchoice = prompt.select("Who do you want to flirt with?", male_choices)
+    choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
+    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    puts "You got to know #{mchoice} better."
+    sleep(2)
+  elsif current_user.preference == "Female"
+    fchoice = prompt.select("Who do you want to flirt with?", female_choices)
+    choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
+    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    puts "You got to know #{fchoice} better."
+    sleep(2)
+  end
+
 end
