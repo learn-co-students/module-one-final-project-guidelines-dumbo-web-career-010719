@@ -51,7 +51,7 @@ def new_game
 
 def goodbye
   puts "Goodbye!"
-  sleep(3)
+  sleep(2)
   system "clear"
   exit
 end
@@ -76,7 +76,7 @@ end
     deleting = User.all.find { |obj| obj.name == delete_choice}
     deleting.destroy
     puts "File has been deleted."
-    sleep(2)
+    sleep(1)
     system "clear"
     welcome
   end
@@ -84,9 +84,6 @@ end
 #---------------------------- Day Loops --------------------------------#
 
 def day(current_user)
-  if(current_user.total_days == 30)
-    lose_game(current_user)
-  end
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -119,11 +116,18 @@ def day(current_user)
   elsif answer == 7
     return welcome
   end
+
   current_user.total_days += 1
+
+  if current_user.total_days == 5
+    check = lose_game(current_user)
+  end
+  
   sleep(1)
   puts "Wow, today was tiring. Time to go to bed!"
   sleep(1)
   if check == "won" || check == "lose"
+
     welcome
   else
     day(current_user)
