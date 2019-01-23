@@ -194,13 +194,15 @@ def study(current_user)
   if current_user.study_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "intellect" }
-      puts "You have met #{lover[0].name} & #{lover[1].name}  !"
+      puts "You have met #{lover[0].name} & #{lover[1].name}!"
       puts lover[0].first_meeting
       puts lover[1].first_meeting
+      sleep(2)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
+      sleep(2)
     end
   end
   puts "Ugh... Learning Active Record is confusing..."
