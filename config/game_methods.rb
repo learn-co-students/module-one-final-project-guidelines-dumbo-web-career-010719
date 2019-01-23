@@ -200,6 +200,13 @@ def work(current_user)
 end
 
 def gym(current_user)
+  if current_user.gym_days == 0
+    lover = Lover.all.find do |lovers|
+      lovers.gender == current_user.preference && lovers.interest == "money"
+    end
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "I'm so sore."
   sleep(2)
   current_user.fitness += 10
@@ -415,12 +422,7 @@ def male_date (current_user)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
-    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
-    else
-      puts "You got to know #{mchoice} better."
-    end
+    puts "You got to know #{mchoice} better."
   else
     puts "#{mchoice} doesn't seem interested in going on a date with you."
   end
@@ -438,12 +440,7 @@ def female_date(current_user)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
-    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
-    else
-      puts "You got to know #{mchoice} better."
-    end
+    puts "You got to know #{fchoice} better."
   else
     puts "#{fchoice} doesn't seem interested in going on a date with you."
   end
@@ -467,9 +464,4 @@ def both_date(current_user)
   end
   sleep(2)
   display_stats(current_user)
-end
-
-def aff_dates_sum(user, lover)
-  sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
-  sum
 end
