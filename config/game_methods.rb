@@ -40,7 +40,7 @@ def new_game
     puts "File has been deleted."
     welcome
   end
-  
+
 def start_day(current_user)
   count = 0.0
   2.times do
@@ -173,13 +173,13 @@ def flirt(current_user)
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
-    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
     puts "You got to know #{mchoice} better."
     sleep(2)
   elsif current_user.preference == "Female"
     fchoice = prompt.select("Who do you want to flirt with?", female_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
     puts "You got to know #{fchoice} better."
     sleep(2)
   end
@@ -199,7 +199,7 @@ def male_date (current_user)
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
   if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{mchoice} better."
@@ -216,7 +216,7 @@ def female_date(current_user)
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
   if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.new(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{fchoice} better."
@@ -229,4 +229,12 @@ end
 
 def prompt_facts(choice_id)
   choice_id
+end
+
+def affection_pts(current_user, current_lover)
+  fitness_mod = current_user.fitness * current_lover.aff_fitness_mod
+  intellect_mod = current_user.intellect * current_lover.aff_intellect_mod
+  kindness_mod = current_user.kindness * current_lover.aff_kindness_mod
+  money_mod = current_user.money * current_lover.aff_money_mod
+  aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/3
 end
