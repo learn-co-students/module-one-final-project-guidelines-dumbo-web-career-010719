@@ -28,28 +28,28 @@ penelope = Lover.create(name: "Penelope", gender: "Female", personality: "Nerdy"
   fact_dream: "I would die if I could meet Michelle Obama")
 
 
-ryan = Lover.create(name: "Ryan", gender: "Male", personality: "Quiet", interest: "intellect", fitness_req: 5, intellect_req: 30, kindness_req: 10, money_req: 20
+ryan = Lover.create(name: "Ryan", gender: "Male", personality: "Quiet", interest: "intellect", fitness_req: 5, intellect_req: 30, kindness_req: 10, money_req: 20,
   fact_place: "I really love coffee shops...",
   fact_item: "My mom handmade this scarf for me. It's a little beat up, but I love it",
   fact_season: "Fall is the best season for reading a book.",
   fact_color: "It's easier to buy all black",
   fact_food: "I make a mean spaghetti bolognese",
   fact_dream: "I've always wanted to travel to Norway")
-john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest: "money", fitness_req: 15, intellect_req: 10, kindness_req: 10, money_req: 1000
+john = Lover.create(name: "John", gender: "Male", personality: "Funny", interest: "money", fitness_req: 15, intellect_req: 10, kindness_req: 10, money_req: 1000,
   fact_place: "I like to go to the Equinox on Wall St",
   fact_item: "Can you be careful not to scratch my jacket? It's real leather",
   fact_season: "Winter is the best season for men's fashion",
   fact_color: "Do you think charcoal gray looks better? Or do you like the midnight blue on me?",
   fact_food: "I love sushi",
   fact_dream: "Ooooh, that Lamborghini is sweet")
-fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", interest: "fitness", fitness_req: 30, intellect_req: 5, kindness_req: 5, money_req: 50
+fabio = Lover.create(name: "Fabio", gender: "Male", personality: "Strong", interest: "fitness", fitness_req: 30, intellect_req: 5, kindness_req: 5, money_req: 50,
   fact_place: "My home country, Italia, is a gorgeous place",
   fact_item: "All I need in life is my Maserati",
   fact_season: "I wish it could be eternal summer, like my heart",
   fact_color: "Red is a beautiful color. A color of passion",
   fact_food: "Oysters, cheese, and wine. I enjoy aphrodisiacs",
   fact_dream: "I would love to build my own cabin in the mountains")
-oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", interest: "volunteering", fitness_req: 0, intellect_req: 15, kindness_req: 25, money_req: 10
+oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", interest: "volunteering", fitness_req: 0, intellect_req: 15, kindness_req: 25, money_req: 10,
   fact_place: "I know this sounds cheesy, but I love volunteering at the shelter",
   fact_item: "Don't laugh but I actually have a vegetable garden",
   fact_season: "Spring is the best season for plants!!",
