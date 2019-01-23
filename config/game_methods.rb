@@ -233,6 +233,29 @@ def date(current_user)
   end
 end
 
+#---------------------------- Helper Methods --------------------------------#
+
+def prompt_facts(choice_id)
+  facts = [choice_id.fact_food, choice_id.fact_item, choice_id.fact_place, choice_id.fact_color, choice_id.fact_dream, choice_id.fact_season]
+  facts.sample
+end
+
+def display_stats(current_user)
+  puts "Here are your stats.
+  Fitness: #{current_user.fitness}
+  Intellect: #{current_user.intellect}
+  Kindness: #{current_user.kindness}
+  Money: $#{current_user.money}"
+end
+
+def affection_pts(current_user, current_lover)
+  fitness_mod = current_user.fitness * current_lover.aff_fitness_mod
+  intellect_mod = current_user.intellect * current_lover.aff_intellect_mod
+  kindness_mod = current_user.kindness * current_lover.aff_kindness_mod
+  money_mod = current_user.money / current_lover.aff_money_mod
+  aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/5
+end
+
 def male_date (current_user)
   prompt = TTY::Prompt.new
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
@@ -267,27 +290,4 @@ def female_date(current_user)
   end
   sleep(2)
   display_stats(current_user)
-end
-
-#---------------------------- Helper Methods --------------------------------#
-
-def prompt_facts(choice_id)
-  facts = [choice_id.fact_food, choice_id.fact_item, choice_id.fact_place, choice_id.fact_color, choice_id.fact_dream, choice_id.fact_season]
-  facts.sample
-end
-
-def display_stats(current_user)
-  puts "Here are your stats.
-  Fitness: #{current_user.fitness}
-  Intellect: #{current_user.intellect}
-  Kindness: #{current_user.kindness}
-  Money: $#{current_user.money}"
-end
-
-def affection_pts(current_user, current_lover)
-  fitness_mod = current_user.fitness * current_lover.aff_fitness_mod
-  intellect_mod = current_user.intellect * current_lover.aff_intellect_mod
-  kindness_mod = current_user.kindness * current_lover.aff_kindness_mod
-  money_mod = current_user.money / current_lover.aff_money_mod
-  aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/5
 end
