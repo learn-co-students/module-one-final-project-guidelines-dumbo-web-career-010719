@@ -44,7 +44,7 @@ def new_game
     puts "Hello, #{current_user.name}!"
     display_stats(current_user)
     sleep(2)
-    start_day(current_user)
+    day(current_user)
   end
 
 def goodbye
@@ -60,7 +60,7 @@ def load_game
   current_user = User.all.find { |obj| obj.name == choice}
   puts "You've chosen #{current_user.name}"
   display_stats(current_user)
-  next_day(current_user)
+  day(current_user)
 end
 
   def delete_file
@@ -176,6 +176,7 @@ def day(user)
   user.total_days += 1
   day(user)
 end
+
 def lovers(user)
   Lovers.all.select do |lover|
     user.preference == lover.gender && user
