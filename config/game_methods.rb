@@ -44,7 +44,7 @@ def new_game
     puts "Hello, #{current_user.name}!"
     display_stats(current_user)
     sleep(2)
-    start_day(current_user)
+    day(current_user)
   end
 
 def goodbye
@@ -60,7 +60,7 @@ def load_game
   current_user = User.all.find { |obj| obj.name == choice}
   puts "You've chosen #{current_user.name}"
   display_stats(current_user)
-  next_day(current_user)
+  day(current_user)
 end
 
   def delete_file
@@ -74,77 +74,76 @@ end
   end
 
 #---------------------------- Day Loops --------------------------------#
-def start_day(current_user)
-  count = 0.0
-  2.times do
-    count += 0.5
-    prompt = TTY::Prompt.new
-    answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
-      menu.enum '.'
-      menu.choice 'work', 1
-      menu.choice 'gym', 2
-      menu.choice 'volunteer', 3
-      menu.choice 'study', 4
-    end
-    if answer == 1
-      if current_user.preference == "Female"
-        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "John: 'Hey there. Welcome to hell.'"
-        sleep(2)
-      else
-        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
-        puts "John: 'Hey there. Welcome to hell.'"
-        sleep(2)
-      end
-      work(current_user)
-    elsif answer == 2
-      if current_user.preference == "Female"
-        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Fabio: *grunts*"
-        sleep(2)
-      else
-        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
-        puts "Fabio: *grunts*"
-        sleep(2)
-      end
-      gym(current_user)
-    elsif answer == 3
-      if current_user.preference == "Female"
-        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Oliver: 'Hi newbie! Welcome!!'"
-        sleep(2)
-      else
-        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
-        puts "Oliver: 'Hi newbie. Welcome!!'"
-        sleep(2)
-      end
-      volunteer(current_user)
-    elsif answer == 4
-      if current_user.preference == "Female"
-        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
-        sleep(2)
-      elsif current_user.preference == "Male"
-        puts "Ryan: '...'"
-        sleep(2)
-      else
-        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
-        puts "Ryan: '...'"
-        sleep(2)
-      end
-      study(current_user)
-    end
-  end
-  puts "Wow, today was tiring. Time to go to bed."
-  sleep(2)
-  next_day(current_user)
-end
-
+# def start_day(current_user)
+#   count = 0.0
+#   2.times do
+#     count += 0.5
+#     prompt = TTY::Prompt.new
+#     answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
+#       menu.enum '.'
+#       menu.choice 'work', 1
+#       menu.choice 'gym', 2
+#       menu.choice 'volunteer', 3
+#       menu.choice 'study', 4
+#     end
+#     if answer == 1
+#       if current_user.preference == "Female"
+#         puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "John: 'Hey there. Welcome to hell.'"
+#         sleep(2)
+#       else
+#         puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
+#         puts "John: 'Hey there. Welcome to hell.'"
+#         sleep(2)
+#       end
+#       work(current_user)
+#     elsif answer == 2
+#       if current_user.preference == "Female"
+#         puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Fabio: *grunts*"
+#         sleep(2)
+#       else
+#         puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
+#         puts "Fabio: *grunts*"
+#         sleep(2)
+#       end
+#       gym(current_user)
+#     elsif answer == 3
+#       if current_user.preference == "Female"
+#         puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Oliver: 'Hi newbie! Welcome!!'"
+#         sleep(2)
+#       else
+#         puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+#         puts "Oliver: 'Hi newbie. Welcome!!'"
+#         sleep(2)
+#       end
+#       volunteer(current_user)
+#     elsif answer == 4
+#       if current_user.preference == "Female"
+#         puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+#         sleep(2)
+#       elsif current_user.preference == "Male"
+#         puts "Ryan: '...'"
+#         sleep(2)
+#       else
+#         puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
+#         puts "Ryan: '...'"
+#         sleep(2)
+#       end
+#       study(current_user)
+#     end
+#   end
+#   puts "Wow, today was tiring. Time to go to bed."
+#   sleep(2)
+#   next_day(current_user)
+# end
 
 def day(user)
   if(user.total_days == 30)
@@ -177,6 +176,7 @@ def day(user)
   user.total_days += 1
   day(user)
 end
+
 def lovers(user)
   Lovers.all.select do |lover|
     user.preference == lover.gender && user
@@ -266,41 +266,41 @@ def delete_file
   welcome
 end
 
-def next_day(current_user)
-  count = 1.5
-  2.times do
-    count += 0.5
-    prompt = TTY::Prompt.new
-    answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
-      menu.enum '.'
-      menu.choice 'work', 1
-      menu.choice 'gym', 2
-      menu.choice 'volunteer', 3
-      menu.choice 'study', 4
-      menu.choice 'flirt', 5
-      menu.choice 'date', 6
-      menu.choice 'exit', 7
-    end
-    if answer == 1
-      work(current_user)
-    elsif answer == 2
-      gym(current_user)
-    elsif answer == 3
-      volunteer(current_user)
-    elsif answer == 4
-      study(current_user)
-    elsif answer == 5
-      flirt(current_user)
-    elsif answer == 6
-      date(current_user)
-    elsif answer == 7
-      return welcome
-    end
-  end
-  puts "Wow, today was tiring. Time to go to bed."
-  sleep(2)
-  next_day(current_user)
-end
+# def next_day(current_user)
+#   count = 1.5
+#   2.times do
+#     count += 0.5
+#     prompt = TTY::Prompt.new
+#     answer = prompt.select("Day #{count} - What do you want to do?") do |menu|
+#       menu.enum '.'
+#       menu.choice 'work', 1
+#       menu.choice 'gym', 2
+#       menu.choice 'volunteer', 3
+#       menu.choice 'study', 4
+#       menu.choice 'flirt', 5
+#       menu.choice 'date', 6
+#       menu.choice 'exit', 7
+#     end
+#     if answer == 1
+#       work(current_user)
+#     elsif answer == 2
+#       gym(current_user)
+#     elsif answer == 3
+#       volunteer(current_user)
+#     elsif answer == 4
+#       study(current_user)
+#     elsif answer == 5
+#       flirt(current_user)
+#     elsif answer == 6
+#       date(current_user)
+#     elsif answer == 7
+#       return welcome
+#     end
+#   end
+#   puts "Wow, today was tiring. Time to go to bed."
+#   sleep(2)
+#   next_day(current_user)
+# end
 
 #---------------------------- Action Methods --------------------------------#
 
