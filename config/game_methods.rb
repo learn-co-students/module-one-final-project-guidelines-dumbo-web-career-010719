@@ -378,7 +378,7 @@ end
 
 def endgame(current_user, lover)
   system "clear"
-  puts "Congratulations! You found someone to fall in love with you!"
+  puts "Congratulations! You found someone to go to Prom with!"
   puts "It took you
   #{current_user.total_days} total days consisting of
   #{current_user.work_days} work days
