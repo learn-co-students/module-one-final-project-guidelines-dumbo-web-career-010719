@@ -83,7 +83,7 @@ end
 
 def day(current_user)
   if(current_user.total_days == 40)
-    lose_game
+    lose_game(current_user)
   end
   choices = [
     {name: 'Go to work', value: 1},
@@ -376,6 +376,27 @@ def aff_dates_sum(user, lover)
   sum
 end
 
+def lose_game(current_user)
+  system "clear"
+  sleep(3)
+  puts "Wow..."
+  sleep(1)
+  puts "Today's the day of Prom and you couldn't find a date..."
+  sleep(1)
+  puts "What's the point of even going alone?"
+  sleep(1)
+  puts "You're such a loser!!"
+  sleep(1)
+  puts "You'll never live this down"
+  sleep(1)
+  options = [
+    {"Reset Game?" => -> do reset_character(current_user) end },
+    {"Delete File" => -> do delete_self(current_user) end}]
+  prompt = TTY::Prompt.new
+  response = prompt.select("What will do you?", options)
+  exit
+end
+
 def endgame(current_user, lover)
   system "clear"
   puts "Congratulations! You found someone to go to Prom with!"
@@ -388,6 +409,7 @@ def endgame(current_user, lover)
   #{current_user.total_dates} total dates
   to end up with #{lover.name}"
   puts "Thank you for playing Flatiron Dating Sim!"
+  sleep(3)
   reset_character(current_user)
   puts "You can continue to play the game, but your stats have been reset."
   sleep(4)
@@ -397,4 +419,8 @@ end
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
+end
+
+def delete_self(current_user)
+  User.find(current_user.id).destroy
 end
