@@ -266,8 +266,6 @@ def delete_file
   welcome
 end
 
-=======
-
 def next_day(current_user)
   count = 1.5
   2.times do
