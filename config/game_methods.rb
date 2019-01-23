@@ -41,7 +41,7 @@ end
     welcome
   end
 
-#---------------------------- Action Methods --------------------------------#
+#---------------------------- Day Loops --------------------------------#
 def start_day(current_user)
   count = 0.0
   2.times do
@@ -132,6 +132,8 @@ def next_day(current_user)
   sleep(2)
   next_day(current_user)
 end
+
+#---------------------------- Action Methods --------------------------------#
 
 def work(current_user)
   puts "Another day, another dollar."
