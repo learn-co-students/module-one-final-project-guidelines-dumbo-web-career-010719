@@ -71,6 +71,8 @@ end
     deleting = User.all.find { |obj| obj.name == delete_choice}
     deleting.destroy
     puts "File has been deleted."
+    sleep(2)
+    system "clear"
     welcome
   end
 
@@ -123,9 +125,7 @@ end
 
 def work(current_user)
   if current_user.work_days == 0
-    lover = Lover.all.find do |lovers|
-      lovers.gender == current_user.preference && lovers.interest == "money"
-    end
+    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
     puts "You have met #{lover.name}!"
     puts lover.first_meeting
   end
@@ -138,6 +138,11 @@ def work(current_user)
 end
 
 def gym(current_user)
+  if current_user.gym_days == 0
+    lover = Lover.all.find {|lovers| lovers.gender == current_user.preference && lovers.interest == "fitness"}
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "I'm so sore."
   sleep(2)
   current_user.fitness += 10
@@ -146,6 +151,11 @@ def gym(current_user)
 end
 
 def volunteer(current_user)
+  if current_user.volunteer_days == 0
+    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "The shelter looks slighter nicer now!"
   sleep(2)
   current_user.kindness += 10
@@ -154,6 +164,11 @@ def volunteer(current_user)
 end
 
 def study(current_user)
+  if current_user.study_days == 0
+    lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "Ugh... Learning Active Record is confusing..."
   sleep(2)
   current_user.intellect += 10
