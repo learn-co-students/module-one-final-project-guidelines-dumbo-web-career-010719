@@ -52,6 +52,7 @@ def goodbye
   puts "Goodbye!"
   sleep(3)
   system "clear"
+  exit
 end
 
 def load_game
@@ -82,7 +83,7 @@ end
 #---------------------------- Day Loops --------------------------------#
 
 def day(current_user)
-  if(current_user.total_days == 40)
+  if(current_user.total_days == 5)
     lose_game(current_user)
   end
   choices = [
@@ -394,7 +395,11 @@ def lose_game(current_user)
     {"Delete File" => -> do delete_self(current_user) end}]
   prompt = TTY::Prompt.new
   response = prompt.select("What will do you?", options)
-  exit
+  puts "Let's try this again."
+  sleep(3)
+  system "clear"
+  welcome
+
 end
 
 def endgame(current_user, lover)
@@ -411,7 +416,6 @@ def endgame(current_user, lover)
   puts "Thank you for playing Flatiron Dating Sim!"
   sleep(3)
   reset_character(current_user)
-  puts "You can continue to play the game, but your stats have been reset."
   sleep(4)
   exit
 end
@@ -419,8 +423,10 @@ end
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
+  puts "You can continue to play the game, but your stats have been reset."
 end
 
 def delete_self(current_user)
   User.find(current_user.id).destroy
+  puts "Your file has been deleted"
 end
