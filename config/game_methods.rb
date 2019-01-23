@@ -41,7 +41,7 @@ def new_game
   current_user = User.create(name: name, preference: preference,
     fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
-    puts "Hello, #{current_user.name}!"
+    goal_message
     display_stats(current_user)
     sleep(2)
     system "clear"
@@ -60,7 +60,10 @@ def load_game
   choice = prompt.select("Choose a file", user_choices)
   current_user = User.all.find { |obj| obj.name == choice}
   puts "You've chosen #{current_user.name}"
-  display_stats(current_user)
+  if current_user.total_days == 0
+    system "clear"
+    goal_message
+  end
   day(current_user)
 end
 
@@ -268,6 +271,21 @@ def prompt_facts(choice_id)
   facts.sample
 end
 
+def goal_message
+  puts "Hey there!"
+  sleep(1)
+  puts "Welcome to the Flatiron School, we're really glad to have you!"
+  sleep(1)
+  puts "There is going to be a school dance in exactly..."
+  sleep(1)
+  puts "40 DAYS!!!??"
+  sleep(1)
+  puts "You need to find a date to go with!!"
+  puts "Good luck!!"
+  sleep(3)
+  system "clear"
+end
+
 def display_stats(current_user)
   puts "Here are your stats.
   Fitness: #{current_user.fitness}
@@ -295,8 +313,7 @@ def male_date (current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         endgame(current_user, choice_id)
     else
       puts "You got to know #{mchoice} better."
@@ -319,8 +336,7 @@ def female_date(current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         endgame(current_user, choice_id)
     else
       puts "You got to know #{fchoice} better."
@@ -342,7 +358,12 @@ def both_date(current_user)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
-    puts "You got to know #{achoice} better."
+    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
+        puts "#{choice_id.name} wants to be exclusive with you."
+        endgame(current_user, choice_id)
+    else
+      puts "You got to know #{achoice} better."
+    end
   else
     puts "#{achoice} doesn't seem interested in going on a date with you."
   end
@@ -355,18 +376,9 @@ def aff_dates_sum(user, lover)
   sum
 end
 
-def lovers(current_user)
-  Lovers.all.select do |lover|
-    current_user.preference == lover.gender && current_user
-    date(current_user)
-  end
-  current_user.total_days += 1
-  day(current_user)
-end
-
 def endgame(current_user, lover)
   system "clear"
-  puts "Congratulations you're in love!"
+  puts "Congratulations! You found someone to fall in love with you!"
   puts "It took you
   #{current_user.total_days} total days consisting of
   #{current_user.work_days} work days
@@ -376,6 +388,13 @@ def endgame(current_user, lover)
   #{current_user.total_dates} total dates
   to end up with #{lover.name}"
   puts "Thank you for playing Flatiron Dating Sim!"
+  reset_character(current_user)
+  puts "You can continue to play the game, but your stats have been reset."
   sleep(4)
   exit
+end
+
+def reset_character(current_user)
+  User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
+    money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
 end
