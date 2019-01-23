@@ -208,7 +208,7 @@ def flirt(current_user)
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
     pts = affection_pts(current_user, choice_id)
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
     puts "#{prompt_facts(choice_id)}"
     sleep(2)
     puts "You got to know #{mchoice} better."
@@ -217,7 +217,7 @@ def flirt(current_user)
     fchoice = prompt.select("Who do you want to flirt with?", female_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
     pts = affection_pts(current_user, choice_id)
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
     puts "#{prompt_facts(choice_id)}"
     sleep(2)
     puts "You got to know #{fchoice} better."
