@@ -408,7 +408,6 @@ def lose_game(current_user)
   sleep(3)
   system "clear"
   welcome
-
 end
 
 def endgame(current_user, lover)
@@ -429,12 +428,12 @@ def endgame(current_user, lover)
   return "won"
 end
 
-def lose_game(current_user)
-  puts "Aw man! you ran out of time... better luck next time"
-  #calltheresetmethod
-  reset_character(current_user)
-  return "lose"
-end
+# def lose_game(current_user)
+#   puts "Aw man! you ran out of time... better luck next time"
+#   #calltheresetmethod
+#   reset_character(current_user)
+#   return "lose"
+# end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
