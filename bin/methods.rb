@@ -1,16 +1,34 @@
 require 'pry'
 
-def hello
-
-puts"__      _____ _    ___ ___  __  __ ___   _____ ___    ___ _____ ___   ___ _  __  _   _ ___ _
-     \ \    / / __| |  / __/ _ \|  \/  | __| |_   _/ _ \  / __|_   _/ _ \ / __| |/ / | | | | _ \ |
-      \ \/\/ /| _|| |_| (_| (_) | |\/| | _|    | || (_) | \__ \ | || (_) | (__| ' <  | |_| |  _/_|
-       \_/\_/ |___|____\___\___/|_|  |_|___|   |_| \___/  |___/ |_| \___/ \___|_|\_\  \___/|_| (_)"
-
+def main_menu
+  $prompt = TTY::Prompt.new
+  user_input = $prompt.select("Main Menu") do |menu|
+    menu.choice 'Sign In/Create Account', -> {username = returning_user?
+    zip = get_user_zip
+    my_store = find_user_store(zip)
+    my_store_items = store_items(my_store)
+    my_item = find_by_item_name(my_store_items)}
+    menu.choice 'View Cart', -> {view_current_cart}
+    menu.choice 'View Local Stores', -> {username = returning_user?
+      zip = get_user_zip
+      view_local_stores(zip)}
+    menu.choice 'Add Items To Cart', -> {username = returning_user?
+    zip = get_user_zip
+    my_store = find_user_store(zip)
+    my_store_items = store_items(my_store)
+    my_item = find_by_item_name(my_store_items)}
+    menu.choice 'Delete Item From_Cart', -> {username = returning_user?
+    zip = get_user_zip
+    my_store = find_user_store(zip)
+    my_store_items = store_items(my_store)
+    delete_item_from_cart}
+    menu.choice 'Pick Up Reserved Items', -> {pick_up_items}
+    menu.choice 'Delete Account', -> {delete_account}
+    menu.choice 'Exit', -> {exit}
+  end
 end
 
 $username = ""
-
 def returning_user?
   puts "Are you a returning or a new user?"
   user_input = gets.chomp
@@ -67,6 +85,7 @@ def get_user_zip
   user_input = gets.chomp
 end
 
+$my_store = []
 def find_user_store(zip)
   store_locations = Store.all.map {|store| store.location}
   my_store_zip = store_locations.find {|location| location == zip}
@@ -75,7 +94,7 @@ def find_user_store(zip)
     zip = get_user_zip
     my_store_zip = find_user_store(zip)
   end
-  my_store = Store.all.select {|store| store.location == my_store_zip}
+  $my_store = Store.all.select {|store| store.location == my_store_zip}
 end
 
 def store_items(my_store)
@@ -151,33 +170,23 @@ def add_to_cart(my_item)
       my_item.save
     end
   end
+  main_menu
 end
 
 def view_current_cart
   puts "Welcome back! Please enter your username:"
   username = gets.chomp
-  if exists?(username)
-    puts "Hey #{username}!"
-    me = User.all.find {|user| user.username == username}
-    mine = Cart.all.select do |cart|
-      if cart.user_id == me.id
-        binding.pry
-        all_items = cart.item_id
-        item_ids = Item.all.map {|item| item.id}
-        cart_item_id = item_ids.select {|item| item == all_items}
-        Item.all.find {|item| item.id }
-        binding.pry
-      end
-    end
+  my_user = User.all.find {|user| user.username == username}
+  my_user_id = my_user.id
+  my_carts = Cart.all.select {|cart| cart.user_id == my_user_id}
+  my_cart_item_ids = my_carts.map {|cart| cart.item_id}
+  message = "You currently have: "
+  my_carts.each do |cart|
+      message << " #{cart.quantity} - #{Item.find(cart.item_id).name},"
   end
+  puts message
+  main_menu
 end
-#
-#     all_mine = mine.map {|cart| {item_id: cart.item_id, quantity: cart.quantity}}
-#     all_mine.each do
-#       puts "You have #{all_mine.quantity} #{all_mine.item_id}(s), and "
-#     end
-#   end
-# end
 
 def view_local_stores(zip)
   Store.all.select do |store|
@@ -186,10 +195,24 @@ def view_local_stores(zip)
       puts all_local_store
     end
   end
+  main_menu
 end
 
 def delete_item_from_cart
+  puts "What item would you like to delete?"
+  user_answer = gets.chomp.capitalize
+  me = User.all.find{|user| user.username == $username}
+  my_carts = Cart.all.select {|cart| cart.user_id == me.id}
+  my_carts.each do |cart|
+    if user_answer == "#{Item.find(cart.item_id).name}"
+      cart.delete
+    end
+  end
+  main_menu
+end
 
+def pick_up_items
+  puts "Thanks for STOCKING UP! Your order will be ready for pickup at your local store!"
 end
 
 def delete_account
@@ -203,8 +226,9 @@ def delete_account
       end
     end
   end
+  main_menu
 end
 
 def exit
-  puts "Goodbye!"
+  puts "Thanks for STOCKING UP! Goodbye!"
 end
