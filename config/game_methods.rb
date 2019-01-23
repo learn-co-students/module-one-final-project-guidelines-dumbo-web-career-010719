@@ -246,6 +246,6 @@ def affection_pts(current_user, current_lover)
   fitness_mod = current_user.fitness * current_lover.aff_fitness_mod
   intellect_mod = current_user.intellect * current_lover.aff_intellect_mod
   kindness_mod = current_user.kindness * current_lover.aff_kindness_mod
-  money_mod = current_user.money * current_lover.aff_money_mod
-  aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/3
+  money_mod = current_user.money / current_lover.aff_money_mod
+  aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/5
 end
