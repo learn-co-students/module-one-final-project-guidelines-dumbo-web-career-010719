@@ -451,6 +451,24 @@ def female_date(current_user)
   display_stats(current_user)
 end
 
+def both_date(current_user)
+  prompt = TTY::Prompt.new
+  all_choices = Lover.all.map { |lovers| lovers.name }
+  achoice = prompt.select("Who do you want to go on a date with?", all_choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == achoice }
+  pts = affection_pts(current_user, choice_id)
+  if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+    current_user.money -= choice_id.money_req
+    current_user.save
+    puts "You got to know #{achoice} better."
+  else
+    puts "#{achoice} doesn't seem interested in going on a date with you."
+  end
+  sleep(2)
+  display_stats(current_user)
+end
+
 def aff_dates_sum(user, lover)
   sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
   sum
