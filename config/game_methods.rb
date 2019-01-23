@@ -53,12 +53,57 @@ def start_day(current_user)
   next_day(current_user)
 end
 
+def day(user)
+  if(user.total_days == 30)
+    end_game
+  end
+  choices = [
+    {name: 'Go to work', value: 1},
+    {name: 'Hit the gym', value: 2},
+    {name: 'Volunteer', value: 3},
+    {name: 'Study at the library', value:4},
+    {name: 'Go on a date', value: 5}
+  ]
+  if user.total_days == 0
+    choices[4][:disabled] = "(You haven't met a girl)"
+  end
+  display_stats(user)
+  prompt = TTY::Prompt.new
+  answer = prompt.select("Day #{user.total_days+1} - What do you want to do?", choices)
+  if answer == 1
+    work(user)
+  elsif answer == 2
+    gym(user)
+  elsif answer == 3
+    volunteer(user)
+  elsif answer == 4
+    study(user)
+  elsif answer == 5
+    date(user)
+  end
+  user.total_days += 1
+  day(user)
+end
+def lovers(user)
+  Lovers.all.select do |lover|
+    user.preference == lover.gender && user
+  end
+end
+
 def work(current_user)
+  if current_user.work_days == 0
+    lover = Lover.all.find do |lovers|
+      lovers.gender == current_user.preference && lovers.interest == "money"
+    end
+    puts "You have met #{lover.name}!"
+    puts lover.first_meeting
+  end
   puts "Another day, another dollar."
   sleep(2)
   current_user.money += 200
   current_user.save
   display_stats(current_user)
+  current_user.work_days += 1
 end
 
 def gym(current_user)
