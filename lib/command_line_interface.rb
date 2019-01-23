@@ -5,11 +5,13 @@ require 'tty-table'
 require 'pry'
 
 ActiveRecord::Base.logger = nil
+ActiveSupport::Deprecation.silenced = true
 
 def command_line
     prompts(welcome)
 end
 
+ # Welcome message and beggining of program
 def welcome 
     system "clear"
     puts "Hello Welcome to My Movie List"
@@ -19,6 +21,7 @@ def welcome
     return name
 end
 
+ # Start of prompt menus for user
 def prompts(name)
     curr_user = check_user(name)
     
@@ -29,11 +32,13 @@ def prompts(name)
     end
 end
 
+# Exit program
 def exit_line
     puts "We exit"
     return false
 end
 
+ # Check for user based on name given, else create new user
 def check_user(user_name)
     User.find_or_create_by(name: user_name)
 end
@@ -41,9 +46,6 @@ end
 # Get movie list for user
 def get_movie_list(curr_user)
     movie_list = curr_user.movie_list
-    movie_list.each { |movie|
-        movie.rating
-    }
     puts display_table(parse_movie_list(movie_list))
 end
 
@@ -80,7 +82,7 @@ def delete_movie_from_movie_list(curr_user)
     puts "Deleted #{input} from your list"
 end
 
-
+ # Display a prompt for our main menu
 def main_prompt_options(curr_user)
     prompt = TTY::Prompt.new
     options = [
@@ -94,6 +96,7 @@ def main_prompt_options(curr_user)
     prompt.select("", options)
 end
 
+ # ---------------------- Update operations ---------------------- #
 def update_movie_prompt(curr_user, movie_name)
     prompt = TTY::Prompt.new
     options = [
@@ -132,20 +135,23 @@ end
 def update_exit
     return false
 end
+# ---------------------- End of update operations  ---------------------- #
 
+ # Parse movie list and return an array of structured arrays for tty-table
 def parse_movie_list(movie_list)
     movie_id = movie_list.map { |item| item.movie_id}
     movies = movie_id.map { |id| Movie.find(id)}
     movie_names = movies.map { |movie| movie.name}
     output = []
-    #binding.pry
+    
     for i in 0...movie_names.size
-        output << [movie_names[i], movie_list[i].rating, movie_list[i].feedback, movie_list[i].watched]
+        output << ["    #{movie_names[i]}   ", "  #{movie_list[i].rating}  ", movie_list[i].feedback, movie_list[i].watched]
     end
 
     output
 end
 
+ # Use tty-table to render a table for our movie_list data
 def display_table(data)
     table = TTY::Table.new(['Title', 'Rating', 'Feedback', 'Watched'], data)
     multi_renderer = TTY::Table::Renderer::ASCII.new(table, multiline: true)
