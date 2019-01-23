@@ -31,6 +31,7 @@ def welcome
     {"Exit" => -> do goodbye end}]
   prompt = TTY::Prompt.new
   response = prompt.select("Welcome to the Flatiron Dating Sim!", main_menu)
+  puts "jesus was here"
 end
 
 def new_game
@@ -52,6 +53,7 @@ def goodbye
   puts "Goodbye!"
   sleep(3)
   system "clear"
+  exit
 end
 
 def load_game
@@ -110,15 +112,19 @@ def day(current_user)
   elsif answer == 5
     flirt(current_user)
   elsif answer == 6
-    date(current_user)
+    check = date(current_user)
   elsif answer == 7
     return welcome
   end
   current_user.total_days += 1
-  sleep(2)
+  sleep(1)
   puts "Wow, today was tiring. Time to go to bed!"
-  sleep(2)
-  day(current_user)
+  sleep(1)
+  if check == "won" || check == "lose"
+    welcome
+  else
+    day(current_user)
+  end
 end
 #---------------------------- Action Methods --------------------------------#
 
@@ -130,16 +136,16 @@ def work(current_user)
       puts "You have met #{lover[0].name} & #{lover[1].name}!"
       puts lover[0].first_meeting
       puts lover[1].first_meeting
-      sleep(2)
+      sleep(1)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
-      sleep(2)
+      sleep(1)
     end
   end
   puts "Another day, another dollar."
-  sleep(2)
+  sleep(1)
   current_user.money += 200
   current_user.save
   display_stats(current_user)
@@ -162,7 +168,7 @@ def gym(current_user)
     end
   end
   puts "I'm so sore."
-  sleep(2)
+  sleep(1)
   current_user.fitness += 10
   current_user.save
   display_stats(current_user)
@@ -176,16 +182,16 @@ def volunteer(current_user)
       puts "You have met #{lover[0].name} & #{lover[1].name}!"
       puts lover[0].first_meeting
       puts lover[1].first_meeting
-      sleep(2)
+      sleep(1)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
-      sleep(2)
+      sleep(1)
     end
   end
   puts "The shelter looks slighter nicer now!"
-  sleep(2)
+  sleep(1)
   current_user.kindness += 10
   current_user.save
   display_stats(current_user)
@@ -199,16 +205,16 @@ def study(current_user)
       puts "You have met #{lover[0].name} & #{lover[1].name}!"
       puts lover[0].first_meeting
       puts lover[1].first_meeting
-      sleep(2)
+      sleep(1)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
-      sleep(2)
+      sleep(1)
     end
   end
   puts "Ugh... Learning Active Record is confusing..."
-  sleep(2)
+  sleep(1)
   current_user.intellect += 10
   current_user.save
   display_stats(current_user)
@@ -227,37 +233,39 @@ def flirt(current_user)
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
     puts "#{prompt_facts(choice_id)}"
-    sleep(2)
+    sleep(1)
     puts "You got to know #{mchoice} better."
-    sleep(2)
+    sleep(1)
   elsif current_user.preference == "Female"
     fchoice = prompt.select("Who do you want to flirt with?", female_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
     puts "#{prompt_facts(choice_id)}"
-    sleep(2)
+    sleep(1)
     puts "You got to know #{fchoice} better."
-    sleep(2)
+    sleep(1)
   elsif current_user.preference == "Both"
     achoice = prompt.select("Who do you want to flirt with?", all_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == achoice }
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
     puts "#{prompt_facts(choice_id)}"
-    sleep(2)
+    sleep(1)
     puts "You got to know #{achoice} better."
-    sleep(2)
+    sleep(1)
   end
 end
 
 def date(current_user)
+  current_user.total_dates += 1
   if current_user.preference == "Male"
-    male_date(current_user)
+    return male_date(current_user)
+
   elsif current_user.preference == "Female"
-    female_date(current_user)
+    return female_date(current_user)
   else
-    both_date(current_user)
+    return both_date(current_user)
   end
 end
 
@@ -297,14 +305,14 @@ def male_date (current_user)
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
         puts "Yay you got a significant other!"
         #endgame method
-        endgame(current_user, choice_id)
+        return endgame(current_user, choice_id)
     else
       puts "You got to know #{mchoice} better."
     end
   else
     puts "#{mchoice} doesn't seem interested in going on a date with you."
   end
-  sleep(2)
+  sleep(1)
   display_stats(current_user)
 end
 
@@ -321,14 +329,14 @@ def female_date(current_user)
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
         puts "Yay you got a significant other!"
         #endgame method
-        endgame(current_user, choice_id)
+        return endgame(current_user, choice_id)
     else
       puts "You got to know #{fchoice} better."
     end
   else
     puts "#{fchoice} doesn't seem interested in going on a date with you."
   end
-  sleep(2)
+  sleep(1)
   display_stats(current_user)
 end
 
@@ -346,7 +354,7 @@ def both_date(current_user)
   else
     puts "#{achoice} doesn't seem interested in going on a date with you."
   end
-  sleep(2)
+  sleep(1)
   display_stats(current_user)
 end
 
@@ -377,5 +385,12 @@ def endgame(current_user, lover)
   to end up with #{lover.name}"
   puts "Thank you for playing Flatiron Dating Sim!"
   sleep(4)
-  exit
+  return "won"
+end
+
+def lose_game
+  puts "Aw man! you ran out of time... better luck next time"
+  #calltheresetmethod
+
+  return "lose"
 end
