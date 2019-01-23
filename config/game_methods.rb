@@ -37,7 +37,7 @@ def new_game
   puts "What is your name?"
   name = gets.chomp
   prompt = TTY::Prompt.new
-  preference = prompt.select("What is your sexual preference?", %w(Male Female))
+  preference = prompt.select("What is your sexual preference?", %w(Male Female Both))
   current_user = User.create(name: name, preference: preference,
     fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100)
@@ -90,7 +90,11 @@ def start_day(current_user)
       if current_user.preference == "Female"
         puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
         sleep(2)
+      elsif current_user.preference == "Male"
+        puts "John: 'Hey there. Welcome to hell.'"
+        sleep(2)
       else
+        puts "Nikki: 'Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.'"
         puts "John: 'Hey there. Welcome to hell.'"
         sleep(2)
       end
@@ -99,7 +103,11 @@ def start_day(current_user)
       if current_user.preference == "Female"
         puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
         sleep(2)
+      elsif current_user.preference == "Male"
+        puts "Fabio: *grunts*"
+        sleep(2)
       else
+        puts "Princess: 'Excuse me. I'm using the squat rack. Wait your turn."
         puts "Fabio: *grunts*"
         sleep(2)
       end
@@ -108,8 +116,12 @@ def start_day(current_user)
       if current_user.preference == "Female"
         puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
         sleep(2)
-      else
+      elsif current_user.preference == "Male"
         puts "Oliver: 'Hi newbie! Welcome!!'"
+        sleep(2)
+      else
+        puts "Kira: 'Hello!! I'm Kira!! Sorry it's a mess in here..."
+        puts "Oliver: 'Hi newbie. Welcome!!'"
         sleep(2)
       end
       volunteer(current_user)
@@ -117,7 +129,11 @@ def start_day(current_user)
       if current_user.preference == "Female"
         puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
         sleep(2)
+      elsif current_user.preference == "Male"
+        puts "Ryan: '...'"
+        sleep(2)
       else
+        puts "Penelope: 'Welcome to the library. Do you need to sign up for a new card?'"
         puts "Ryan: '...'"
         sleep(2)
       end
@@ -203,6 +219,7 @@ def flirt(current_user)
   prompt = TTY::Prompt.new
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
   female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  all_choices = Lover.all.map { |lovers| lovers.name }
 
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
@@ -222,6 +239,15 @@ def flirt(current_user)
     sleep(2)
     puts "You got to know #{fchoice} better."
     sleep(2)
+  elsif current_user.preference == "Both"
+    achoice = prompt.select("Who do you want to flirt with?", all_choices)
+    choice_id = Lover.all.find { |lovers| lovers.name == achoice }
+    pts = affection_pts(current_user, choice_id)
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
+    puts "#{prompt_facts(choice_id)}"
+    sleep(2)
+    puts "You got to know #{achoice} better."
+    sleep(2)
   end
 end
 
@@ -230,6 +256,8 @@ def date(current_user)
     male_date(current_user)
   elsif current_user.preference == "Female"
     female_date(current_user)
+  else
+    both_date(current_user)
   end
 end
 
@@ -287,6 +315,24 @@ def female_date(current_user)
     puts "You got to know #{fchoice} better."
   else
     puts "#{fchoice} doesn't seem interested in going on a date with you."
+  end
+  sleep(2)
+  display_stats(current_user)
+end
+
+def both_date(current_user)
+  prompt = TTY::Prompt.new
+  all_choices = Lover.all.map { |lovers| lovers.name }
+  achoice = prompt.select("Who do you want to go on a date with?", all_choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == achoice }
+  pts = affection_pts(current_user, choice_id)
+  if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+    current_user.money -= choice_id.money_req
+    current_user.save
+    puts "You got to know #{achoice} better."
+  else
+    puts "#{achoice} doesn't seem interested in going on a date with you."
   end
   sleep(2)
   display_stats(current_user)
