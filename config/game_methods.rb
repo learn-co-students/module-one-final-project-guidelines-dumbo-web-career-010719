@@ -207,7 +207,8 @@ def flirt(current_user)
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    pts = affection_pts(current_user, choice_id)
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
     puts "#{prompt_facts(choice_id)}"
     sleep(2)
     puts "You got to know #{mchoice} better."
@@ -215,7 +216,8 @@ def flirt(current_user)
   elsif current_user.preference == "Female"
     fchoice = prompt.select("Who do you want to flirt with?", female_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 10 )
+    pts = affection_pts(current_user, choice_id)
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
     puts "#{prompt_facts(choice_id)}"
     sleep(2)
     puts "You got to know #{fchoice} better."
@@ -236,8 +238,9 @@ def male_date (current_user)
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
+  pts = affection_pts(current_user, choice_id)
   if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{mchoice} better."
@@ -253,8 +256,9 @@ def female_date(current_user)
   female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
+  pts = affection_pts(current_user, choice_id)
   if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: 50 )
+    Dates.create(user_id: current_user, lovers_id: choice_id, affection_pts: pts )
     current_user.money -= choice_id.money_req
     current_user.save
     puts "You got to know #{fchoice} better."
