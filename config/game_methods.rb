@@ -119,15 +119,14 @@ def day(current_user)
 
   current_user.total_days += 1
 
-  if current_user.total_days == 5
+  if current_user.total_days == 40
     check = lose_game(current_user)
   end
-  
+
   sleep(1)
   puts "Wow, today was tiring. Time to go to bed!"
   sleep(1)
   if check == "won" || check == "lose"
-
     welcome
   else
     day(current_user)
@@ -325,8 +324,7 @@ def male_date (current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
       puts "You got to know #{mchoice} better."
@@ -349,8 +347,7 @@ def female_date(current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
       puts "You got to know #{fchoice} better."
@@ -407,11 +404,11 @@ def lose_game(current_user)
     {"Reset Game?" => -> do reset_character(current_user) end },
     {"Delete File" => -> do delete_self(current_user) end}]
   prompt = TTY::Prompt.new
-  response = prompt.select("What will do you?", options)
+  response = prompt.select("What will you do?", options)
   puts "Let's try this again."
   sleep(3)
   system "clear"
-  welcome
+  return "lose"
 end
 
 def endgame(current_user, lover)
@@ -431,13 +428,6 @@ def endgame(current_user, lover)
   sleep(4)
   return "won"
 end
-
-# def lose_game(current_user)
-#   puts "Aw man! you ran out of time... better luck next time"
-#   #calltheresetmethod
-#   reset_character(current_user)
-#   return "lose"
-# end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
