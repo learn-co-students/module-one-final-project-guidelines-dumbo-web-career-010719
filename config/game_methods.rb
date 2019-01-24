@@ -164,13 +164,14 @@ def work(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "Another day, another dollar."
   sleep(1)
@@ -189,13 +190,14 @@ def gym(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(2)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers| lovers.gender == current_user.preference && lovers.interest == "fitness"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(2)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "I'm so sore."
   sleep(1)
@@ -213,13 +215,14 @@ def volunteer(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "The shelter looks slighter nicer now!"
   sleep(1)
@@ -237,13 +240,14 @@ def study(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "Ugh... Learning Active Record is confusing..."
   sleep(1)
@@ -506,7 +510,7 @@ def all_lovers(current_user)
   elsif current_user.preference == "Both"
     lovers = Lover.all.map { |lovers| lovers.name }
   end
-  lovers.select {}
+  lovers
 end
 
 def user_meet_check(current_user, lover)
@@ -527,5 +531,11 @@ def user_meet_check(current_user, lover)
     current_user.fabio = true
   elsif lover.name == "Oliver"
     current_user.oliver = true
+  end
+end
+
+def bisexual_meet_check(current_user, lovers)
+  lovers.each do |obj|
+    user_meet_check(current_user, obj)
   end
 end
