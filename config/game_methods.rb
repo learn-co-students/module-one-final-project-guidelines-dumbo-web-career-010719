@@ -243,13 +243,21 @@ def study(current_user)
   current_user.save
   current_user.study_days += 1
 end
+def all_lovers(current_user)
+  lovers = []
+  if current_user.preference == "Male"
+    lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+  elsif current_user.preference == "Female"
+    lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  elsif current_user.preference == "Both"
+    lovers = Lover.all.map { |lovers| lovers.name }
+  end
+  lovers
+end
 
 def flirt(current_user)
   prompt = TTY::Prompt.new
-  male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
-  female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
-  all_choices = Lover.all.map { |lovers| lovers.name }
-
+  lovers = all_lovers
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
