@@ -58,6 +58,11 @@ def goodbye
 end
 
 def load_game
+  if User.all.length == 0
+    puts "There are no more files!"
+    sleep(1)
+    return nil
+  end
   user_choices = User.all.map{ |obj| obj.name}
   prompt = TTY::Prompt.new
   choice = prompt.select("Choose a file", user_choices)
