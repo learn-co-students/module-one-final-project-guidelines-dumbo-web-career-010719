@@ -1,6 +1,7 @@
 
-
+#-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
+#-----------------------------------------------------------------------#
 def banner
   puts "
 
@@ -80,10 +81,11 @@ end
     system "clear"
     welcome
   end
-
+#-----------------------------------------------------------------------#
 #---------------------------- Day Loops --------------------------------#
+#-----------------------------------------------------------------------#
 
-def day(current_user)
+def day(current_user, action_point = 0)
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -96,6 +98,16 @@ def day(current_user)
     choices[4][:disabled] = "(You haven't met anyone to talk to!)"
     choices[5][:disabled] = "(You haven't met anyone to talk to!)"
   end
+  if action_point > 0
+    choices[5][:disabled] = "(Not enough time in the day!)"
+  end
+  if action_point > 1
+    choices[0][:disabled] = "(You missed your shift!)"
+  end
+  if action_point > 2
+    choices[4][:disabled] = "(Not enough time in the day!)"
+    choices[2][:disabled] = "(Not enough time in the day!)"
+  end
 
   display_stats(current_user)
 
@@ -103,38 +115,46 @@ def day(current_user)
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
     work(current_user)
+    action_point +=3
   elsif answer == 2
     gym(current_user)
+    action_point += 1
   elsif answer == 3
     volunteer(current_user)
+    action_point +=2
   elsif answer == 4
     study(current_user)
+    action_point += 1
   elsif answer == 5
     flirt(current_user)
+    action_point += 1
   elsif answer == 6
     check = date(current_user)
+    action_point += 4
   elsif answer == 7
     return welcome
   end
 
-  current_user.total_days += 1
-
-  if current_user.total_days == 5
+  if current_user.total_days == 40
     check = lose_game(current_user)
   end
-
-  sleep(1)
-  puts "Wow, today was tiring. Time to go to bed!"
-  sleep(1)
+  if action_point == 4
+    sleep(1)
+    puts "Wow, today was tiring. Time to go to bed!"
+    sleep(1)
+    current_user.total_days += 1
+    action_point = 0
+  end
   if check == "won" || check == "lose"
-
     welcome
   else
-    day(current_user)
+    system "clear"
+    day(current_user, action_point)
   end
 end
+#----------------------------------------------------------------------------#
 #---------------------------- Action Methods --------------------------------#
-
+#----------------------------------------------------------------------------#
 
 def work(current_user)
   if current_user.work_days == 0
@@ -155,7 +175,6 @@ def work(current_user)
   sleep(1)
   current_user.money += 200
   current_user.save
-  display_stats(current_user)
   current_user.work_days += 1
 end
 
@@ -178,7 +197,6 @@ def gym(current_user)
   sleep(1)
   current_user.fitness += 10
   current_user.save
-  display_stats(current_user)
   current_user.gym_days += 1
 end
 
@@ -201,7 +219,6 @@ def volunteer(current_user)
   sleep(1)
   current_user.kindness += 10
   current_user.save
-  display_stats(current_user)
   current_user.volunteer_days += 1
 end
 
@@ -224,7 +241,6 @@ def study(current_user)
   sleep(1)
   current_user.intellect += 10
   current_user.save
-  display_stats(current_user)
   current_user.study_days += 1
 end
 
@@ -276,7 +292,9 @@ def date(current_user)
   end
 end
 
+#----------------------------------------------------------------------------#
 #---------------------------- Helper Methods --------------------------------#
+#----------------------------------------------------------------------------#
 
 def prompt_facts(choice_id)
   facts = [choice_id.fact_food, choice_id.fact_item, choice_id.fact_place, choice_id.fact_color, choice_id.fact_dream, choice_id.fact_season]
@@ -325,8 +343,7 @@ def male_date (current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
       puts "You got to know #{mchoice} better."
@@ -349,8 +366,7 @@ def female_date(current_user)
     current_user.money -= choice_id.money_req
     current_user.save
     if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
-        puts "Yay you got a significant other!"
-        #endgame method
+        puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
       puts "You got to know #{fchoice} better."
@@ -407,11 +423,11 @@ def lose_game(current_user)
     {"Reset Game?" => -> do reset_character(current_user) end },
     {"Delete File" => -> do delete_self(current_user) end}]
   prompt = TTY::Prompt.new
-  response = prompt.select("What will do you?", options)
+  response = prompt.select("What will you do?", options)
   puts "Let's try this again."
   sleep(3)
   system "clear"
-  welcome
+  return "lose"
 end
 
 def endgame(current_user, lover)
@@ -439,13 +455,6 @@ def endgame(current_user, lover)
   sleep(4)
   return "won"
 end
-
-# def lose_game(current_user)
-#   puts "Aw man! you ran out of time... better luck next time"
-#   #calltheresetmethod
-#   reset_character(current_user)
-#   return "lose"
-# end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
