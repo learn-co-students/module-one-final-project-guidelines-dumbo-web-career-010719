@@ -122,7 +122,7 @@ def day(current_user)
   if current_user.total_days == 5
     check = lose_game(current_user)
   end
-  
+
   sleep(1)
   puts "Wow, today was tiring. Time to go to bed!"
   sleep(1)
@@ -416,6 +416,14 @@ end
 
 def endgame(current_user, lover)
   system "clear"
+  puts "
+  ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗  █████╗ ████████╗███████╗
+ ██╔════╝██╔═══██╗████╗  ██║██╔════╝ ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+ ██║     ██║   ██║██╔██╗ ██║██║  ███╗██████╔╝███████║   ██║   ███████╗
+ ██║     ██║   ██║██║╚██╗██║██║   ██║██╔══██╗██╔══██║   ██║   ╚════██║
+ ╚██████╗╚██████╔╝██║ ╚████║╚██████╔╝██║  ██║██║  ██║   ██║   ███████║
+  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+    "
   puts "Congratulations! You found someone to go to Prom with!"
   puts "It took you
   #{current_user.total_days} total days consisting of
