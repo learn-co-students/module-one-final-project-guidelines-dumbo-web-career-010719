@@ -71,6 +71,11 @@ def load_game
 end
 
   def delete_file
+    if User.all.length == 0
+      puts "There are no more files!"
+      sleep(1)
+      return nil
+    end
     users = User.all.map { |obj| obj.name}
     prompt = TTY::Prompt.new
     delete_choice = prompt.select("Choose a file to delete", users)
@@ -86,7 +91,7 @@ end
 #-----------------------------------------------------------------------#
 
 def day(current_user, action_point = 0)
-
+  current_user.save
   if current_user.total_days == 30
     return check = lose_game(current_user)
   end
