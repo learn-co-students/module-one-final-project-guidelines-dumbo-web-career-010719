@@ -13,13 +13,13 @@ Player.create(username: 'rick', location: "Queens", age: 5)
 Player.create(username: 'nate', location: "Manhattan", age: 21)
 
 
-League.create(name: "LCS", location: "Albany", title: "SSB")
-League.create(name: "aaa", location: "Buffalo", title: "SSB")
-League.create(name: "vwvw", location: "Albany", title: "LOL")
-League.create(name: "whakcd", location: "Queens", title: "WHAT")
-League.create(name: "oola", location: "Manhattan", title: "SSB")
+Community.create(location: "Albany", start_date: "01/23", title: "SSB")
+Community.create(location: "Buffalo", start_date: "01/13",title: "SSB")
+Community.create(location: "Albany", start_date: "12/30", title: "LOL")
+Community.create(location: "Queens", start_date: "05/05",title: "WHAT")
+Community.create(location: "Manhattan", start_date: "01/24", title: "SSB")
 
-
+#
 # League.create(name: "LCS", location: "NY", date: 20190123, title: "SSB")
 # League.create(name: "aaa", location: "NY", date: 20000123, title: "SSB")
 # League.create(name: "vwvw", location: "LA", date: 19641230, title: "LOL")
