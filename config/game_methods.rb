@@ -257,6 +257,7 @@ def study(current_user)
 end
 
 def flirt(current_user)
+  pid = fork{ exec 'afplay', "./bin/Smang_It.mp3" }
   prompt = TTY::Prompt.new
   lovers = all_lovers
   if current_user.preference == "Male"
