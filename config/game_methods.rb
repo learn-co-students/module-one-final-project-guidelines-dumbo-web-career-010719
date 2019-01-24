@@ -32,7 +32,7 @@ def welcome
     {"Exit" => -> do goodbye end}]
   prompt = TTY::Prompt.new
   response = prompt.select("Welcome to the Flatiron Dating Sim!", main_menu)
-  puts "jesus was here"
+  welcome
 end
 
 def new_game
@@ -86,6 +86,11 @@ end
 #-----------------------------------------------------------------------#
 
 def day(current_user, action_point = 0)
+
+    if current_user.total_days == 5
+      return check = lose_game(current_user)
+    end
+
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -135,9 +140,6 @@ def day(current_user, action_point = 0)
     return welcome
   end
 
-  if current_user.total_days == 40
-    check = lose_game(current_user)
-  end
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
