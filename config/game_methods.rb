@@ -275,6 +275,7 @@ def study(current_user)
 end
 
 def flirt(current_user)
+  pid = fork{ exec 'afplay', "./sounds/flirt_sound.mp3" }
   prompt = TTY::Prompt.new
   lovers = true_names(current_user)
   choice = prompt.select("Who do you want to flirt with?", lovers)
