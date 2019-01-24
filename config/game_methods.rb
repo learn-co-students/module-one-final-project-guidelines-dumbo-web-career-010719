@@ -371,7 +371,7 @@ def male_date (current_user)
     date.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if current_user.affection_pts >= choice_id.aff_pts_req
+    if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
@@ -396,7 +396,7 @@ def female_date(current_user)
     date.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if current_user.affection_pts >= choice_id.aff_pts_req
+    if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
@@ -421,7 +421,7 @@ def both_date(current_user)
     date.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if current_user.affection_pts >= choice_id.aff_pts_req
+    if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         endgame(current_user, choice_id)
     else
