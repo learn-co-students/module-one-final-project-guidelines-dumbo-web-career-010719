@@ -20,7 +20,7 @@ def banner
   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚══════╝╚═╝╚═╝     ╚═╝
 
   "
-  sleep(5)
+  sleep(3)
   system "clear"
 end
 
@@ -148,7 +148,7 @@ def day(current_user, action_point = 0)
   if check == "won" || check == "lose"
     welcome
   else
-    system "clear"
+    # system "clear"
     day(current_user, action_point)
   end
 end
@@ -255,35 +255,45 @@ end
 def flirt(current_user)
 
   prompt = TTY::Prompt.new
-  lovers = all_lovers
-  if current_user.preference == "Male"
-    mchoice = prompt.select("Who do you want to flirt with?", male_choices)
-    choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
-    pts = affection_pts(current_user, choice_id)
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-    puts "#{prompt_facts(choice_id)}"
-    sleep(1)
-    puts "You got to know #{mchoice} better."
-    sleep(1)
-  elsif current_user.preference == "Female"
-    fchoice = prompt.select("Who do you want to flirt with?", female_choices)
-    choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-    pts = affection_pts(current_user, choice_id)
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-    puts "#{prompt_facts(choice_id)}"
-    sleep(1)
-    puts "You got to know #{fchoice} better."
-    sleep(1)
-  elsif current_user.preference == "Both"
-    achoice = prompt.select("Who do you want to flirt with?", all_choices)
-    choice_id = Lover.all.find { |lovers| lovers.name == achoice }
-    pts = affection_pts(current_user, choice_id)
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-    puts "#{prompt_facts(choice_id)}"
-    sleep(1)
-    puts "You got to know #{achoice} better."
-    sleep(1)
+  lovers = all_lovers(current_user)
+  choice = prompt.select("Who do you want to flirt with?", lovers)
+  choice_id = Lover.all.find { |lovers| lovers.name == choice }
+  pts = affection_adder(current_user, choice_id)
+  if Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id } == nil
+    current_date = Dates.create(user_id: current_user.id, affection_pts: pts, lovers_id: choice_id.id)
+  else
+    current_date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id }
   end
+  current_date.affection_pts+= pts
+  puts "#{prompt_facts(choice_id)}"
+  sleep(1)
+  puts "You got to know #{choice} better."
+  sleep(1)
+  # if current_user.preference == "Male"
+  #   mchoice = prompt.select("Who do you want to flirt with?", lovers)
+  #   choice_id = Lover.all.find { |lover| lover.name == mchoice }
+  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
+  #   puts "#{prompt_facts(choice_id)}"
+  #   sleep(1)
+  #   puts "You got to know #{mchoice} better."
+  #   sleep(1)
+  # elsif current_user.preference == "Female"
+  #   fchoice = prompt.select("Who do you want to flirt with?", lovers)
+  #   choice_id = Lover.all.find { |lover| lover.name == fchoice }
+  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
+  #   puts "#{prompt_facts(choice_id)}"
+  #   sleep(1)
+  #   puts "You got to know #{fchoice} better."
+  #   sleep(1)
+  # elsif current_user.preference == "Both"
+  #   achoice = prompt.select("Who do you want to flirt with?", lovers)
+  #   choice_id = Lover.all.find { |lover| lover.name == achoice }
+  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
+  #   puts "#{prompt_facts(choice_id)}"
+  #   sleep(1)
+  #   puts "You got to know #{achoice} better."
+  #   sleep(1)
+  # end
 end
 
 def date(current_user)
@@ -330,7 +340,7 @@ def display_stats(current_user)
   Money: $#{current_user.money}"
 end
 
-def affection_pts(current_user, current_lover)
+def affection_adder(current_user, current_lover)
   fitness_mod = current_user.fitness * current_lover.aff_fitness_mod
   intellect_mod = current_user.intellect * current_lover.aff_intellect_mod
   kindness_mod = current_user.kindness * current_lover.aff_kindness_mod
