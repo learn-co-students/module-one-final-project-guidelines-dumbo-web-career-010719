@@ -87,16 +87,22 @@ end
 
 def day(current_user, action_point = 0)
 <<<<<<< HEAD
+<<<<<<< HEAD
   if current_user.total_days == 40
     return check = lose_game(current_user)
   end
 =======
+=======
+>>>>>>> jesus
 
     if current_user.total_days == 30
       return check = lose_game(current_user)
     end
 
+<<<<<<< HEAD
 >>>>>>> 869764cef55386f22e37e3d66ad22c2de3d8f44f
+=======
+>>>>>>> jesus
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -146,9 +152,13 @@ def day(current_user, action_point = 0)
     return welcome
   end
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 869764cef55386f22e37e3d66ad22c2de3d8f44f
+=======
+
+>>>>>>> jesus
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
@@ -353,7 +363,11 @@ def male_date (current_user)
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+<<<<<<< HEAD
     date.affection_pts += (pts * 2)
+=======
+    current_user.affection_pts += (pts * 2)
+>>>>>>> jesus
     current_user.money -= choice_id.money_req
     current_user.save
     if current_user.affection_pts >= choice_id.aff_pts_req
@@ -378,7 +392,11 @@ def female_date(current_user)
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+<<<<<<< HEAD
     date.affection_pts += (pts * 2)
+=======
+    current_user.affection_pts += (pts * 2)
+>>>>>>> jesus
     current_user.money -= choice_id.money_req
     current_user.save
     if current_user.affection_pts >= choice_id.aff_pts_req
@@ -403,7 +421,11 @@ def both_date(current_user)
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+<<<<<<< HEAD
     date.affection_pts += (pts * 2)
+=======
+    current_user.affection_pts += (pts * 2)
+>>>>>>> jesus
     current_user.money -= choice_id.money_req
     current_user.save
     if current_user.affection_pts >= choice_id.aff_pts_req
