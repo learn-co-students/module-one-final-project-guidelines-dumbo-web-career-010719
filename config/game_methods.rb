@@ -157,6 +157,7 @@ end
 #----------------------------------------------------------------------------#
 
 def work(current_user)
+  pid = fork{ exec 'afplay', "./sounds/work-sound.mp3" }
   if current_user.work_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "money" }
@@ -208,6 +209,7 @@ def gym(current_user)
 end
 
 def volunteer(current_user)
+  pid = fork{ exec 'afplay', "./sounds/volunteer-sound.wav" }
   if current_user.volunteer_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "volunteering" }
@@ -233,6 +235,7 @@ def volunteer(current_user)
 end
 
 def study(current_user)
+  pid = fork{ exec 'afplay', "./sounds/study-sound.wav" }
   if current_user.study_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "intellect" }
@@ -258,18 +261,19 @@ def study(current_user)
 end
 
 def flirt(current_user)
-
   prompt = TTY::Prompt.new
   lovers = all_lovers(current_user)
   choice = prompt.select("Who do you want to flirt with?", lovers)
   choice_id = Lover.all.find { |lovers| lovers.name == choice }
-  pts = affection_adder(current_user, choice_id)
+  pts = affection_adder(current_user, Lover.first)
+  sleep(2)
   if Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id } == nil
     current_date = Dates.create(user_id: current_user.id, affection_pts: pts, lovers_id: choice_id.id)
   else
     current_date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id }
   end
-  current_date.affection_pts+= pts
+  current_date.affection_pts += pts
+  current_date.save
   puts "#{prompt_facts(choice_id)}"
   sleep(1)
   puts "You got to know #{choice} better."
