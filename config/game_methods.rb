@@ -87,7 +87,7 @@ end
 
 def day(current_user, action_point = 0)
 
-    if current_user.total_days == 5
+    if current_user.total_days == 30
       return check = lose_game(current_user)
     end
 
@@ -335,7 +335,7 @@ def goal_message
   sleep(1)
   puts "There is going to be a school dance in exactly..."
   sleep(1)
-  puts "40 DAYS!!!??"
+  puts "30 DAYS!!!??"
   sleep(1)
   puts "You need to find a date to go with!!"
   puts "Good luck!!"
