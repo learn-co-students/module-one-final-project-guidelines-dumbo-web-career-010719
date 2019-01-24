@@ -3,40 +3,43 @@ require 'colorize'
 
 $prompt = TTY::Prompt.new
 
-def main_menu
-  user_input = $prompt.select("Main Menu", active_color: :cyan) do |menu|
-    menu.choice 'Sign In/Create Account', -> {username = returning_user?
-    zip = get_user_zip
-    my_store = find_user_store(zip)
-    my_store_items = store_items(my_store)
-    my_item = find_by_item_name(my_store_items)}
-    menu.choice 'View Cart', -> {view_current_cart}
-    menu.choice 'View Local Stores', -> {username = returning_user?
-      zip = get_user_zip
+def first_menu
+  user_input = $prompt.select("Welcome!", active_color: :cyan) do |menu|
+    menu.choice 'Sign In/Create Account', -> {username = returning_user?}
+    menu.choice 'View Local Stores', -> {zip = get_user_zip
       view_local_stores(zip)}
-    menu.choice 'Add Items To Cart', -> {username = returning_user?
-    zip = get_user_zip
-    my_store = find_user_store(zip)
-    my_store_items = store_items(my_store)
-    my_item = find_by_item_name(my_store_items)}
-    menu.choice 'Delete Item From Cart', -> {access_username($username)
-    delete_item_from_cart}
-    menu.choice 'Pick Up Reserved Items', -> {pick_up_items}
     menu.choice 'Delete Account', -> {delete_account}
     menu.choice 'Exit', -> {exit}
   end
 end
 
+def main_menu
+  user_input = $prompt.select("Main Menu", active_color: :cyan) do |menu|
+    menu.choice 'View Local Stores', -> {zip = get_user_zip
+      view_local_stores(zip)}
+    menu.choice 'Add Items To Cart', -> {zip = get_user_zip
+      my_store = find_user_store(zip)
+      my_store_items = store_items(my_store)
+      my_item = find_by_item_name(my_store_items)}
+    menu.choice 'View Cart', -> {view_current_cart}
+    menu.choice 'Delete Item From Cart', -> {delete_item_from_cart}
+    menu.choice 'Pick Up Reserved Items', -> {pick_up_items}
+    menu.choice 'Delete Account', -> {delete_account}
+    menu.choice 'Sign Out', -> {exit}
+  end
+end
+
 $username = ""
 def returning_user?
-  user_input = $prompt.select("Are you a returning or a new user?", %w(returning new), active_color: :magenta)
-  if user_input == "returning"
+  user_input = $prompt.select("Are you a New or Returning user?", %w(New Returning), active_color: :magenta)
+  if user_input == "Returning"
     username = access_username(user_input)
   else
     puts "Awesome! Welcome!"
     username = create_username(user_input)
   end
   $username = username
+  main_menu
 end
 
 def exists?(user_input)
@@ -67,6 +70,7 @@ def create_username(user_input)
   end
   user_first_name = $prompt.ask("That username is not taken! Please enter your first name:")
   User.create(username: user_input, name: user_first_name)
+  $username = user_input
 end
 
 def get_user_zip
@@ -157,16 +161,19 @@ def add_to_cart(my_item)
 end
 
 def view_current_cart
-  username = $prompt.ask("Welcome back! Please enter your username:")
-  my_user = User.all.find {|user| user.username == username}
-  my_user_id = my_user.id
-  my_carts = Cart.all.select {|cart| cart.user_id == my_user_id}
-  my_cart_item_ids = my_carts.map {|cart| cart.item_id}
-  message = "You currently have: ".red
-  my_carts.each do |cart|
-      message << " #{cart.quantity} - #{Item.find(cart.item_id).name},"
-  end
-  puts message
+  if Cart.all.empty?
+    puts "Your cart is currently empty.".red
+  else
+    my_user = User.all.find {|user| user.username == $username}
+    my_user_id = my_user.id
+    my_carts = Cart.all.select {|cart| cart.user_id == my_user_id}
+    my_cart_item_ids = my_carts.map {|cart| cart.item_id}
+    message = "You currently have: ".red
+    my_carts.each do |cart|
+        message << " #{cart.quantity} - #{Item.find(cart.item_id).name},"
+    end
+      puts message
+    end
   main_menu
 end
 
