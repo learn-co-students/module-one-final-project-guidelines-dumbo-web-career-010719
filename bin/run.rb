@@ -45,8 +45,8 @@ type = prompt.select("Please choose to create or to join a league.", %w(Join Cre
 
       # League.last.creator_id = Creator.last.id
       League.last.update(creator_id: Creator.last.id)
-        binding.pry
-
+        # binding.pry
+      answer2 = prompt.select('What would you like to do?', %w(To see all of my leagues))
 
 
 
