@@ -243,17 +243,6 @@ def study(current_user)
   current_user.save
   current_user.study_days += 1
 end
-def all_lovers(current_user)
-  lovers = []
-  if current_user.preference == "Male"
-    lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
-  elsif current_user.preference == "Female"
-    lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
-  elsif current_user.preference == "Both"
-    lovers = Lover.all.map { |lovers| lovers.name }
-  end
-  lovers
-end
 
 def flirt(current_user)
   prompt = TTY::Prompt.new
@@ -465,4 +454,16 @@ end
 def delete_self(current_user)
   User.find(current_user.id).destroy
   puts "Your file has been deleted"
+end
+
+def all_lovers(current_user)
+  lovers = []
+  if current_user.preference == "Male"
+    lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+  elsif current_user.preference == "Female"
+    lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  elsif current_user.preference == "Both"
+    lovers = Lover.all.map { |lovers| lovers.name }
+  end
+  lovers
 end
