@@ -181,6 +181,7 @@ def work(current_user)
 end
 
 def gym(current_user)
+  pid = fork{ exec 'afplay', "./sounds/gym-sound.mp3" }
   if current_user.gym_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "fitness" }
@@ -415,7 +416,7 @@ end
 def lose_game(current_user)
   system "clear"
   sleep(3)
-  pid = fork{ exec 'afplay', "./bin/Lose.mp3"}
+  pid = fork{ exec 'afplay', "./sounds/Lose.mp3"}
   puts "Wow..."
   sleep(1)
   puts "Today's the day of Prom and you couldn't find a date..."
@@ -449,7 +450,7 @@ def lose_game(current_user)
 end
 
 def endgame(current_user, lover)
-  pid = fork{ exec 'afplay', "./bin/Smang-It.mp3"}
+  pid = fork{ exec 'afplay', "./sounds/Smang-It.mp3"}
   system "clear"
   puts "
   ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗  █████╗ ████████╗███████╗
