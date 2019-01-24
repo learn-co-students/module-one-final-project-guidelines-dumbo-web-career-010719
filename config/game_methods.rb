@@ -157,6 +157,7 @@ end
 #----------------------------------------------------------------------------#
 
 def work(current_user)
+  pid = fork{ exec 'afplay', "./sounds/work-sound.mp3" }
   if current_user.work_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "money" }
@@ -233,6 +234,7 @@ def volunteer(current_user)
 end
 
 def study(current_user)
+  pid = fork{ exec 'afplay', "./sounds/study-sound.mp3" }
   if current_user.study_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "intellect" }
