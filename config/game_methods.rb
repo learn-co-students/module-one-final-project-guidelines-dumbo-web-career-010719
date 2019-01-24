@@ -209,6 +209,7 @@ def gym(current_user)
 end
 
 def volunteer(current_user)
+  pid = fork{ exec 'afplay', "./sounds/volunteer-sound.wav" }
   if current_user.volunteer_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "volunteering" }
