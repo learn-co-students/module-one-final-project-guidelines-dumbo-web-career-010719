@@ -58,6 +58,11 @@ def goodbye
 end
 
 def load_game
+  if User.all.length == 0
+    puts "There are no more files!"
+    sleep(1)
+    return nil
+  end
   user_choices = User.all.map{ |obj| obj.name}
   prompt = TTY::Prompt.new
   choice = prompt.select("Choose a file", user_choices)
@@ -140,7 +145,9 @@ def day(current_user, action_point = 0)
     action_point += 1
   elsif answer == 6
     check = date(current_user)
-    action_point += 4
+    if check != "no date"
+      action_point += 4
+    end
   elsif answer == 7
     return welcome
   end
@@ -280,11 +287,29 @@ def flirt(current_user)
   end
   current_date.affection_pts += pts
   current_date.save
-  puts "#{choice}: #{prompt_facts(choice_id)}"
+  if current_date.fact_color == nil
+    current_date.fact_color = choice_id.fact_color
+    puts "#{choice}: #{choice_id.fact_color}"
+  elsif current_date.fact_season == nil
+      current_date.fact_season = choice_id.fact_season
+      puts "#{choice}: #{choice_id.fact_season}"
+  elsif current_date.fact_dream == nil
+      current_date.fact_dream = choice_id.fact_dream
+      puts "#{choice}: #{choice_id.fact_dream}"
+  elsif current_date.fact_item == nil
+      current_date.fact_item = choice_id.fact_item
+      puts "#{choice}: #{choice_id.fact_item}"
+  elsif current_date.fact_place == nil
+      current_date.fact_place = choice_id.fact_place
+      puts "#{choice}: #{choice_id.fact_place}"
+  elsif current_date.fact_food == nil
+      current_date.fact_food = choice_id.fact_food
+      puts "#{choice}: #{choice_id.fact_food}"
+  end
   sleep(1)
-  puts "You got to know #{choice} better."
+  puts "You got to know #{choice} better!"
   sleep(1)
-
+  current_date.save
 end
 
 def date(current_user)
@@ -358,6 +383,7 @@ def male_date (current_user)
     end
   else
     puts "#{mchoice} doesn't seem interested in going on a date with you."
+    return "no date"
   end
   sleep(1)
   display_stats(current_user)
