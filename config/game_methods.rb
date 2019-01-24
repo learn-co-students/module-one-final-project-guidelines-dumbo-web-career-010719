@@ -1,4 +1,4 @@
-# require 'pry'
+
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -514,7 +514,7 @@ def all_lovers(current_user)
 end
 
 def user_meet_check(current_user, lover)
-  # binding.pry
+
   if lover.name == "Nikki"
     current_user.nikki = true
   elsif lover.name == "Kira"
