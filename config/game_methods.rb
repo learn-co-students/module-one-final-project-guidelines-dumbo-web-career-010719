@@ -358,7 +358,7 @@ def male_date (current_user)
   male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
-  pts = affection_pts(current_user, choice_id)
+  pts = affection_adder(current_user, choice_id)
   if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
@@ -381,7 +381,7 @@ def female_date(current_user)
   female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-  pts = affection_pts(current_user, choice_id)
+  pts = affection_adder(current_user, choice_id)
   if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
@@ -404,7 +404,7 @@ def both_date(current_user)
   all_choices = Lover.all.map { |lovers| lovers.name }
   achoice = prompt.select("Who do you want to go on a date with?", all_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == achoice }
-  pts = affection_pts(current_user, choice_id)
+  pts = affection_adder(current_user, choice_id)
   if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
     current_user.money -= choice_id.money_req
