@@ -1,4 +1,4 @@
-
+require 'pry'
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -175,7 +175,7 @@ def work(current_user)
   sleep(1)
   current_user.money += 200
 
-  user_meet_check(current_user, lover)
+  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.work_days += 1
@@ -200,7 +200,7 @@ def gym(current_user)
   sleep(1)
   current_user.fitness += 10
 
-  user_meet_check(current_user, lover)
+  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.gym_days += 1
@@ -225,7 +225,7 @@ def volunteer(current_user)
   sleep(1)
   current_user.kindness += 10
 
-  user_meet_check(current_user, lover)
+  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.volunteer_days += 1
@@ -250,14 +250,14 @@ def study(current_user)
   sleep(1)
   current_user.intellect += 10
 
-  user_meet_check(current_user, lover)
+  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.study_days += 1
 end
 
 def flirt(current_user)
-  pid = fork{ exec 'afplay', "./bin/Smang_It.mp3" }
+
   prompt = TTY::Prompt.new
   lovers = all_lovers
   if current_user.preference == "Male"
@@ -419,6 +419,7 @@ end
 def lose_game(current_user)
   system "clear"
   sleep(3)
+  pid = fork{ exec 'afplay', "./bin/Lose.mp3"}
   puts "Wow..."
   sleep(1)
   puts "Today's the day of Prom and you couldn't find a date..."
@@ -441,6 +442,7 @@ def lose_game(current_user)
 end
 
 def endgame(current_user, lover)
+  pid = fork{ exec 'afplay', "./bin/Smang-It.mp3"}
   system "clear"
   puts "
   ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗  █████╗ ████████╗███████╗
@@ -490,6 +492,7 @@ def all_lovers(current_user)
 end
 
 def user_meet_check(current_user, lover)
+  binding.pry
   if lover.name == "Nikki"
     current_user.nikki = true
   elsif lover.name == "Kira"
