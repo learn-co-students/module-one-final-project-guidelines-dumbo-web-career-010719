@@ -86,6 +86,9 @@ end
 #-----------------------------------------------------------------------#
 
 def day(current_user, action_point = 0)
+  if current_user.total_days == 40
+    return check = lose_game(current_user)
+  end
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -134,10 +137,6 @@ def day(current_user, action_point = 0)
   elsif answer == 7
     return welcome
   end
-
-  if current_user.total_days == 40
-    check = lose_game(current_user)
-  end
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
@@ -148,7 +147,7 @@ def day(current_user, action_point = 0)
   if check == "won" || check == "lose"
     welcome
   else
-    # system "clear"
+    system "clear"
     day(current_user, action_point)
   end
 end
@@ -277,31 +276,7 @@ def flirt(current_user)
   sleep(1)
   puts "You got to know #{choice} better."
   sleep(1)
-  # if current_user.preference == "Male"
-  #   mchoice = prompt.select("Who do you want to flirt with?", lovers)
-  #   choice_id = Lover.all.find { |lover| lover.name == mchoice }
-  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-  #   puts "#{prompt_facts(choice_id)}"
-  #   sleep(1)
-  #   puts "You got to know #{mchoice} better."
-  #   sleep(1)
-  # elsif current_user.preference == "Female"
-  #   fchoice = prompt.select("Who do you want to flirt with?", lovers)
-  #   choice_id = Lover.all.find { |lover| lover.name == fchoice }
-  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-  #   puts "#{prompt_facts(choice_id)}"
-  #   sleep(1)
-  #   puts "You got to know #{fchoice} better."
-  #   sleep(1)
-  # elsif current_user.preference == "Both"
-  #   achoice = prompt.select("Who do you want to flirt with?", lovers)
-  #   choice_id = Lover.all.find { |lover| lover.name == achoice }
-  #   Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
-  #   puts "#{prompt_facts(choice_id)}"
-  #   sleep(1)
-  #   puts "You got to know #{achoice} better."
-  #   sleep(1)
-  # end
+
 end
 
 def date(current_user)
