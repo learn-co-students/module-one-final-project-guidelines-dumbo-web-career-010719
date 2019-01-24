@@ -170,12 +170,11 @@ def work(current_user)
       puts lover.first_meeting
       sleep(1)
     end
+    user_meet_check(current_user, lover)
   end
   puts "Another day, another dollar."
   sleep(1)
   current_user.money += 200
-
-  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.work_days += 1
@@ -195,12 +194,11 @@ def gym(current_user)
       puts lover.first_meeting
       sleep(2)
     end
+    user_meet_check(current_user, lover)
   end
   puts "I'm so sore."
   sleep(1)
   current_user.fitness += 10
-
-  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.gym_days += 1
@@ -220,12 +218,11 @@ def volunteer(current_user)
       puts lover.first_meeting
       sleep(1)
     end
+    user_meet_check(current_user, lover)
   end
   puts "The shelter looks slighter nicer now!"
   sleep(1)
   current_user.kindness += 10
-
-  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.volunteer_days += 1
@@ -245,12 +242,11 @@ def study(current_user)
       puts lover.first_meeting
       sleep(1)
     end
+    user_meet_check(current_user, lover)
   end
   puts "Ugh... Learning Active Record is confusing..."
   sleep(1)
   current_user.intellect += 10
-
-  # user_meet_check(current_user, lover)
 
   current_user.save
   current_user.study_days += 1
@@ -426,9 +422,20 @@ def lose_game(current_user)
   sleep(1)
   puts "What's the point of even going alone?"
   sleep(1)
-  puts "You're such a loser!!"
-  sleep(1)
-  puts "You'll never live this down"
+  puts "You're such a
+
+  ██▓     ▒█████    ██████ ▓█████  ██▀███
+▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ ▓██ ▒ ██▒
+▒██░    ▒██░  ██▒░ ▓██▄   ▒███   ▓██ ░▄█ ▒
+▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ ▒██▀▀█▄
+░██████▒░ ████▓▒░▒██████▒▒░▒████▒░██▓ ▒██▒
+░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ▒▓ ░▒▓░
+░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░  ░▒ ░ ▒░
+ ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░     ░░   ░
+   ░  ░    ░ ░        ░     ░  ░   ░
+
+                                        "
+
   sleep(1)
   options = [
     {"Reset Game?" => -> do reset_character(current_user) end },
@@ -492,7 +499,7 @@ def all_lovers(current_user)
 end
 
 def user_meet_check(current_user, lover)
-  binding.pry
+  # binding.pry
   if lover.name == "Nikki"
     current_user.nikki = true
   elsif lover.name == "Kira"
