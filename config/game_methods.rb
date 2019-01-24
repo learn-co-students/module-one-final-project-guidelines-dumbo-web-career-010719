@@ -262,7 +262,7 @@ end
 
 def flirt(current_user)
   prompt = TTY::Prompt.new
-  lovers = all_lovers(current_user)
+  lovers = true_names(current_user)
   choice = prompt.select("Who do you want to flirt with?", lovers)
   choice_id = Lover.all.find { |lovers| lovers.name == choice }
   pts = affection_adder(current_user, Lover.first)
@@ -364,11 +364,12 @@ def male_date (current_user)
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
   pts = affection_adder(current_user, choice_id)
-  if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
+  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    current_user.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
+    if current_user.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
@@ -388,11 +389,12 @@ def female_date(current_user)
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
   pts = affection_adder(current_user, choice_id)
-  if current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
+  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    current_user.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
+    if current_user.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
@@ -412,11 +414,12 @@ def both_date(current_user)
   achoice = prompt.select("Who do you want to go on a date with?", all_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == achoice }
   pts = affection_adder(current_user, choice_id)
-  if  current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts )
+  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
+  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    current_user.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
     current_user.save
-    if aff_dates_sum(current_user.id, choice_id.id) >= choice_id.aff_pts_req
+    if current_user.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         endgame(current_user, choice_id)
     else
@@ -508,17 +511,17 @@ def delete_self(current_user)
   puts "Your file has been deleted"
 end
 
-def all_lovers(current_user)
-  lovers = []
-  if current_user.preference == "Male"
-    lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
-  elsif current_user.preference == "Female"
-    lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
-  elsif current_user.preference == "Both"
-    lovers = Lover.all.map { |lovers| lovers.name }
-  end
-  lovers
-end
+# def all_lovers(current_user)
+#   lovers = []
+#   if current_user.preference == "Male"
+#     lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+#   elsif current_user.preference == "Female"
+#     lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+#   elsif current_user.preference == "Both"
+#     lovers = Lover.all.map { |lovers| lovers.name }
+#   end
+#   lovers
+# end
 
 def user_meet_check(current_user, lover)
 
