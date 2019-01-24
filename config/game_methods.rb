@@ -85,7 +85,7 @@ end
 #---------------------------- Day Loops --------------------------------#
 #-----------------------------------------------------------------------#
 
-def day(current_user)
+def day(current_user, action_point = 0)
   choices = [
     {name: 'Go to work', value: 1},
     {name: 'Hit the gym', value: 2},
@@ -98,6 +98,16 @@ def day(current_user)
     choices[4][:disabled] = "(You haven't met anyone to talk to!)"
     choices[5][:disabled] = "(You haven't met anyone to talk to!)"
   end
+  if action_point > 0
+    choices[5][:disabled] = "(Not enough time in the day!)"
+  end
+  if action_point > 1
+    choices[0][:disabled] = "(You missed your shift!)"
+  end
+  if action_point > 2
+    choices[4][:disabled] = "(Not enough time in the day!)"
+    choices[2][:disabled] = "(Not enough time in the day!)"
+  end
 
   display_stats(current_user)
 
@@ -105,33 +115,41 @@ def day(current_user)
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
     work(current_user)
+    action_point +=3
   elsif answer == 2
     gym(current_user)
+    action_point += 1
   elsif answer == 3
     volunteer(current_user)
+    action_point +=2
   elsif answer == 4
     study(current_user)
+    action_point += 1
   elsif answer == 5
     flirt(current_user)
+    action_point += 1
   elsif answer == 6
     check = date(current_user)
+    action_point += 4
   elsif answer == 7
     return welcome
   end
 
-  current_user.total_days += 1
-
   if current_user.total_days == 40
     check = lose_game(current_user)
   end
-
-  sleep(1)
-  puts "Wow, today was tiring. Time to go to bed!"
-  sleep(1)
+  if action_point == 4
+    sleep(1)
+    puts "Wow, today was tiring. Time to go to bed!"
+    sleep(1)
+    current_user.total_days += 1
+    action_point = 0
+  end
   if check == "won" || check == "lose"
     welcome
   else
-    day(current_user)
+    system "clear"
+    day(current_user, action_point)
   end
 end
 #----------------------------------------------------------------------------#
@@ -157,7 +175,6 @@ def work(current_user)
   sleep(1)
   current_user.money += 200
   current_user.save
-  display_stats(current_user)
   current_user.work_days += 1
 end
 
@@ -180,7 +197,6 @@ def gym(current_user)
   sleep(1)
   current_user.fitness += 10
   current_user.save
-  display_stats(current_user)
   current_user.gym_days += 1
 end
 
@@ -203,7 +219,6 @@ def volunteer(current_user)
   sleep(1)
   current_user.kindness += 10
   current_user.save
-  display_stats(current_user)
   current_user.volunteer_days += 1
 end
 
@@ -226,7 +241,6 @@ def study(current_user)
   sleep(1)
   current_user.intellect += 10
   current_user.save
-  display_stats(current_user)
   current_user.study_days += 1
 end
 
