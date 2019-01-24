@@ -2,7 +2,7 @@ require_relative '../config/environment'
 require_relative 'methods'
 require 'pry'
 
-puts "                     ___                                       ___                       ___                    ___                          ___  
+puts "                     ___                                       ___                       ___                    ___                          ___
                     (   )                                     (   )                     (   )                  (   )                        (   )
  ___  ___  ___ .--.  | |  .--.    .--.  ___ .-. .-.    .--.    | |_     .--.       .--.  | |_     .--.    .--.  | |   ___    ___  ___  .-..  | |
 (   )(   )(   )    \ | | /    \  /    \(   )   '   \  /    \  (   __)  /    \    /  _  \(   __)  /    \  /    \ | |  (   )  (   )(   )/    \ | |
@@ -17,5 +17,3 @@ puts "                     ___                                       ___        
                                                                                                                                     (___)         "
 
 main_menu
-
-puts "HELLO WORLD"
