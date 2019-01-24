@@ -174,6 +174,9 @@ def work(current_user)
   puts "Another day, another dollar."
   sleep(1)
   current_user.money += 200
+
+  user_meet_check(current_user, lover)
+
   current_user.save
   current_user.work_days += 1
 end
@@ -196,6 +199,9 @@ def gym(current_user)
   puts "I'm so sore."
   sleep(1)
   current_user.fitness += 10
+
+  user_meet_check(current_user, lover)
+
   current_user.save
   current_user.gym_days += 1
 end
@@ -218,6 +224,9 @@ def volunteer(current_user)
   puts "The shelter looks slighter nicer now!"
   sleep(1)
   current_user.kindness += 10
+
+  user_meet_check(current_user, lover)
+
   current_user.save
   current_user.volunteer_days += 1
 end
@@ -240,6 +249,9 @@ def study(current_user)
   puts "Ugh... Learning Active Record is confusing..."
   sleep(1)
   current_user.intellect += 10
+
+  user_meet_check(current_user, lover)
+
   current_user.save
   current_user.study_days += 1
 end
@@ -473,5 +485,25 @@ def all_lovers(current_user)
   elsif current_user.preference == "Both"
     lovers = Lover.all.map { |lovers| lovers.name }
   end
-  lovers
+  lovers.select {}
+end
+
+def user_meet_check(current_user, lover)
+  if lover.name == "Nikki"
+    current_user.nikki = true
+  elsif lover.name == "Kira"
+    current_user.kira = true
+  elsif lover.name == "Princess"
+    current_user.princess = true
+  elsif lover.name == "Penelope"
+    current_user.penelope = true
+  elsif lover.name == "Ryan"
+    current_user.ryan = true
+  elsif lover.name == "John"
+    current_user.john = true
+  elsif lover.name == "Fabio"
+    current_user.fabio = true
+  elsif lover.name == "Oliver"
+    current_user.oliver = true
+  end
 end
