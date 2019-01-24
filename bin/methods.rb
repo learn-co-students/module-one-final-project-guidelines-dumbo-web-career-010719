@@ -101,7 +101,7 @@ def find_by_item_name(my_store_items)
     my_item = my_store_items.find {|item| item.name == user_input}
   end
   puts "Yay! We carry that item!".blue
-  if my_item.quantity > 0 && my_item.in_stock?
+  if my_item.quantity > 0
     user_answer = $prompt.yes?("Would you like to add this item to your cart?")
     if user_answer == true
       add_to_cart(my_item)
@@ -170,7 +170,7 @@ def view_current_cart
     my_cart_item_ids = my_carts.map {|cart| cart.item_id}
     message = "You currently have: ".red
     my_carts.each do |cart|
-        message << " #{cart.quantity} - #{Item.find(cart.item_id).name},"
+        message << " #{cart.quantity} - #{Item.find(cart.item_id).name}"
     end
       puts message
     end
