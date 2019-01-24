@@ -115,13 +115,12 @@ def day(current_user, action_point = 0)
     choices[5][:disabled] = "(You haven't met anyone to talk to!)"
   end
   if action_point > 0
-    choices[5][:disabled] = "(Not enough time in the day!)"
+    choices[5][:disabled] = "(Not enough time to go on a date!)"
   end
   if action_point > 1
     choices[0][:disabled] = "(You missed your shift!)"
   end
   if action_point > 2
-    choices[4][:disabled] = "(Not enough time in the day!)"
     choices[2][:disabled] = "(Not enough time in the day!)"
   end
 
@@ -307,10 +306,15 @@ def flirt(current_user)
   elsif current_date.fact_food == nil
       current_date.fact_food = choice_id.fact_food
       puts "#{choice}: #{choice_id.fact_food}"
-  end
+    else
+      puts "Oh you know #{choice}So well already!"
+      sleep(3)
+      current_date.save
+      return nil
+    end
   sleep(1)
   puts "You got to know #{choice} better!"
-  sleep(1)
+  sleep(3)
   current_date.save
 end
 
@@ -386,6 +390,7 @@ def male_date (current_user)
     end
   else
     puts "#{mchoice} doesn't seem interested in going on a date with you."
+    sleep(3)
     return "no date"
   end
   sleep(1)
@@ -411,6 +416,8 @@ def female_date(current_user)
     end
   else
     puts "#{fchoice} doesn't seem interested in going on a date with you."
+    sleep(3)
+    return "no date"
   end
   sleep(1)
   display_stats(current_user)
@@ -435,6 +442,8 @@ def both_date(current_user)
     end
   else
     puts "#{achoice} doesn't seem interested in going on a date with you."
+    sleep(3)
+    return "no date"
   end
   sleep(1)
   display_stats(current_user)
