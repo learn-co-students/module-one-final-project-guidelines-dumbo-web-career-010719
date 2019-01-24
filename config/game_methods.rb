@@ -20,7 +20,7 @@ def banner
   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚══════╝╚═╝╚═╝     ╚═╝
 
   "
-  sleep(3)
+  sleep(5)
   system "clear"
 end
 
@@ -246,10 +246,7 @@ end
 
 def flirt(current_user)
   prompt = TTY::Prompt.new
-  male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
-  female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
-  all_choices = Lover.all.map { |lovers| lovers.name }
-
+  lovers = all_lovers
   if current_user.preference == "Male"
     mchoice = prompt.select("Who do you want to flirt with?", male_choices)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
@@ -465,4 +462,16 @@ end
 def delete_self(current_user)
   User.find(current_user.id).destroy
   puts "Your file has been deleted"
+end
+
+def all_lovers(current_user)
+  lovers = []
+  if current_user.preference == "Male"
+    lovers = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+  elsif current_user.preference == "Female"
+    lovers = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  elsif current_user.preference == "Both"
+    lovers = Lover.all.map { |lovers| lovers.name }
+  end
+  lovers
 end
