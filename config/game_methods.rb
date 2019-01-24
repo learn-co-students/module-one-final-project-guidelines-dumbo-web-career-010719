@@ -234,7 +234,7 @@ def volunteer(current_user)
 end
 
 def study(current_user)
-  pid = fork{ exec 'afplay', "./sounds/study-sound.mp3" }
+  pid = fork{ exec 'afplay', "./sounds/study-sound.wav" }
   if current_user.study_days == 0
     if current_user.preference == 'Both'
       lover = Lover.all.select { |lovers| lovers.interest == "intellect" }
