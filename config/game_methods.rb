@@ -355,7 +355,8 @@ end
 
 def male_date (current_user)
   prompt = TTY::Prompt.new
-  male_choices = Lover.all.select { |obj| obj.gender == "Male"}.map { |males| males.name }
+  male_choices = true_names(current_user)
+  # male_choices = Lover.all.select { |obj| obj.gender == "Male" && }.map { |males| males.name }
   mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
   pts = affection_adder(current_user, choice_id)
@@ -378,7 +379,8 @@ end
 
 def female_date(current_user)
   prompt = TTY::Prompt.new
-  female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
+  female_choices = true_names(current_user)
+  # female_choices = Lover.all.select { |obj| obj.gender == "Female"}.map { |females| females.name }
   fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
   pts = affection_adder(current_user, choice_id)
@@ -401,7 +403,8 @@ end
 
 def both_date(current_user)
   prompt = TTY::Prompt.new
-  all_choices = Lover.all.map { |lovers| lovers.name }
+  # all_choices = Lover.all.map { |lovers| lovers.name }
+  all_choices = true_names(current_user)
   achoice = prompt.select("Who do you want to go on a date with?", all_choices)
   choice_id = Lover.all.find { |lovers| lovers.name == achoice }
   pts = affection_adder(current_user, choice_id)
@@ -532,6 +535,35 @@ def user_meet_check(current_user, lover)
   elsif lover.name == "Oliver"
     current_user.oliver = true
   end
+end
+
+def true_names(current_user)
+  arr = []
+  if current_user.nikki == true
+      arr << "Nikki"
+  end
+  if current_user.kira == true
+      arr << "Kira"
+  end
+  if current_user.princess == true
+    arr << "Princess"
+  end
+  if current_user.penelope == true
+    arr << "Penelope"
+  end
+  if current_user.ryan == true
+    arr << "Ryan"
+  end
+  if current_user.john == true
+    arr << "John"
+  end
+  if current_user.fabio == true
+    arr << "Fabio"
+  end
+  if current_user.oliver == true
+    arr << "Oliver"
+  end
+  arr
 end
 
 def bisexual_meet_check(current_user, lovers)
