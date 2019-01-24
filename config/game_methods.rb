@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -164,13 +164,14 @@ def work(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "money"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "Another day, another dollar."
   sleep(1)
@@ -188,13 +189,14 @@ def gym(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(2)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers| lovers.gender == current_user.preference && lovers.interest == "fitness"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(2)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "I'm so sore."
   sleep(1)
@@ -212,13 +214,14 @@ def volunteer(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "volunteering"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "The shelter looks slighter nicer now!"
   sleep(1)
@@ -236,13 +239,14 @@ def study(current_user)
       puts lover[0].first_meeting
       puts lover[1].first_meeting
       sleep(1)
+      bisexual_meet_check(current_user, lover)
     else
       lover = Lover.all.find {|lovers|lovers.gender == current_user.preference && lovers.interest == "intellect"}
       puts "You have met #{lover.name}!"
       puts lover.first_meeting
       sleep(1)
+      user_meet_check(current_user, lover)
     end
-    user_meet_check(current_user, lover)
   end
   puts "Ugh... Learning Active Record is confusing..."
   sleep(1)
@@ -255,9 +259,9 @@ end
 def flirt(current_user)
 
   prompt = TTY::Prompt.new
-  lovers = all_lovers
+  lovers = all_lovers(current_user)
   if current_user.preference == "Male"
-    mchoice = prompt.select("Who do you want to flirt with?", male_choices)
+    mchoice = prompt.select("Who do you want to flirt with?", lovers)
     choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
@@ -266,7 +270,7 @@ def flirt(current_user)
     puts "You got to know #{mchoice} better."
     sleep(1)
   elsif current_user.preference == "Female"
-    fchoice = prompt.select("Who do you want to flirt with?", female_choices)
+    fchoice = prompt.select("Who do you want to flirt with?", lovers)
     choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
@@ -275,7 +279,7 @@ def flirt(current_user)
     puts "You got to know #{fchoice} better."
     sleep(1)
   elsif current_user.preference == "Both"
-    achoice = prompt.select("Who do you want to flirt with?", all_choices)
+    achoice = prompt.select("Who do you want to flirt with?", lovers)
     choice_id = Lover.all.find { |lovers| lovers.name == achoice }
     pts = affection_pts(current_user, choice_id)
     Dates.create(user_id: current_user.id, lovers_id: choice_id.id, affection_pts: pts/2 )
@@ -495,7 +499,7 @@ def all_lovers(current_user)
   elsif current_user.preference == "Both"
     lovers = Lover.all.map { |lovers| lovers.name }
   end
-  lovers.select {}
+  lovers
 end
 
 def user_meet_check(current_user, lover)
@@ -516,5 +520,11 @@ def user_meet_check(current_user, lover)
     current_user.fabio = true
   elsif lover.name == "Oliver"
     current_user.oliver = true
+  end
+end
+
+def bisexual_meet_check(current_user, lovers)
+  lovers.each do |obj|
+    user_meet_check(current_user, obj)
   end
 end
