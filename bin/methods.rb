@@ -140,7 +140,7 @@ def add_to_cart(my_item)
       my_store_items = store_items(my_store)
       my_item = find_by_item_name(my_store_items)
     else
-      exit
+      main_menu
     end
   else
     puts "Sorry, we only have #{my_item.quantity} currently in stock."
