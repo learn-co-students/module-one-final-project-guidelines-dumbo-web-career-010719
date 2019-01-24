@@ -1,4 +1,5 @@
 require_relative '../config/environment'
+
 require 'pry'
 
 
@@ -19,6 +20,7 @@ require 'pry'
 #   else
 #     puts "Invaild Answer. Please enter 'join' or 'create'."
 #   end
+def run_program
 
 puts "------------------------------"
 puts " "
@@ -26,7 +28,7 @@ puts "  Welcome to League Central!"
 puts " "
 puts "------------------------------"
 prompt = TTY::Prompt.new
-type = prompt.select("Please choose to create or to join a league.", %w(Create View_Communities))
+type = prompt.select("Please choose to create or to view a community.", %w(Create View_Communities Update_An_Existing_Community Exit))
 # Community.main_menu
   if type == "Create"
 
@@ -34,17 +36,32 @@ type = prompt.select("Please choose to create or to join a league.", %w(Create V
           key(:username).ask('username?')
         end
 
-        user = Creator.create(username)
+        Creator.create(username)
         community = prompt.collect do
           key(:location).select('location of community?', %w(Manhattan Brooklyn Queens Bronx Buffalo Albany))
-          key(:start_date).ask('start date of community? (example: yyyymmdd)')
+          # key(:start_date).ask('start date of community? (example: mm/dd)')
           key(:title).select('which game is the community for?', %w(Super_Smash_Brothers_Ultimate Fortnite League_of_Legends Call_of_Duty Overwatch Battlefield_5))
         end
           # League.last.creator_id = Creator.last.id
-          Community.last.update(creator_id: Creator.last.id)
+          Community.create(community)
+          Community.last.update(creator_id: Creator.last.id, game_id: Game.find_by(title: Community.last.title).id)
             # binding.pry
           # answer2 = prompt.select('What would you like to do?', %w(To_see_all_of_my_leagues))
-        puts "Thank you for creating the community!"
+        puts "-----------------------------------------"
+        puts " "
+        puts "  Thank you for creating the community!"
+        puts " "
+        puts "-----------------------------------------"
+
+      q1 = prompt.select("Would you like to go back to the main menu or exit the program?", %w(Main_menu Exit))
+          if q1 == "Main_menu"
+            run_program
+          elsif q1 == "Exit"
+            exit
+          end
+
+
+
 
   elsif type == "View_Communities"
         community_locations = prompt.select('location?', %w(Manhattan Brooklyn Queens Bronx Buffalo Albany))
@@ -57,40 +74,101 @@ type = prompt.select("Please choose to create or to join a league.", %w(Create V
           end
         end
 
+        if n < 1
+          q1 = prompt.select("Sorry there are no communities in this location. Do you want to create a new community?", %w(Yes No))
 
-        q1 = prompt.yes?("Would you like to join one?")
+          if q1 == "Yes"
+            username = prompt.collect do
+              key(:username).ask('username?')
+            end
 
-            if q1 == true
-              if  n = 1
-                prompt.select("Sorry there are no communities. You want to start a new community?", %w(Yes No))
-              end
+            Creator.create(username)
+            title = prompt.collect do
+              # key(:start_date).ask('start date of community? (example: mm/dd)')
+              key(:title).select('which game is the community for?', %w(Super_Smash_Brothers_Ultimate Fortnite League_of_Legends Call_of_Duty Overwatch Battlefield_5))
+            end
+            title[:location] = community_locations
+            title[:creator_id] = Creator.last.id
+            # title[:game_id] =
+              # League.last.creator_id = Creator.last.id
+            Community.create(title)
+            Community.last.update(creator_id: Creator.last.id, game_id: Game.find_by(title: Community.last.title).id)
 
-              q2 = prompt.ask("Which community would you like to join? (ex. Game Title)")
-              q1_answer = prompt.collect do
+            puts "-----------------------------------------"
+            puts " "
+            puts "  Thank you for creating the community!"
+            puts " "
+            puts "-----------------------------------------"
+
+          elsif q1 == "No"
+            run_program
+        end
+
+        elsif n >= 1
+          q2 = prompt.select("Would you like to join one?", %w(Yes No))
+            if q2 == "Yes"
+              q3 = prompt.ask("Which community would you like to join? (example: Game_Title)")
+              q3_answer = prompt.collect do
                 key(:username).ask('username?')
                 key(:age).ask('age?(example: 21)', convert: :int)
               end
-              q1_answer[:location] = community_locations
 
-              Player.create(q1_answer)
-              # q2 = prompt.ask("Which community would you like to join? (ex. Location - Game Title)")
-              why = Community.find_by(location: community_locations ,title: q2)
-              why.player_id = Player.last.id
-              binding.pry
-              #   if q2 == leagues.
-              # # binding.pry
-
-              # q2 = prompt.select("What would you like to do?", %w(Create_a_new_community_for_your_location. Go_back_to_main_menu.) )
-            else
-              puts "You are now directed back to the main menu."
-              prompt.select("Please choose to create or to join a league.", %w(Create View_Communities))
+              q3_answer[:location] = community_locations
+              Player.create(q3_answer)
+              Community.find_by(location: community_locations ,title: q3).update(player_id: Player.last.id)
+              # Community.find_by(location: community_locations ,title: q3).update(player_id: Player.last.id)
+              puts "-----------------------------------------"
+              puts " "
+              puts "  Thank you for joining the community!"
+              puts " "
+              puts "-----------------------------------------"
+            elsif q2 == "No"
+              run_program
             end
+        end
 
+
+
+
+  elsif type == "Update_An_Existing_Community"
+    Community.all.map do |ooo|
+      puts "#{ooo.location} - #{ooo.title}"
+    end
+
+    q5 = prompt.ask("Which community would you like to update?")
+    q5 = q5.split(" - ")
+    q6 = prompt.ask("What is your username?")
+    id_check = Community.find_by(location: q5[0] ,title: q5[1]).creator_id
+
+    if Creator.find_by(username: q6) == id_check
+      q7 = prompt.select("What would you like to update/delete?", %w(Change_location Delete_Community))
+
+      if q7 == "Change_location"
+        q8 = prompt.select('Where do you want to move to?', %w(Manhattan Brooklyn Queens Bronx Buffalo Albany))
+        Community.find_by(location: q5[0] ,title: q5[1]).update(location: q8)
+      elsif q7 == "Delete_Community"
+        q8 = prompt.select("Do you really want to delete your community?", %w(No Yes))
+
+         if q8 == "Yes"
+          Community.find_by(location: q5[0] ,title: q5[1]).destroy
+          binding.pry
+          puts "Congrats your community is no more."
+         elsif q8 == "No"
+          run_program
+         end
+      end
+    end
+
+
+
+
+   elsif type == "Exit"
+     exit
 
   end
-
-
+end
     # Able to choose whether you want to join an existing league or to create a new one
 
     # If you want to join... be able to choose where you would like to choose
     # If you choose to create, you go back to the first.
+run_program
