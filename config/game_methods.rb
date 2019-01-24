@@ -80,6 +80,7 @@ end
     prompt = TTY::Prompt.new
     delete_choice = prompt.select("Choose a file to delete", users)
     deleting = User.all.find { |obj| obj.name == delete_choice}
+    Dates.find_by(user_id: deleting.id).destroy
     deleting.destroy
     puts "File has been deleted."
     sleep(1)
@@ -309,6 +310,7 @@ def prompt_facts(choice_id)
 end
 
 def goal_message
+  system "clear"
   puts "Hey there!"
   sleep(1)
   puts "Welcome to the Flatiron School, we're really glad to have you!"
