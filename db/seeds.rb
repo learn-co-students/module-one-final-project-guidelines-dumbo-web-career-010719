@@ -10,7 +10,7 @@ nikki = Lover.create(name: "Nikki", gender: "Female", personality: "Fierce", int
   aff_kindness_mod: 2,
   aff_money_mod: 10,
   aff_pts_req: 400,
-  first_meeting: "Nikki: Oh, hi! You must be new here. My name is Nikki. I'm in accounting! Nice to meet you.")
+  first_meeting: "Nikki: Oh, hi! You must be new here. My name is Nikki. Nice to meet you.")
 kira = Lover.create(name: "Kira", gender: "Female", personality: "Sweet", interest: "volunteering", fitness_req: 10, intellect_req: 20, kindness_req: 30, money_req: 50,
   fact_color: "My favorite color is purple",
   fact_item: "I love animals!!",
@@ -25,10 +25,10 @@ kira = Lover.create(name: "Kira", gender: "Female", personality: "Sweet", intere
   aff_pts_req: 500,
   first_meeting: "Kira: Hello!! I'm Kira!! Sorry it's a mess in here...")
 princess = Lover.create(name: "Princess", gender: "Female", personality: "Shallow", interest: "money", fitness_req: 30, intellect_req: 30, kindness_req: 10, money_req: 1000,
-  fact_item: "I really want this Louis Vuitton purse",
-  fact_dream:"I can't decide between an Audi or Mercedes for my next car",
+  fact_item: "I really want this Louis Vuitton purse!!",
+  fact_dream:"I can't decide between an Audi or Mercedes for my next car.",
   fact_place:"Can I have some money to get my nails done?",
-  fact_color: "Can you buy me this in pink??? Pleaaaasseeeeeee",
+  fact_color: "Can you buy me this in pink??? Pleaaaasseeeeeee!",
   fact_season: "Ugh. I hate the winter. I can't wait for the summer",
   fact_food: "OMG. Take me to this fancy restaurant. It has four dollar signs on Yelp",
   aff_fitness_mod: 4,
@@ -36,7 +36,7 @@ princess = Lover.create(name: "Princess", gender: "Female", personality: "Shallo
   aff_kindness_mod: 1,
   aff_money_mod: 50,
   aff_pts_req: 400,
-  first_meeting: "Princess: Excuse me. I'm using the squat rack. Wait your turn.")
+  first_meeting: "Princess: Excuse me. You're literally standing in the middle of the hallway. Can you move?")
 penelope = Lover.create(name: "Penelope", gender: "Female", personality: "Nerdy", interest: "intellect", fitness_req: 10, intellect_req: 40, kindness_req: 10, money_req: 20,
   fact_place: "I absolutely adore the library",
   fact_item: "My favorite author of ALL TIME is Edgar Allen Poe",
@@ -96,7 +96,7 @@ oliver = Lover.create(name: "Oliver", gender: "Male", personality: "Sweet", inte
   fact_item: "Don't laugh but I actually have a vegetable garden",
   fact_season: "Spring is the best season for plants!!",
   fact_color: "I like the color green and brown",
-  fact_food: "I love all types of food!! ",
+  fact_food: "I love all types of food!!",
   fact_dream: "I would like to retire on a farm someday",
   aff_fitness_mod: 1,
   aff_intellect_mod: 1,
