@@ -139,7 +139,6 @@ def day(current_user, action_point = 0)
   elsif answer == 7
     return welcome
   end
-
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
@@ -150,7 +149,7 @@ def day(current_user, action_point = 0)
   if check == "won" || check == "lose"
     welcome
   else
-    # system "clear"
+    system "clear"
     day(current_user, action_point)
   end
 end
@@ -280,6 +279,7 @@ def flirt(current_user)
   sleep(1)
   puts "You got to know #{choice} better."
   sleep(1)
+
 end
 
 def date(current_user)
