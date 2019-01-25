@@ -147,7 +147,7 @@ def add_to_cart(my_item)
       main_menu
     end
   else
-    puts "Sorry, we only have #{my_item.quantity} currently in stock."
+    puts "Sorry, we only have #{my_item.quantity} currently in stock.".red
     item_quantity = $prompt.ask("How many would you like to add to your cart: 0-#{my_item.quantity}?") { |q| q.in('0-100') }
     if my_item.quantity >= item_quantity.to_i && item_quantity.to_i > 0
       item_cart = Cart.all.find {|cart| cart.item_id == my_item.id}
@@ -228,7 +228,7 @@ def pick_up_items
 end
 
 def delete_account
-  username = $prompt.ask("Sorry to hear you're leaving us! Please enter your username:")
+  username = $prompt.ask("Sorry to hear you're leaving us! Please enter your username:").red
   if exists?(username)
     system "clear"
     puts "Goodbye #{username}!".yellow.blink
