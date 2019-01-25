@@ -528,6 +528,13 @@ def bisexual_meet_check(current_user, lovers)
   end
 end
 
+def hash_question(current_date, current_user)
+  question =
+  prompt = TTY::Prompt.new
+  choice = prompt.select(question, options)
+end
+
+
 def date_questions
   question = {
     :nikki => {
