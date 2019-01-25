@@ -12,7 +12,7 @@ def first_menu
 end
 
 def main_menu
-  user_input = $prompt.select("Main Menu", active_color: :cyan) do |menu|
+  user_input = $prompt.select("Main Menu".magenta, active_color: :cyan) do |menu|
     menu.choice 'View Local Stores', -> {zip = get_user_zip
       view_local_stores(zip)}
     menu.choice 'Add Items To Cart', -> {zip = get_user_zip
@@ -32,11 +32,9 @@ def returning_user?
   user_input = $prompt.select("Are you a New or Returning user?", %w(New Returning), active_color: :magenta)
   if user_input == "Returning"
     username = access_username(user_input)
-    sleep(2)
   else
     puts "Awesome! Welcome!"
     username = create_username(user_input)
-    sleep(2)
   end
   $username = username
   main_menu
@@ -117,7 +115,7 @@ def find_by_item_name(my_store_items)
       end
     end
   else
-    puts "Sorry, this item is temporarily out of stock :("
+    puts "Sorry, this item is temporarily out of stock :(".red
     find_by_item_name(my_store_items)
   end
 end
@@ -155,6 +153,7 @@ def add_to_cart(my_item)
       item_cart = Cart.all.find {|cart| cart.item_id == my_item.id}
       if item_cart.nil?
         Cart.create(item_id: my_item.id, user_id: user.id, quantity: item_quantity)
+        puts "Your item has been successfully added to your cart!".green.blink
       else
         item_cart.quantity += item_quantity.to_i
         item_cart.save
@@ -174,6 +173,7 @@ def view_current_cart
     my_user_id = my_user.id
     my_carts = Cart.all.select {|cart| cart.user_id == my_user_id}
     my_cart_item_ids = my_carts.map {|cart| cart.item_id}
+    system "clear"
     message = "You currently have: ".red
     my_carts.each do |cart|
         message << " #{cart.quantity} - #{Item.find(cart.item_id).name}"
@@ -205,6 +205,7 @@ def delete_item_from_cart
       end
     end
   end
+  system "clear"
   puts "You currently have: #{cart_names.join(" and ")} in your cart."
   user_answer = $prompt.ask("What item would you like to delete?").capitalize
   my_carts.each do |cart|
@@ -212,6 +213,7 @@ def delete_item_from_cart
       cart.delete
     end
   end
+  puts "Your item was successfully deleted.".red
   main_menu
 end
 
