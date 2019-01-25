@@ -86,7 +86,7 @@ end
     delete_choice = prompt.select("Choose a file to delete", users)
     deleting = User.all.find { |obj| obj.name == delete_choice}
     if Dates.all.length != 0
-      Dates.find_by(user_id: deleting.id).destroy
+      Dates.where(user_id: deleting.id).delete_all
     end
     deleting.destroy
     puts "File has been deleted."
@@ -101,7 +101,7 @@ end
 def day(current_user, action_point = 0)
   current_user.save
   if current_user.total_days == 30
-    return check = lose_game(current_user)
+    return lose_game(current_user)
   end
 
   choices = [
@@ -117,17 +117,24 @@ def day(current_user, action_point = 0)
     choices[5][:disabled] = "(You haven't met anyone to talk to!)"
   end
   if action_point > 0
-    choices[5][:disabled] = "(Not enough time to go on a date!)"
+    choices[5][:disabled] = "(Not enough time in the day!)"
   end
   if action_point > 1
     choices[0][:disabled] = "(You missed your shift!)"
   end
   if action_point > 2
+    choices[4][:disabled] = "(Not enough time in the day!)"
     choices[2][:disabled] = "(Not enough time in the day!)"
   end
 
   display_stats(current_user)
 
+  if check == "won" || check == "lose"
+    welcome
+  else
+    system "clear"
+    day(current_user, action_point)
+  end
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -159,12 +166,6 @@ def day(current_user, action_point = 0)
     sleep(1)
     current_user.total_days += 1
     action_point = 0
-  end
-  if check == "won" || check == "lose"
-    welcome
-  else
-    system "clear"
-    day(current_user, action_point)
   end
 end
 #----------------------------------------------------------------------------#
@@ -308,18 +309,24 @@ def flirt(current_user)
   elsif current_date.fact_food == nil
       current_date.fact_food = choice_id.fact_food
       puts "#{choice}: #{choice_id.fact_food}"
-    else
-      puts "Oh you know #{choice}So well already!"
-      sleep(3)
-      current_date.save
-      return nil
-    end
+  end
   sleep(1)
   puts "You got to know #{choice} better!"
-  sleep(3)
+  sleep(1)
   current_date.save
 end
 
+def date(current_user)
+  current_user.total_dates += 1
+  if current_user.preference == "Male"
+    return male_date(current_user)
+
+  elsif current_user.preference == "Female"
+    return female_date(current_user)
+  else
+    return both_date(current_user)
+  end
+end
 
 #----------------------------------------------------------------------------#
 #---------------------------- Helper Methods --------------------------------#
@@ -362,32 +369,82 @@ def affection_adder(current_user, current_lover)
   aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/5
 end
 
-def date (current_user)
+def male_date (current_user)
   prompt = TTY::Prompt.new
-  choices = true_names(current_user)
-  choice = prompt.select("Who do you want to go on a date with?", choices)
-  choice_id = Lover.all.find { |lovers| lovers.name == choice }
+  male_choices = true_names(current_user)
+  mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     date.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
-    current_user.total_dates += 1
     current_user.save
-    date.save
     if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
-      puts "You got to know #{choice} better."
+      puts "You got to know #{mchoice} better."
     end
   else
-    puts "#{choice} doesn't seem interested in going on a date with you."
-    sleep(3)
+    puts "#{mchoice} doesn't seem interested in going on a date with you."
     return "no date"
   end
   sleep(1)
   display_stats(current_user)
+end
+
+def female_date(current_user)
+  prompt = TTY::Prompt.new
+  female_choices = true_names(current_user)
+  fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
+  pts = affection_adder(current_user, choice_id)
+  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
+  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    date.affection_pts += (pts * 2)
+    current_user.money -= choice_id.money_req
+    current_user.save
+    if date.affection_pts >= choice_id.aff_pts_req
+        puts "#{choice_id.name} wants to be exclusive with you."
+        return endgame(current_user, choice_id)
+    else
+      puts "You got to know #{fchoice} better."
+    end
+  else
+    puts "#{fchoice} doesn't seem interested in going on a date with you."
+  end
+  sleep(1)
+  display_stats(current_user)
+end
+
+def both_date(current_user)
+  prompt = TTY::Prompt.new
+  all_choices = true_names(current_user)
+  achoice = prompt.select("Who do you want to go on a date with?", all_choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == achoice }
+  pts = affection_adder(current_user, choice_id)
+  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
+  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
+    date.affection_pts += (pts * 2)
+    current_user.money -= choice_id.money_req
+    current_user.save
+    if date.affection_pts >= choice_id.aff_pts_req
+        puts "#{choice_id.name} wants to be exclusive with you."
+        return endgame(current_user, choice_id)
+    else
+      puts "You got to know #{achoice} better."
+    end
+  else
+    puts "#{achoice} doesn't seem interested in going on a date with you."
+  end
+  sleep(1)
+  display_stats(current_user)
+end
+
+def aff_dates_sum(user, lover)
+  sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
+  sum
 end
 
 def lose_game(current_user)
@@ -413,7 +470,6 @@ def lose_game(current_user)
    ░  ░    ░ ░        ░     ░  ░   ░
 
                                         "
-
   sleep(1)
   options = [
     {"Reset Game?" => -> do reset_character(current_user) end },
@@ -423,7 +479,7 @@ def lose_game(current_user)
   puts "Let's try this again."
   sleep(3)
   system "clear"
-  return "lose"
+  return welcome
 end
 
 def endgame(current_user, lover)
@@ -450,17 +506,19 @@ def endgame(current_user, lover)
   sleep(3)
   reset_character(current_user)
   sleep(4)
-  return "won"
+  return welcome
 end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
+  Dates.where(user_id: current_user.id).delete_all
   puts "You can continue to play the game, but your stats have been reset."
 end
 
 def delete_self(current_user)
   User.find(current_user.id).destroy
+  Dates.where(user_id: current_user.id).delete_all
   puts "Your file has been deleted"
 end
 
@@ -524,7 +582,74 @@ def hash_question(current_date, current_user)
   question =
   prompt = TTY::Prompt.new
   choice = prompt.select(question, options)
+end
 
 
-
+def date_questions
+  question = {
+    :nikki => {
+    :fact_dream => "Do you remember what my biggest dream is?",
+    :fact_color => "What's my favorite color?",
+    :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+    :fact_item => "Can you buy this for me?",
+    :fact_food =>"Guess what my favorite food is!",
+    :fact_season => "My favorite time of year is probably..."
+    }
+    :kira => {
+      :fact_dream => "Have I told you what my dream is?",
+      :fact_color => "Have you noticed what my favorite color is?",
+      :fact_place => "If I could travel somewhere, where would it be?",
+      :fact_item => "I really love...",
+      :fact_food => "What kind of food should we get?",
+      :fact_season => "Do you remember what my favorite season is?"
+    }
+    :princess => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in A SPECIFIC COLOR.",
+      :fact_place => "My dream house is...",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :penelope => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :ryan => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :john => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :fabio => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :oliver => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+  }
 end
