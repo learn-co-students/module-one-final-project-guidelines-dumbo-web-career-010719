@@ -1,4 +1,4 @@
-require 'pry'
+
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -626,7 +626,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
     end
   end
 end
-puts "Your date points are #{check}"
+puts "You got #{check} affection points."
   if check <= 0
     puts "Your date sucked!"
   else
