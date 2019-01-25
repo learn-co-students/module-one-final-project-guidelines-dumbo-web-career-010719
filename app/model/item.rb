@@ -30,7 +30,7 @@ class Item < ActiveRecord::Base
         tp Item.all
     end
 
-    #delete a item from charact inventory
+    #delete a item from character inventory
     def self.delete_item
         if Character.current_char != ""
             inv = Inventory.char_inventory
