@@ -171,46 +171,45 @@ end
 #----------------------------------------------------------------------------#
 
 def diary(current_user)
-  puts "Affection points:"
-  if Dates.all.find{|user| user.user_id == current_user.id} != nil
-    Dates.all.each do |date|
-      if date.user_id == current_user.id
-        lover_max = 0
-        puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name} points: #{date.affection_pts}/#{lover_max} "
-      end
-    end
-  end
+  # puts "Affection points:"
+  # if Dates.all.find{|user| user.user_id == current_user.id} != nil
+  #   Dates.all.each do |date|
+  #     if date.user_id == current_user.id
+  #       lover_max = 0
+  #       puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
+  #     end
+  #   end
+  # end
+
   puts "Facts:"
   if Dates.all.find{|user| user.user_id == current_user.id} != nil
     Dates.all.each do |date|
       if date.user_id == current_user.id
+        lover_max = 0
         lover = Lover.all.find{|lover1| lover1.id == date.lovers_id}
-        facts = Dates.all.select{|dates| dates.lovers_id == lover.id}
-        puts "#{lover.name}"
-        # binding.pry
-        if facts.fact_color !=nil
-          puts "#{facts.map{|facts| facts == "fact_color"}}"
+        puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
+        if date.fact_color !=nil
+          puts "#{date.fact_color}"
         end
-        if facts.fact_season != nil
-          puts "#{facts.fact_season}"
+        if date.fact_season != nil
+          puts "#{date.fact_season}"
         end
-        if facts.fact_season != nil
-          puts "#{facts.fact_dream}"
+        if date.fact_dream != nil
+          puts "#{date.fact_dream}"
         end
-        if facts.fact_season != nil
-          puts "#{facts.fact_item}"
+        if date.fact_item != nil
+          puts "#{date.fact_item}"
         end
-        if facts.fact_season != nil
-          puts "#{facts.fact_place}"
+        if date.fact_place != nil
+          puts "#{date.fact_place}"
         end
-        if facts.fact_season != nil
-          puts "#{facts.fact_food}"
+        if date.fact_food != nil
+          puts "#{date.fact_food}"
         end
       end
     end
   end
-    prompt = TTY::Prompt.new
-  # response = prompt.select("Back" => -> do day(current_user) end)
+  sleep(10)
 end
 
 def work(current_user)
