@@ -598,10 +598,10 @@ def date_questions
     }
     :princess => {
       :fact_dream => "What kind of car would you buy for me?",
-      :fact_color => "I told you I wanted this in A SPECIFIC COLOR.",
+      :fact_color => "I told you I wanted this in A SPECIFIC COLOR. Do you even remember what color I said?",
       :fact_place => "My dream house is...",
-      :fact_item => "Can you buy this for me?",
-      :fact_food => "Guess what my favorite food is!",
+      :fact_item => "I really want thissssss purse. Do you remember which one I wanted??",
+      :fact_food => "I'm hungry!! Where are we eating?",
       :fact_season => ""
     }
     :penelope => {
