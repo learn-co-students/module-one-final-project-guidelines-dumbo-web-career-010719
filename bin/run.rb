@@ -22,11 +22,11 @@ require 'pry'
 #   end
 def run_program
 
-puts "------------------------------"
+puts "---------------------------------"
 puts " "
-puts "  Welcome to League Central!"
+puts "  Welcome to Community Central!"
 puts " "
-puts "------------------------------"
+puts "---------------------------------"
 prompt = TTY::Prompt.new
 type = prompt.select("Please choose to create or to view a community.", %w(Create View_Communities Update_An_Existing_Community Exit))
 # Community.main_menu
@@ -49,7 +49,7 @@ type = prompt.select("Please choose to create or to view a community.", %w(Creat
           # answer2 = prompt.select('What would you like to do?', %w(To_see_all_of_my_leagues))
         puts "-----------------------------------------"
         puts " "
-        puts "  Thank you for creating the community!"
+        puts "   Thank you for creating a community!"
         puts " "
         puts "-----------------------------------------"
 
@@ -96,7 +96,7 @@ type = prompt.select("Please choose to create or to view a community.", %w(Creat
 
             puts "-----------------------------------------"
             puts " "
-            puts "  Thank you for creating the community!"
+            puts "   Thank you for creating a community!"
             puts " "
             puts "-----------------------------------------"
 
@@ -119,7 +119,7 @@ type = prompt.select("Please choose to create or to view a community.", %w(Creat
               # Community.find_by(location: community_locations ,title: q3).update(player_id: Player.last.id)
               puts "-----------------------------------------"
               puts " "
-              puts "  Thank you for joining the community!"
+              puts "   Thank you for joining a community!"
               puts " "
               puts "-----------------------------------------"
             elsif q2 == "No"

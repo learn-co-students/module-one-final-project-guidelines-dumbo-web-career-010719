@@ -18,11 +18,11 @@ Player.create(username: 'rick', location: "Queens", age: 5)
 Player.create(username: 'nate', location: "Manhattan", age: 21)
 
 
-Community.create(location: "Albany", start_date: "01/23", title: "Super_Smash_Brothers_Ultimate")
-Community.create(location: "Buffalo", start_date: "01/13",title: "SSuper_Smash_Brothers_Ultimate")
-Community.create(location: "Albany", start_date: "12/30", title: "League_of_Legends")
-Community.create(location: "Queens", start_date: "05/05",title: "Call_of_Duty")
-Community.create(location: "Manhattan", start_date: "01/24", title: "Super_Smash_Brothers_Ultimate")
+Community.create(location: "Albany", start_date: "01/23", title: "Super_Smash_Brothers_Ultimate", creator_id: 1)
+Community.create(location: "Buffalo", start_date: "01/13",title: "SSuper_Smash_Brothers_Ultimate",creator_id: 2)
+Community.create(location: "Albany", start_date: "12/30", title: "League_of_Legends", creator_id: 1)
+Community.create(location: "Queens", start_date: "05/05",title: "Call_of_Duty", creator_id: 3)
+Community.create(location: "Manhattan", start_date: "01/24", title: "Super_Smash_Brothers_Ultimate", creator_id: 1)
 
 #
 # League.create(name: "LCS", location: "NY", date: 20190123, title: "SSB")
