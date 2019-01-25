@@ -6,8 +6,6 @@ $prompt = TTY::Prompt.new
 def first_menu
   user_input = $prompt.select("Welcome!", active_color: :cyan) do |menu|
     menu.choice 'Sign In/Create Account', -> {username = returning_user?}
-    menu.choice 'View Local Stores', -> {zip = get_user_zip
-      view_local_stores(zip)}
     menu.choice 'Delete Account', -> {delete_account}
     menu.choice 'Exit', -> {exit}
   end
@@ -34,9 +32,11 @@ def returning_user?
   user_input = $prompt.select("Are you a New or Returning user?", %w(New Returning), active_color: :magenta)
   if user_input == "Returning"
     username = access_username(user_input)
+    sleep(2)
   else
     puts "Awesome! Welcome!"
     username = create_username(user_input)
+    sleep(2)
   end
   $username = username
   main_menu
@@ -54,12 +54,12 @@ end
 def access_username(user_input)
   user_input = $prompt.ask("Welcome back! Please enter your username:")
   if exists?(user_input)
+    system "clear"
     puts "Hey #{user_input}!".green.blink
-    username = user_input
+    $username = user_input
   else
-    user_input = $prompt.ask("Username does not exist. Please try again.")
+    puts ("Username does not exist. Please try again.")
     access_username(user_input)
-    username = user_input
   end
 end
 
@@ -70,10 +70,13 @@ def create_username(user_input)
   end
   user_first_name = $prompt.ask("That username is not taken! Please enter your first name:")
   User.create(username: user_input, name: user_first_name)
+  system "clear"
+  puts "Welcome #{user_input}!".red.blink
   $username = user_input
 end
 
 def get_user_zip
+  system "clear"
   user_input = $prompt.ask("What is your zipcode:")
 end
 
@@ -132,6 +135,9 @@ def add_to_cart(my_item)
     end
     my_item.quantity -= item_quantity.to_i
     my_item.save
+    puts "Your item has been successfully added to your cart!".green.blink
+    sleep(3)
+    system "clear"
   elsif item_quantity.to_i == 0
     user_input = $prompt.yes?('Did you want to search for another item?')
     if user_input == true
@@ -178,6 +184,7 @@ def view_current_cart
 end
 
 def view_local_stores(zip)
+  system "clear"
   Store.all.select do |store|
     if store.location == zip
       all_local_store = store.name
@@ -213,6 +220,7 @@ def clear_cart
 end
 
 def pick_up_items
+  system "clear"
   puts "Thanks for STOCKING UP! Your order will be ready for pickup at your local store!".magenta.blink
   clear_cart
 end
@@ -220,20 +228,22 @@ end
 def delete_account
   username = $prompt.ask("Sorry to hear you're leaving us! Please enter your username:")
   if exists?(username)
-    puts "Goodbye #{username}!".yellow
-    User.find do |user|
-      if user.username == username
-        user.delete
-      end
-    end
+    system "clear"
+    puts "Goodbye #{username}!".yellow.blink
+    sleep(5)
   else
     puts "Sorry, we could not find that username. Please try again!".red
     delete_account
   end
-  main_menu
+  User.find do |user|
+    if user.username == username
+      user.delete
+    end
+  end
 end
 
 def exit
+  system "clear"
   puts "Thanks for STOCKING UP! Goodbye!".magenta.blink
   clear_cart
 end

@@ -8,16 +8,16 @@
   * Create a cart with items that you can pick up at your store - never waste time shopping again!
   * Update and delete items from your cart with ease
 
+
 ## Instructions
 
-1. Fork and clone this repository.
-2. Run bundle install to make use of all the wonderful gems
-3. Let STOCK UP lead you through creating, reading, updating, and destroying items in your cart, reading your local stores and destroying your account
-4. Happy Shopping!
-
-
-
-
+1. Fork and clone this repository
+2. Change directory (cd) into the folder for this repo
+3. Bundle install to make use of all the wonderful gems
+4. Run 'rake db:migrate' & 'rake db:seed' in your terminal
+5. Enter 'ruby bin/run.rb' into your command line
+6. Let STOCK UP lead you through creating, reading, updating, and destroying items in your cart, reading your local stores and destroying your account
+7. Happy Shopping!
 
 
 
