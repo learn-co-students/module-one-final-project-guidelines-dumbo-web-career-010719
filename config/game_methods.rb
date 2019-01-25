@@ -72,6 +72,7 @@ def load_game
     system "clear"
     goal_message
   end
+  system "clear"
   day(current_user)
 end
 
@@ -120,12 +121,10 @@ def day(current_user, action_point = 0)
     choices[0][:disabled] = "(You missed your shift!)"
   end
   if action_point > 2
-    choices[4][:disabled] = "(Not enough time in the day!)"
     choices[2][:disabled] = "(Not enough time in the day!)"
   end
 
   display_stats(current_user)
-
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -408,7 +407,7 @@ def date (current_user)
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    date.affection_pts += (pts * 2)
+    date.affection_pts += date_test(current_user, date, choice_id, choice) * (pts/2)
     current_user.money -= choice_id.money_req
     current_user.total_dates += 1
     current_user.save
@@ -416,8 +415,6 @@ def date (current_user)
     if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
-    else
-      puts "You got to know #{choice} better."
     end
   else
     puts "#{choice} doesn't seem interested in going on a date with you."
@@ -425,7 +422,6 @@ def date (current_user)
     return "no date"
   end
   sleep(1)
-  display_stats(current_user)
 end
 
 def lose_game(current_user)
@@ -559,10 +555,102 @@ def bisexual_meet_check(current_user, lovers)
   end
 end
 
+def date_test(current_user, current_date, lover_id, lover_name)
+  arr = ["food", "dream", "color", "place", "item", "season"]
+  lover_questions = date_questions()
+  check = 0
+  puts "You are on a date with #{lover_name}! make sure you remember #{lover_name} fatcs."
+  sleep(2)
+  rand(2..6).times do
+  question_asked = arr.sample
+  if question_asked == "dream"
+    puts lover_questions[lover_name][:fact_dream]
+    answer = gets.chomp
+    if lover_id.fact_dream.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  elsif question_asked == "place"
+    puts lover_questions[lover_name][:fact_place]
+    answer = gets.chomp
+    if lover_id.fact_place.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  elsif question_asked == "item"
+    puts lover_questions[lover_name][:fact_item]
+    answer = gets.chomp
+    if lover_id.fact_item.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  elsif question_asked == "food"
+    puts lover_questions[lover_name][:fact_food]
+    answer = gets.chomp
+    if lover_id.fact_food.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  elsif question_asked == "color"
+    puts lover_questions[lover_name][:fact_color]
+    answer = gets.chomp
+    if lover_id.fact_color.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  elsif question_asked == "season"
+    puts lover_questions[lover_name][:fact_season]
+    answer = gets.chomp
+    if lover_id.fact_season.include?(answer)
+      check += 5
+      puts "Correct!"
+      sleep(1)
+    else
+      puts "Wrong!"
+      sleep(1)
+      check -= 5
+    end
+  end
+end
+puts "Your date points are #{check}"
+  if check <= 0
+    puts "your date sucked!"
+  else
+    puts "your date was a success!"
+  end
+  sleep(2)
+  return check
+end
+
 def date_questions
   question = {
     "Nikki" => {
-    :fact_dream => "If I could live somewhere for the rest of my life, where would it be?",
+    :fact_dream => "Do you remember what my biggest dream is?",
     :fact_color => "What's my favorite color?",
     :fact_place => "You can always find me here",
     :fact_item => "Can you buy this for me?",
