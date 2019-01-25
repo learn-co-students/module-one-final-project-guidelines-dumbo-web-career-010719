@@ -85,8 +85,10 @@ end
     prompt = TTY::Prompt.new
     delete_choice = prompt.select("Choose a file to delete", users)
     deleting = User.all.find { |obj| obj.name == delete_choice}
-    Dates.find_by(user_id: deleting.id).destroy
-    deleting.destroy
+    if Dates.all.length != 0
+      Dates.find_by(user_id: deleting.id).delete
+    end
+    deleting.delete
     puts "File has been deleted."
     sleep(1)
     system "clear"
