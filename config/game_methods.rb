@@ -160,6 +160,9 @@ def day(current_user, action_point = 0)
   elsif answer == 7
     return welcome
   end
+  if check == "won" || check == "lose"
+    return welcome
+  else
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
@@ -167,6 +170,12 @@ def day(current_user, action_point = 0)
     current_user.total_days += 1
     action_point = 0
   end
+<<<<<<< HEAD
+=======
+    system "clear"
+    day(current_user, action_point)
+  end
+>>>>>>> jesus
 end
 #----------------------------------------------------------------------------#
 #---------------------------- Action Methods --------------------------------#
@@ -359,6 +368,14 @@ def display_stats(current_user)
   Intellect: #{current_user.intellect}
   Kindness: #{current_user.kindness}
   Money: $#{current_user.money}"
+  if Dates.all.find{|user| user.user_id == current_user.id} != nil
+    Dates.all.each do |date|
+      if date.user_id == current_user.id
+        lover_max = 0
+      puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name} points: #{date.affection_pts}/#{lover_max} "
+    end
+  end
+  end
 end
 
 def affection_adder(current_user, current_lover)
