@@ -577,3 +577,72 @@ def bisexual_meet_check(current_user, lovers)
     user_meet_check(current_user, obj)
   end
 end
+
+def date_questions
+  question = {
+    :nikki => {
+    :fact_dream => "Do you remember what my biggest dream is?",
+    :fact_color => "What's my favorite color?",
+    :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+    :fact_item => "Can you buy this for me?",
+    :fact_food =>"Guess what my favorite food is!",
+    :fact_season => "My favorite time of year is probably..."
+    }
+    :kira => {
+      :fact_dream => "Have I told you what my dream is?",
+      :fact_color => "Have you noticed what my favorite color is?",
+      :fact_place => "If I could travel somewhere, where would it be?",
+      :fact_item => "I really love...",
+      :fact_food => "What kind of food should we get?",
+      :fact_season => "Do you remember what my favorite season is?"
+    }
+    :princess => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in A SPECIFIC COLOR.",
+      :fact_place => "My dream house is...",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :penelope => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :ryan => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :john => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :fabio => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+    :oliver => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    }
+  }
+end
