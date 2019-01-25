@@ -76,6 +76,9 @@ end
 def get_user_zip
   system "clear"
   user_input = $prompt.ask("What is your zipcode:")
+  if user_input.nil?
+    puts "Sorry that is not a valid zip code.".red
+  end
 end
 
 $my_store = []
@@ -184,7 +187,6 @@ def view_current_cart
 end
 
 def view_local_stores(zip)
-  system "clear"
   Store.all.select do |store|
     if store.location == zip
       all_local_store = store.name
@@ -228,7 +230,7 @@ def pick_up_items
 end
 
 def delete_account
-  username = $prompt.ask("Sorry to hear you're leaving us! Please enter your username:").red
+  username = $prompt.ask("Sorry to hear you're leaving us! Please enter your username:")
   if exists?(username)
     system "clear"
     puts "Goodbye #{username}!".yellow.blink
