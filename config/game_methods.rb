@@ -1,4 +1,4 @@
-require 'pry'
+
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -171,16 +171,6 @@ end
 #----------------------------------------------------------------------------#
 
 def diary(current_user)
-  # puts "Affection points:"
-  # if Dates.all.find{|user| user.user_id == current_user.id} != nil
-  #   Dates.all.each do |date|
-  #     if date.user_id == current_user.id
-  #       lover_max = 0
-  #       puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
-  #     end
-  #   end
-  # end
-
   puts "Facts:"
   if Dates.all.find{|user| user.user_id == current_user.id} != nil
     Dates.all.each do |date|
@@ -189,22 +179,22 @@ def diary(current_user)
         lover = Lover.all.find{|lover1| lover1.id == date.lovers_id}
         puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
         if date.fact_color !=nil
-          puts "#{date.fact_color}"
+          puts "color: #{date.fact_color}"
         end
         if date.fact_season != nil
-          puts "#{date.fact_season}"
+          puts "season: #{date.fact_season}"
         end
         if date.fact_dream != nil
-          puts "#{date.fact_dream}"
+          puts "dream: #{date.fact_dream}"
         end
         if date.fact_item != nil
-          puts "#{date.fact_item}"
+          puts "item: #{date.fact_item}"
         end
         if date.fact_place != nil
-          puts "#{date.fact_place}"
+          puts "place: #{date.fact_place}"
         end
         if date.fact_food != nil
-          puts "#{date.fact_food}"
+          puts "food: #{date.fact_food}"
         end
       end
     end
@@ -568,7 +558,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   if question_asked == "dream"
     puts lover_questions[lover_name][:fact_dream]
     answer = gets.chomp
-    if lover_id.fact_dream.include?(answer)
+    if lover_id.fact_dream.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -580,7 +570,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   elsif question_asked == "place"
     puts lover_questions[lover_name][:fact_place]
     answer = gets.chomp
-    if lover_id.fact_place.include?(answer)
+    if lover_id.fact_place.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -592,7 +582,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   elsif question_asked == "item"
     puts lover_questions[lover_name][:fact_item]
     answer = gets.chomp
-    if lover_id.fact_item.include?(answer)
+    if lover_id.fact_item.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -604,7 +594,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   elsif question_asked == "food"
     puts lover_questions[lover_name][:fact_food]
     answer = gets.chomp
-    if lover_id.fact_food.include?(answer)
+    if lover_id.fact_food.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -616,7 +606,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   elsif question_asked == "color"
     puts lover_questions[lover_name][:fact_color]
     answer = gets.chomp
-    if lover_id.fact_color.include?(answer)
+    if lover_id.fact_color.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -628,7 +618,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   elsif question_asked == "season"
     puts lover_questions[lover_name][:fact_season]
     answer = gets.chomp
-    if lover_id.fact_season.include?(answer)
+    if lover_id.fact_season.downcase.include?(answer.downcase)
       check += 5
       puts "Correct!"
       sleep(1)
@@ -639,11 +629,11 @@ def date_test(current_user, current_date, lover_id, lover_name)
     end
   end
 end
-puts "Your date points are #{check}"
+puts "You got #{check} affection points."
   if check <= 0
-    puts "your date sucked!"
+    puts "Your date sucked!"
   else
-    puts "your date was a success!"
+    puts "Your date was alot of fun!"
   end
   sleep(2)
   return check
