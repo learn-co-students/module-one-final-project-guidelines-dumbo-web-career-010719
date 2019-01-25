@@ -177,7 +177,8 @@ def diary(current_user)
       if date.user_id == current_user.id
         lover_max = 0
         lover = Lover.all.find{|lover1| lover1.id == date.lovers_id}
-        puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
+        puts " "
+        puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} affection points"
         if date.fact_color !=nil
           puts "color: #{date.fact_color}"
         end
@@ -199,6 +200,7 @@ def diary(current_user)
       end
     end
   end
+  puts " "
   back = [
     {"Exit" => -> do return nil end } ]
   prompt = TTY::Prompt.new
@@ -551,7 +553,7 @@ def date_test(current_user, current_date, lover_id, lover_name)
   arr = ["food", "dream", "color", "place", "item", "season"]
   lover_questions = date_questions()
   check = 0
-  puts "You are on a date with #{lover_name}! make sure you remember #{lover_name} fatcs."
+  puts "You are on a date with #{lover_name}! Make sure you remember #{lover_name}'s facts."
   sleep(2)
   rand(2..6).times do
   question_asked = arr.sample
