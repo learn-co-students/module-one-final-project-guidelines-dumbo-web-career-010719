@@ -55,8 +55,11 @@ def access_username(user_input)
     system "clear"
     puts "Hey #{user_input}!".green.blink
     $username = user_input
+  elsif user_input.nil?
+    puts "That is not a valid username. Please try again.".red
+    first_menu
   else
-    puts ("Username does not exist. Please try again.")
+    puts "Username does not exist. Please try again.".red
     access_username(user_input)
   end
 end
@@ -225,8 +228,8 @@ end
 
 def pick_up_items
   system "clear"
-  puts "Thanks for STOCKING UP! Your order will be ready for pickup at your local store!".magenta.blink
   clear_cart
+  puts "Thanks for STOCKING UP! Your order will be ready for pickup at your local store!".magenta.blink
 end
 
 def delete_account
