@@ -86,7 +86,7 @@ end
     delete_choice = prompt.select("Choose a file to delete", users)
     deleting = User.all.find { |obj| obj.name == delete_choice}
     if Dates.all.length != 0
-      Dates.find_by(user_id: deleting.id).destroy
+      Dates.where(user_id: deleting.id).delete_all
     end
     deleting.destroy
     puts "File has been deleted."
@@ -101,7 +101,7 @@ end
 def day(current_user, action_point = 0)
   current_user.save
   if current_user.total_days == 30
-    return check = lose_game(current_user)
+    return lose_game(current_user)
   end
 
   choices = [
@@ -160,9 +160,6 @@ def day(current_user, action_point = 0)
     current_user.total_days += 1
     action_point = 0
   end
-  if check == "won" || check == "lose"
-    welcome
-  else
     system "clear"
     day(current_user, action_point)
   end
@@ -413,7 +410,6 @@ def lose_game(current_user)
    ░  ░    ░ ░        ░     ░  ░   ░
 
                                         "
-
   sleep(1)
   options = [
     {"Reset Game?" => -> do reset_character(current_user) end },
@@ -423,7 +419,7 @@ def lose_game(current_user)
   puts "Let's try this again."
   sleep(3)
   system "clear"
-  return "lose"
+  return welcome
 end
 
 def endgame(current_user, lover)
@@ -450,17 +446,19 @@ def endgame(current_user, lover)
   sleep(3)
   reset_character(current_user)
   sleep(4)
-  return "won"
+  return welcome
 end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
     money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
+  Dates.where(user_id: current_user.id).delete_all
   puts "You can continue to play the game, but your stats have been reset."
 end
 
 def delete_self(current_user)
   User.find(current_user.id).destroy
+  Dates.where(user_id: current_user.id).delete_all
   puts "Your file has been deleted"
 end
 
