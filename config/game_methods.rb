@@ -189,22 +189,22 @@ def diary(current_user)
         lover = Lover.all.find{|lover1| lover1.id == date.lovers_id}
         puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name}: #{date.affection_pts}/#{lover_max} "
         if date.fact_color !=nil
-          puts "#{date.fact_color}"
+          puts "color: #{date.fact_color}"
         end
         if date.fact_season != nil
-          puts "#{date.fact_season}"
+          puts "season: #{date.fact_season}"
         end
         if date.fact_dream != nil
-          puts "#{date.fact_dream}"
+          puts "dream: #{date.fact_dream}"
         end
         if date.fact_item != nil
-          puts "#{date.fact_item}"
+          puts "item: #{date.fact_item}"
         end
         if date.fact_place != nil
-          puts "#{date.fact_place}"
+          puts "place: #{date.fact_place}"
         end
         if date.fact_food != nil
-          puts "#{date.fact_food}"
+          puts "food: #{date.fact_food}"
         end
       end
     end
