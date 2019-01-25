@@ -170,12 +170,9 @@ def day(current_user, action_point = 0)
     current_user.total_days += 1
     action_point = 0
   end
-<<<<<<< HEAD
-=======
     system "clear"
     day(current_user, action_point)
   end
->>>>>>> jesus
 end
 #----------------------------------------------------------------------------#
 #---------------------------- Action Methods --------------------------------#
@@ -325,17 +322,6 @@ def flirt(current_user)
   current_date.save
 end
 
-def date(current_user)
-  current_user.total_dates += 1
-  if current_user.preference == "Male"
-    return male_date(current_user)
-
-  elsif current_user.preference == "Female"
-    return female_date(current_user)
-  else
-    return both_date(current_user)
-  end
-end
 
 #----------------------------------------------------------------------------#
 #---------------------------- Helper Methods --------------------------------#
@@ -386,11 +372,11 @@ def affection_adder(current_user, current_lover)
   aff_pts = (fitness_mod + intellect_mod + kindness_mod + money_mod)/5
 end
 
-def male_date (current_user)
+def date (current_user)
   prompt = TTY::Prompt.new
-  male_choices = true_names(current_user)
-  mchoice = prompt.select("Who do you want to go on a date with?", male_choices)
-  choice_id = Lover.all.find { |lovers| lovers.name == mchoice }
+  choices = true_names(current_user)
+  choice = prompt.select("Who do you want to go on a date with?", choices)
+  choice_id = Lover.all.find { |lovers| lovers.name == choice }
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
@@ -401,67 +387,14 @@ def male_date (current_user)
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
     else
-      puts "You got to know #{mchoice} better."
+      puts "You got to know #{choice} better."
     end
   else
-    puts "#{mchoice} doesn't seem interested in going on a date with you."
+    puts "#{choice} doesn't seem interested in going on a date with you."
     return "no date"
   end
   sleep(1)
   display_stats(current_user)
-end
-
-def female_date(current_user)
-  prompt = TTY::Prompt.new
-  female_choices = true_names(current_user)
-  fchoice = prompt.select("Who do you want to go on a date with?", female_choices)
-  choice_id = Lover.all.find { |lovers| lovers.name == fchoice }
-  pts = affection_adder(current_user, choice_id)
-  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
-  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    date.affection_pts += (pts * 2)
-    current_user.money -= choice_id.money_req
-    current_user.save
-    if date.affection_pts >= choice_id.aff_pts_req
-        puts "#{choice_id.name} wants to be exclusive with you."
-        return endgame(current_user, choice_id)
-    else
-      puts "You got to know #{fchoice} better."
-    end
-  else
-    puts "#{fchoice} doesn't seem interested in going on a date with you."
-  end
-  sleep(1)
-  display_stats(current_user)
-end
-
-def both_date(current_user)
-  prompt = TTY::Prompt.new
-  all_choices = true_names(current_user)
-  achoice = prompt.select("Who do you want to go on a date with?", all_choices)
-  choice_id = Lover.all.find { |lovers| lovers.name == achoice }
-  pts = affection_adder(current_user, choice_id)
-  date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
-  if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    date.affection_pts += (pts * 2)
-    current_user.money -= choice_id.money_req
-    current_user.save
-    if date.affection_pts >= choice_id.aff_pts_req
-        puts "#{choice_id.name} wants to be exclusive with you."
-        return endgame(current_user, choice_id)
-    else
-      puts "You got to know #{achoice} better."
-    end
-  else
-    puts "#{achoice} doesn't seem interested in going on a date with you."
-  end
-  sleep(1)
-  display_stats(current_user)
-end
-
-def aff_dates_sum(user, lover)
-  sum = Dates.where("user_id = #{user} and lovers_id = #{lover}").sum(:affection_pts)
-  sum
 end
 
 def lose_game(current_user)
