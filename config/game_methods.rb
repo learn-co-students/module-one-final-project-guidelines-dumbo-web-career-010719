@@ -129,12 +129,6 @@ def day(current_user, action_point = 0)
 
   display_stats(current_user)
 
-  if check == "won" || check == "lose"
-    welcome
-  else
-    system "clear"
-    day(current_user, action_point)
-  end
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
