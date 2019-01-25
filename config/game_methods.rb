@@ -125,10 +125,6 @@ def day(current_user, action_point = 0)
   end
 
   display_stats(current_user)
-<<<<<<< HEAD
-
-=======
->>>>>>> jesus
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -531,12 +527,6 @@ def bisexual_meet_check(current_user, lovers)
 end
 
 <<<<<<< HEAD
-def date_questions
-  question = {
-    "Nikki" => {
-    :fact_dream => "If I could live somewhere for the rest of my life, where would it be?",
-=======
-<<<<<<< HEAD
 def hash_question(current_date, current_user)
   options = true_names(current_user)
   prompt = TTY::Prompt.new
@@ -644,31 +634,15 @@ end
 
 def date_questions
   question = {
-<<<<<<< HEAD
-    "nikki" => {
->>>>>>> jesus
-=======
     "Nikki" => {
->>>>>>> jesus
     :fact_dream => "Do you remember what my biggest dream is?",
->>>>>>> f25dbec13acf3f128eba44390090036c94e0d7fc
     :fact_color => "What's my favorite color?",
     :fact_place => "You can always find me here",
     :fact_item => "Can you buy this for me?",
     :fact_food =>"Guess what my favorite food is!",
     :fact_season => "My favorite time of year is probably..."
-<<<<<<< HEAD
-<<<<<<< HEAD
     },
     "Kira" => {
-=======
-  },
-    "kira" => {
->>>>>>> jesus
-=======
-    },
-    "Kira" => {
->>>>>>> jesus
       :fact_dream => "Have I told you what my dream is?",
       :fact_color => "Have you noticed what my favorite color is?",
       :fact_place => "If I could travel somewhere, where would it be?",
@@ -676,30 +650,6 @@ def date_questions
       :fact_food => "What kind of food should we get?",
       :fact_season => "Do you remember what my favorite season is?"
     },
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "Princess" => {
-=======
-    "princess" => {
->>>>>>> jesus
-      :fact_dream => "What kind of car would you buy for me?",
-      :fact_color => "I told you I wanted this in A SPECIFIC COLOR. Do you even remember what color I said?",
-      :fact_place => "My dream house is...",
-<<<<<<< HEAD
-      :fact_item => "I really want thissssss purse. Do you remember which one I wanted??",
-      :fact_food => "I'm hungry!! Where are we eating?",
-      :fact_season => "Next season's fashion show is my favorite season. Do you know what season I'm talking about??"
-    },
-    "Penelope" => {
-      :fact_dream => "Wouldn't it be crazy if I got to meet this person?? Can you guess who??",
-      :fact_color => "is it obvious that my favorite color is...",
-      :fact_place => "Do you know where my favorite place in the entire world is?",
-      :fact_item => "I have an entire collection of this author's books... Do you know whose it is?",
-=======
-      :fact_item => "Can you buy this for me?",
-      :fact_food => "Guess what my favorite food is!",
-      :fact_season => ""
-=======
     "Princess" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in A SPECIFIC COLOR. Do you even remember what color I said?",
@@ -707,7 +657,6 @@ def date_questions
       :fact_item => "I really want thissssss purse. Do you remember which one I wanted??",
       :fact_food => "I'm hungry!! Where are we eating?",
       :fact_season => "Next season's fashion show is my favorite season. Do you know what season I'm talking about??"
->>>>>>> jesus
     },
     "Penelope" => {
       :fact_dream => "Wouldn't it be crazy if I got to meet this person?? Can you guess who??",
@@ -741,42 +690,6 @@ def date_questions
       :fact_food => "Do you know if this restaurant has any of my favorite foods? Do they have...",
       :fact_season => "There is one season I love more than others... Which is it?"
     },
-<<<<<<< HEAD
-    "oliver" => {
-      :fact_dream => "What kind of car would you buy for me?",
-      :fact_color => "I told you I wanted this in ",
-      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
-      :fact_item => "Can you buy this for me?",
->>>>>>> jesus
-      :fact_food => "Guess what my favorite food is!",
-      :fact_season => "This is the my favorite season for lattes at Starbucks."
-    },
-    "Ryan" => {
-      :fact_dream => "It's my dream to travel here...",
-      :fact_color => "I usually just buy everything in this color... I guess you could say it's my favorite color. Have you noticed what it is?",
-      :fact_place => "You can usually find me at...",
-      :fact_item => "This means alot to me so I don't want to lose it. Do you remember what it was?",
-      :fact_food => "Honestly this is the only thing I can cook because it's my favorite food. Remember what it was?",
-      :fact_season => "I love going to the park and reading around this time of year."
-    },
-    "John" => {
-      :fact_dream => "That's a sweet car. It's my dream to buy one of these...",
-      :fact_color => "These specific colors look really good on me. I hope you remembered what colors.",
-      :fact_place => "Do you remember which gym I like to go to?",
-      :fact_item => "Make sure that matches my favorite jacket. You remember which one right?",
-      :fact_food => "You should know what my favorite food is by now. What is it?",
-      :fact_season => "Men's fashion during this season is the best. You know what I'm talking 'bout?'"
-    },
-    "Fabio" => {
-      :fact_dream => "What do you think I would do when I retire?",
-      :fact_color => "I remembered your favorite color. Do you know mine?",
-      :fact_place => "I would love to travel here with you... Can you guess where?",
-      :fact_item => "There is one thing I cherish more than anything. I hope you know what that is.",
-      :fact_food => "Do you know if this restaurant has any of my favorite foods? Do they have...",
-      :fact_season => "There is one season I love more than others... Which is it?"
-    },
-=======
->>>>>>> jesus
     "Oliver" => {
       :fact_dream => "One day I'd love to retire here...",
       :fact_color => "Do you know what my favorite colors are?",
