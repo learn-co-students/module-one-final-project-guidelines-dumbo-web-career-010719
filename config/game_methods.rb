@@ -86,9 +86,9 @@ end
     delete_choice = prompt.select("Choose a file to delete", users)
     deleting = User.all.find { |obj| obj.name == delete_choice}
     if Dates.all.length != 0
-      Dates.find_by(user_id: deleting.id).delete
+      Dates.find_by(user_id: deleting.id).destroy
     end
-    deleting.delete
+    deleting.destroy
     puts "File has been deleted."
     sleep(1)
     system "clear"
@@ -129,6 +129,12 @@ def day(current_user, action_point = 0)
 
   display_stats(current_user)
 
+  if check == "won" || check == "lose"
+    welcome
+  else
+    system "clear"
+    day(current_user, action_point)
+  end
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -160,12 +166,6 @@ def day(current_user, action_point = 0)
     sleep(1)
     current_user.total_days += 1
     action_point = 0
-  end
-  if check == "won" || check == "lose"
-    welcome
-  else
-    system "clear"
-    day(current_user, action_point)
   end
 end
 #----------------------------------------------------------------------------#
