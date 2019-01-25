@@ -519,3 +519,12 @@ def bisexual_meet_check(current_user, lovers)
     user_meet_check(current_user, obj)
   end
 end
+
+def hash_question(current_date, current_user)
+  question =
+  prompt = TTY::Prompt.new
+  choice = prompt.select(question, options)
+
+
+
+end
