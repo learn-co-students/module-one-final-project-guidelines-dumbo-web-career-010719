@@ -124,7 +124,10 @@ def day(current_user, action_point = 0)
   end
 
   display_stats(current_user)
+<<<<<<< HEAD
 
+=======
+>>>>>>> jesus
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -370,7 +373,7 @@ def date (current_user)
   pts = affection_adder(current_user, choice_id)
   date = Dates.all.find{|d| d.user_id == current_user.id && d.lovers_id == choice_id.id}
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
-    date.affection_pts += (pts * 2)
+    date.affection_pts += date_test(current_user, date, choice_id, choice)
     current_user.money -= choice_id.money_req
     current_user.total_dates += 1
     current_user.save
@@ -522,6 +525,7 @@ def bisexual_meet_check(current_user, lovers)
   end
 end
 
+<<<<<<< HEAD
 def hash_question(current_date, current_user)
   options = true_names(current_user)
   prompt = TTY::Prompt.new
@@ -534,14 +538,108 @@ end
 def date_questions
   question = {
     "Nikki" => {
+=======
+def date_test(current_user, current_date, lover_id, lover_name)
+  arr = []
+  lover_questions = date_questions()
+  if current_date.fact_food != nil
+    arr << "food"
+  end
+  if current_date.fact_dream != nil
+    arr << "dream"
+  end
+  if current_date.fact_color != nil
+    arr << "color"
+  end
+  if current_date.fact_place != nil
+    arr << "place"
+  end
+  if current_date.fact_item != nil
+    arr << "item"
+  end
+  if current_date.fact_season != nil
+    arr << "season"
+  end
+  question_asked = arr.sample
+
+  puts "You are on a date with #{lover_name}! make sure you remember #{lover_name} fatcs."
+  sleep(2)
+  check = 0
+  if question_asked == "dream"
+    puts lover_questions[lover_name][:fact_dream]
+    answer = gets.chomp
+    if current_date.fact_dream.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  elsif question_asked == "place"
+    puts lover_questions[lover_name][:fact_place]
+    answer = gets.chomp
+    if current_date.fact_place.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  elsif question_asked == "item"
+    puts lover_questions[lover_name][:fact_item]
+    answer = gets.chomp
+    if current_date.fact_item.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  elsif question_asked == "food"
+    puts lover_questions[lover_name][:fact_food]
+    answer = gets.chomp
+    if current_date.fact_food.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  elsif question_asked == "color"
+    binding.pry
+    puts lover_questions[lover_name][:fact_color]
+    answer = gets.chomp
+    if current_date.fact_color.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  elsif question_asked == "season"
+    puts lover_questions[lover_name][:fact_season]
+    answer = gets.chomp
+    if current_date.fact_season.include?(answer)
+      check += 5
+    else
+      check -= 5
+    end
+  end
+  if check <= 0
+    puts "your date sucked!"
+  else
+    puts "your date was a success!"
+  end
+  return check
+end
+
+def date_questions
+  question = {
+    "nikki" => {
+>>>>>>> jesus
     :fact_dream => "Do you remember what my biggest dream is?",
     :fact_color => "What's my favorite color?",
     :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
     :fact_item => "Can you buy this for me?",
     :fact_food =>"Guess what my favorite food is!",
     :fact_season => "My favorite time of year is probably..."
+<<<<<<< HEAD
     },
     "Kira" => {
+=======
+  },
+    "kira" => {
+>>>>>>> jesus
       :fact_dream => "Have I told you what my dream is?",
       :fact_color => "Have you noticed what my favorite color is?",
       :fact_place => "If I could travel somewhere, where would it be?",
@@ -549,10 +647,15 @@ def date_questions
       :fact_food => "What kind of food should we get?",
       :fact_season => "Do you remember what my favorite season is?"
     },
+<<<<<<< HEAD
     "Princess" => {
+=======
+    "princess" => {
+>>>>>>> jesus
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in A SPECIFIC COLOR. Do you even remember what color I said?",
       :fact_place => "My dream house is...",
+<<<<<<< HEAD
       :fact_item => "I really want thissssss purse. Do you remember which one I wanted??",
       :fact_food => "I'm hungry!! Where are we eating?",
       :fact_season => "Next season's fashion show is my favorite season. Do you know what season I'm talking about??"
@@ -562,6 +665,49 @@ def date_questions
       :fact_color => "is it obvious that my favorite color is...",
       :fact_place => "Do you know where my favorite place in the entire world is?",
       :fact_item => "I have an entire collection of this author's books... Do you know whose it is?",
+=======
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    },
+    "penelope" => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    },
+    "ryan" => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    },
+    "john" => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    },
+    "fabio" => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+      :fact_food => "Guess what my favorite food is!",
+      :fact_season => ""
+    },
+    "oliver" => {
+      :fact_dream => "What kind of car would you buy for me?",
+      :fact_color => "I told you I wanted this in ",
+      :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+      :fact_item => "Can you buy this for me?",
+>>>>>>> jesus
       :fact_food => "Guess what my favorite food is!",
       :fact_season => "This is the my favorite season for lattes at Starbucks."
     },
