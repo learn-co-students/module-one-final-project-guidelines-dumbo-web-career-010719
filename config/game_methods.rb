@@ -129,12 +129,6 @@ def day(current_user, action_point = 0)
 
   display_stats(current_user)
 
-  if check == "won" || check == "lose"
-    welcome
-  else
-    system "clear"
-    day(current_user, action_point)
-  end
   prompt = TTY::Prompt.new
   answer = prompt.select("Day #{current_user.total_days + 1} - What do you want to do?", choices)
   if answer == 1
@@ -162,7 +156,7 @@ def day(current_user, action_point = 0)
   end
   if check == "won" || check == "lose"
     return welcome
-  else
+  end
   if action_point == 4
     sleep(1)
     puts "Wow, today was tiring. Time to go to bed!"
@@ -172,8 +166,8 @@ def day(current_user, action_point = 0)
   end
     system "clear"
     day(current_user, action_point)
-  end
 end
+
 #----------------------------------------------------------------------------#
 #---------------------------- Action Methods --------------------------------#
 #----------------------------------------------------------------------------#
@@ -382,7 +376,9 @@ def date (current_user)
   if  date != nil && current_user.fitness >= choice_id.fitness_req && current_user.intellect >= choice_id.intellect_req && current_user.kindness >= choice_id.kindness_req && current_user.money >= choice_id.money_req
     date.affection_pts += (pts * 2)
     current_user.money -= choice_id.money_req
+    current_user.total_dates += 1
     current_user.save
+    date.save
     if date.affection_pts >= choice_id.aff_pts_req
         puts "#{choice_id.name} wants to be exclusive with you."
         return endgame(current_user, choice_id)
@@ -391,6 +387,7 @@ def date (current_user)
     end
   else
     puts "#{choice} doesn't seem interested in going on a date with you."
+    sleep(2)
     return "no date"
   end
   sleep(1)
@@ -445,11 +442,11 @@ def endgame(current_user, lover)
     "
   puts "Congratulations! You found someone to go to Prom with!"
   puts "It took you
-  #{current_user.total_days} total days consisting of
-  #{current_user.work_days} work days
-  #{current_user.volunteer_days} volunteer days
-  #{current_user.gym_days} gym days
-  #{current_user.study_days} study days
+  #{current_user.total_days} total days
+  #{current_user.work_days} work sessions
+  #{current_user.volunteer_days} volunteer sessions
+  #{current_user.gym_days} gym sessions
+  #{current_user.study_days} study sessions
   #{current_user.total_dates} total dates
   to end up with #{lover.name}"
   puts "Thank you for playing Flatiron Dating Sim!"
@@ -461,7 +458,8 @@ end
 
 def reset_character(current_user)
   User.update(current_user.id, fitness: rand(0..15), intellect: rand(0..15), kindness: rand(0..15),
-    money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0)
+    money: 100, total_days: 0, work_days: 0, volunteer_days: 0, total_dates: 0, gym_days: 0, study_days: 0,
+   nikki: nil, kira: nil, princess: nil, penelope: nil, ryan: nil, john: nil, fabio: nil, oliver: nil)
   Dates.where(user_id: current_user.id).delete_all
   puts "You can continue to play the game, but your stats have been reset."
 end
@@ -529,71 +527,73 @@ def bisexual_meet_check(current_user, lovers)
 end
 
 def hash_question(current_date, current_user)
-  question =
+  options = true_names(current_user)
   prompt = TTY::Prompt.new
   choice = prompt.select(question, options)
+  facts = date_questions
+  facts.select { |k, v| choice == v }
 end
 
 
 def date_questions
   question = {
-    :nikki => {
+    "nikki" => {
     :fact_dream => "Do you remember what my biggest dream is?",
     :fact_color => "What's my favorite color?",
     :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
     :fact_item => "Can you buy this for me?",
     :fact_food =>"Guess what my favorite food is!",
     :fact_season => "My favorite time of year is probably..."
-    }
-    :kira => {
+  },
+    "kira" => {
       :fact_dream => "Have I told you what my dream is?",
       :fact_color => "Have you noticed what my favorite color is?",
       :fact_place => "If I could travel somewhere, where would it be?",
       :fact_item => "I really love...",
       :fact_food => "What kind of food should we get?",
       :fact_season => "Do you remember what my favorite season is?"
-    }
-    :princess => {
+    },
+    "princess" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in A SPECIFIC COLOR.",
       :fact_place => "My dream house is...",
       :fact_item => "Can you buy this for me?",
       :fact_food => "Guess what my favorite food is!",
       :fact_season => ""
-    }
-    :penelope => {
+    },
+    "penelope" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in ",
       :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
       :fact_item => "Can you buy this for me?",
       :fact_food => "Guess what my favorite food is!",
       :fact_season => ""
-    }
-    :ryan => {
+    },
+    "ryan" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in ",
       :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
       :fact_item => "Can you buy this for me?",
       :fact_food => "Guess what my favorite food is!",
       :fact_season => ""
-    }
-    :john => {
+    },
+    "john" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in ",
       :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
       :fact_item => "Can you buy this for me?",
       :fact_food => "Guess what my favorite food is!",
       :fact_season => ""
-    }
-    :fabio => {
+    },
+    "fabio" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in ",
       :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
       :fact_item => "Can you buy this for me?",
       :fact_food => "Guess what my favorite food is!",
       :fact_season => ""
-    }
-    :oliver => {
+    },
+    "oliver" => {
       :fact_dream => "What kind of car would you buy for me?",
       :fact_color => "I told you I wanted this in ",
       :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
