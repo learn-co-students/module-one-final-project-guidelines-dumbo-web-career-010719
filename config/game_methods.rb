@@ -1,4 +1,4 @@
-
+require 'pry'
 #-----------------------------------------------------------------------#
 #---------------------------- Main Menu --------------------------------#
 #-----------------------------------------------------------------------#
@@ -107,7 +107,8 @@ def day(current_user, action_point = 0)
     {name: 'Study at the library', value:4},
     {name: 'Text someone', value: 5},
     {name: 'Go on a date', value: 6},
-    {name: 'Exit', value: 7}]
+    {name: 'Check your journal', value: 7},
+    {name: 'Exit', value: 8}]
   if current_user.total_days == 0
     choices[4][:disabled] = "(You haven't met anyone to talk to!)"
     choices[5][:disabled] = "(You haven't met anyone to talk to!)"
@@ -148,6 +149,8 @@ def day(current_user, action_point = 0)
       action_point += 4
     end
   elsif answer == 7
+    diary(current_user)
+  elsif answer == 8
     return welcome
   end
   if check == "won" || check == "lose"
@@ -167,6 +170,49 @@ end
 #----------------------------------------------------------------------------#
 #---------------------------- Action Methods --------------------------------#
 #----------------------------------------------------------------------------#
+
+def diary(current_user)
+  puts "Affection points:"
+  if Dates.all.find{|user| user.user_id == current_user.id} != nil
+    Dates.all.each do |date|
+      if date.user_id == current_user.id
+        lover_max = 0
+        puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name} points: #{date.affection_pts}/#{lover_max} "
+      end
+    end
+  end
+  puts "Facts:"
+  if Dates.all.find{|user| user.user_id == current_user.id} != nil
+    Dates.all.each do |date|
+      if date.user_id == current_user.id
+        lover = Lover.all.find{|lover1| lover1.id == date.lovers_id}
+        facts = Dates.all.select{|dates| dates.lovers_id == lover.id}
+        puts "#{lover.name}"
+        # binding.pry
+        if facts.fact_color !=nil
+          puts "#{facts.map{|facts| facts == "fact_color"}}"
+        end
+        if facts.fact_season != nil
+          puts "#{facts.fact_season}"
+        end
+        if facts.fact_season != nil
+          puts "#{facts.fact_dream}"
+        end
+        if facts.fact_season != nil
+          puts "#{facts.fact_item}"
+        end
+        if facts.fact_season != nil
+          puts "#{facts.fact_place}"
+        end
+        if facts.fact_season != nil
+          puts "#{facts.fact_food}"
+        end
+      end
+    end
+  end
+    prompt = TTY::Prompt.new
+  # response = prompt.select("Back" => -> do day(current_user) end)
+end
 
 def work(current_user)
   pid = fork{ exec 'afplay', "./sounds/work-sound.mp3" }
@@ -344,14 +390,6 @@ def display_stats(current_user)
   Intellect: #{current_user.intellect}
   Kindness: #{current_user.kindness}
   Money: $#{current_user.money}"
-  if Dates.all.find{|user| user.user_id == current_user.id} != nil
-    Dates.all.each do |date|
-      if date.user_id == current_user.id
-        lover_max = 0
-      puts "#{Lover.all.find{|lover1| (lover_max = lover1.aff_pts_req); lover1.id == date.lovers_id}.name} points: #{date.affection_pts}/#{lover_max} "
-    end
-  end
-  end
 end
 
 def affection_adder(current_user, current_lover)
@@ -402,17 +440,17 @@ def lose_game(current_user)
   sleep(1)
   puts "You're such a
 
-  ██▓     ▒█████    ██████ ▓█████  ██▀███
-▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ ▓██ ▒ ██▒
-▒██░    ▒██░  ██▒░ ▓██▄   ▒███   ▓██ ░▄█ ▒
-▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ ▒██▀▀█▄
-░██████▒░ ████▓▒░▒██████▒▒░▒████▒░██▓ ▒██▒
-░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ▒▓ ░▒▓░
-░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░  ░▒ ░ ▒░
- ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░     ░░   ░
-   ░  ░    ░ ░        ░     ░  ░   ░
+    ██▓     ▒█████    ██████ ▓█████  ██▀███
+  ▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ ▓██ ▒ ██▒
+  ▒██░    ▒██░  ██▒░ ▓██▄   ▒███   ▓██ ░▄█ ▒
+  ▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ ▒██▀▀█▄
+  ░██████▒░ ████▓▒░▒██████▒▒░▒████▒░██▓ ▒██▒
+  ░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ▒▓ ░▒▓░
+  ░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░  ░▒ ░ ▒░
+   ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░     ░░   ░
+     ░  ░    ░ ░        ░     ░  ░   ░
 
-                                        "
+                                          "
   sleep(1)
   options = [
     {"Reset Game?" => -> do reset_character(current_user) end },
@@ -467,7 +505,6 @@ def delete_self(current_user)
 end
 
 def user_meet_check(current_user, lover)
-
   if lover.name == "Nikki"
     current_user.nikki = true
   elsif lover.name == "Kira"
@@ -522,21 +559,12 @@ def bisexual_meet_check(current_user, lovers)
   end
 end
 
-def hash_question(current_date, current_user)
-  options = true_names(current_user)
-  prompt = TTY::Prompt.new
-  choice = prompt.select(question, options)
-  facts = date_questions
-  facts.select { |k, v| choice == v }
-end
-
-
 def date_questions
   question = {
     "Nikki" => {
-    :fact_dream => "Do you remember what my biggest dream is?",
+    :fact_dream => "If I could live somewhere for the rest of my life, where would it be?",
     :fact_color => "What's my favorite color?",
-    :fact_place => "If I could live somewhere for the rest of my life, where would it be?",
+    :fact_place => "You can always find me here",
     :fact_item => "Can you buy this for me?",
     :fact_food =>"Guess what my favorite food is!",
     :fact_season => "My favorite time of year is probably..."
