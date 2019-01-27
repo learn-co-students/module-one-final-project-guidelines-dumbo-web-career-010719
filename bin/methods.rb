@@ -55,11 +55,8 @@ def access_username(user_input)
     system "clear"
     puts "Hey #{user_input}!".green.blink
     $username = user_input
-  elsif user_input.nil?
-    puts "That is not a valid username. Please try again.".red
-    first_menu
   else
-    puts "Username does not exist. Please try again.".red
+    puts ("Username does not exist. Please try again.")
     access_username(user_input)
   end
 end
@@ -79,9 +76,6 @@ end
 def get_user_zip
   system "clear"
   user_input = $prompt.ask("What is your zipcode:")
-  if user_input.nil?
-    puts "Sorry that is not a valid zip code.".red
-  end
 end
 
 $my_store = []
@@ -153,7 +147,7 @@ def add_to_cart(my_item)
       main_menu
     end
   else
-    puts "Sorry, we only have #{my_item.quantity} currently in stock.".red
+    puts "Sorry, we only have #{my_item.quantity} currently in stock."
     item_quantity = $prompt.ask("How many would you like to add to your cart: 0-#{my_item.quantity}?") { |q| q.in('0-100') }
     if my_item.quantity >= item_quantity.to_i && item_quantity.to_i > 0
       item_cart = Cart.all.find {|cart| cart.item_id == my_item.id}
@@ -190,6 +184,7 @@ def view_current_cart
 end
 
 def view_local_stores(zip)
+  system "clear"
   Store.all.select do |store|
     if store.location == zip
       all_local_store = store.name
@@ -228,8 +223,8 @@ end
 
 def pick_up_items
   system "clear"
-  clear_cart
   puts "Thanks for STOCKING UP! Your order will be ready for pickup at your local store!".magenta.blink
+  clear_cart
 end
 
 def delete_account
